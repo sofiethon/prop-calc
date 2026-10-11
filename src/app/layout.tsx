@@ -4,8 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: { default: "Mein Projekt", template: "%s – Mein Projekt" },
-  description: "Ein Produkt aus dem Kurs „Programmieren mit AI“ an der NDU.",
+  title: { default: "Proportio", template: "%s – Proportio" },
+  description: "Proportio hilft Innenarchitekt*innen vor Ort, Teppiche, Vorhangstangen, Bilder und Sitzabstände nach Messzahlen statt nach Bauchgefühl zu planen.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

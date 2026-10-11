@@ -1,4 +1,4 @@
-# Mein Projekt — NDU Coding 2026
+# Proportio — NDU Coding 2026
 
 Die Vorlage für dein **eigenes Produkt** im Kurs **„Programmieren mit AI“** (MSc Management by Innovation, NDU). Wie die Kursvorlage mit Leihbar, nur ohne das Übungsprodukt: leere Startseite, leerer Backlog. Anleitung: [Neues Projekt starten](https://ndu.datamonkeys.ai/neues-projekt).
 Du arbeitest lokal auf deinem Laptop – eingerichtet wie unter [Setup → Lokal](https://ndu.datamonkeys.ai/setup#lokal).

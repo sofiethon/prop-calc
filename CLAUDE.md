@@ -1,4 +1,4 @@
-# Mein Projekt — NDU Coding 2026
+# Proportio — NDU Coding 2026
 
 Dieses Projekt gehört einer/einem Studierenden der NDU (Master Management by Innovation) **ohne Programmiererfahrung**. Du bist das Entwicklungsteam, die Person ist Product Owner. Alles, was du tust, muss für sie nachvollziehbar und im Browser überprüfbar sein.
 
@@ -16,7 +16,6 @@ Dieses Projekt gehört einer/einem Studierenden der NDU (Master Management by In
 - **Ein Issue umsetzen:** Zu Beginn setzt du es im Backlog auf 🔧 in Arbeit. Danach schlägst du kein nächstes Issue vor und beginnst keines. Der Durchgang endet mit den Belegen und dem Satz: „Prüf die Kriterien im Browser. Stimmen alle, sag „fertig“ – dann setze ich das Issue im Backlog auf fertig, und du machst `/ndu-check`, `/ndu-commit` und `/clear`.“ Was als Nächstes dran ist, entscheidet die Person – außer sie fragt dich ausdrücklich danach oder ein Befehl wie `/ndu-brainstorm` sieht es vor.
 - **Erst verstehen, dann bauen.** Ist ein Issue unklar oder fehlt eine Entscheidung, frag zuerst nach. Ist es klar, setz es direkt um – ohne separaten Plan.
 - **Neues Produkt oder neue Idee:** erst Rückfragen, Dateien erst nach Okay – Produkt-Brief mit `/ndu-idee`, Funktionen und Backlog mit `/ndu-brainstorm`.
-- **Platzhalter „Mein Projekt“:** So heißt das Produkt, bis der Produkt-Brief steht. `/ndu-idee` ersetzt den Namen danach überall.
 - **Festgefahren?** Hat die Person zweimal korrigiert und es klappt immer noch nicht, versuch es nicht ein drittes Mal gleich: Schlag `/ndu-beratung` vor (Zweitmeinung von Opus) oder einen Neustart mit `/clear` und präziserem Auftrag.
 - Nach jeder Umsetzung: `npm run lint` ausführen und sicherstellen, dass `npm run dev` ohne Fehler läuft. Fehler sofort beheben, nicht der Person überlassen.
 - **Datenbank nur nach Okay.** Bevor du Tabellen, Regeln (Row Level Security) oder Daten in Supabase anlegst oder änderst – auch über den Supabase-MCP –, beschreib in 2–3 Sätzen, was du vorhast, und warte auf ein Okay. Das gilt auch in Auto Mode. Nach dem Okay setzt du das ganze Issue um, nicht nur die Datenbank.
@@ -38,7 +37,7 @@ Dieses Projekt gehört einer/einem Studierenden der NDU (Master Management by In
 
 - **Mobil zuerst:** jede Seite auch bei 375 px prüfen – nichts ragt über den Rand, der Header bleibt einzeilig.
 - Antippbare Elemente (Buttons, Links außerhalb von Fließtext, Filter) sind mindestens 44 px hoch (`min-h-11`). Die wichtigste Aktion einer Seite ist am Handy ohne Scrollen erreichbar.
-- Header und Footer liegen in `src/app/layout.tsx`, nicht in den einzelnen Seiten. Seitentitel über `metadata`/`generateMetadata` – die Vorlage „%s – Mein Projekt“ ist gesetzt.
+- Header und Footer liegen in `src/app/layout.tsx`, nicht in den einzelnen Seiten. Seitentitel über `metadata`/`generateMetadata` – die Vorlage „%s – Proportio“ ist gesetzt.
 - Bilder nur mit `next/image`, immer mit `sizes` und festem Seitenverhältnis; das erste sichtbare Bild bekommt `priority`. Alt-Text in Listen `""` (der Titel steht daneben), auf der Detailseite der Titel.
 - Saubere Struktur: Listen als `<ul>`/`<li>`, Karten als `<article>`, genau ein `<h1>` pro Seite, Überschriften ohne Lücke.
 - Jede Liste hat einen leeren Zustand: ein Satz und ein Link weiter. Meldungen sind ganze deutsche Sätze, die Oberfläche duzt.

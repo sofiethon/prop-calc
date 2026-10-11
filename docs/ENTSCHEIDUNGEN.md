@@ -5,3 +5,5 @@
 
 - 2026-10-08 — Stack: Next.js + Tailwind + Supabase + Vercel — Kursvorgabe
 - 2026-10-08 — Sprache der Oberfläche: Deutsch — Zielgruppe NDU-Studierende
+- 2026-10-11 — Produktname Proportio — aus dem Produkt-Brief
+- 2026-10-11 — Zielgruppe zuerst: Innenarchitekt*innen (Privatpersonen später); Grundriss/3D nicht ausgeschlossen — aus dem Produkt-Brief

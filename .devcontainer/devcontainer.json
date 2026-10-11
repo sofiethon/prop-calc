@@ -14,7 +14,7 @@
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
-      "label": "Mein Projekt (npm run dev)",
+      "label": "Proportio (npm run dev)",
       "onAutoForward": "openPreview"
     }
   },
