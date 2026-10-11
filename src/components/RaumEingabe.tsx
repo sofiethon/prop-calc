@@ -38,9 +38,17 @@ function leseGespeichert(): Gespeichert {
     const roh = window.localStorage.getItem(SPEICHER_KEY);
     if (!roh) return {};
     const d = JSON.parse(roh);
+    const istZahl = (n: unknown) => typeof n === "number" && Number.isFinite(n) && n > 0;
+    const raumOk = d.raum && istZahl(d.raum.laenge) && istZahl(d.raum.breite) && istZahl(d.raum.hoehe);
+    const eintraegeOk =
+      Array.isArray(d.eintraege) &&
+      d.eintraege.every(
+        (x: Eintrag) =>
+          x && ARTEN.includes(x.art) && typeof x.id === "number" && istZahl(x.breite) && istZahl(x.hoehe),
+      );
     return {
-      raum: d.raum ?? undefined,
-      eintraege: Array.isArray(d.eintraege) ? d.eintraege : undefined,
+      raum: raumOk ? d.raum : undefined,
+      eintraege: eintraegeOk ? d.eintraege : undefined,
       naechsteId: typeof d.naechsteId === "number" ? d.naechsteId : undefined,
     };
   } catch {

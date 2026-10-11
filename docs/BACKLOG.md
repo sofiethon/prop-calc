@@ -88,7 +88,7 @@
 
 **Fertig, wenn:** Ich gebe ein Sofa mit 200 cm Breite und 95 cm Tiefe ein und sehe 230 × 160 cm mit dem Verhältnis 1,15.
 
-## Issue 7: Eingaben beim Neuladen behalten 🔧 in Arbeit
+## Issue 7: Eingaben beim Neuladen behalten ✅ fertig
 
 **Ziel:** Eine Innenarchitektin verliert beim Neuladen der Seite ihre Eingaben nicht, damit sie vor Ort nicht von vorn anfangen muss.
 
