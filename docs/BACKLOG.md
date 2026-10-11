@@ -33,7 +33,7 @@
 
 **Fertig, wenn:** Ich gebe Raum und Sofa ein, öffne die Teppichempfehlung und sehe Größe, Regel und Quelle; mit einem zu kleinen Raum sehe ich einen Hinweis statt einer Zahl.
 
-## Issue 3: Vorhangstange und Bildhöhe 🔧 in Arbeit
+## Issue 3: Vorhangstange und Bildhöhe ✅ fertig
 
 **Ziel:** Eine Innenarchitektin bekommt aus Fenster und Sofa die Breite und Höhe der Vorhangstange sowie Größe und Hängehöhe eines Bildes über dem Sofa, damit zwei oft geschätzte Maße belegt sind.
 
@@ -47,7 +47,7 @@
 
 **Fertig, wenn:** Ich gebe Fenster und Sofa ein und sehe beide Empfehlungen mit Regel und Quelle; ein zu hohes Fenster erzeugt einen Hinweis.
 
-## Issue 4: Sitzabstände und Laufwege 🔧 in Arbeit
+## Issue 4: Sitzabstände und Laufwege ✅ fertig
 
 **Ziel:** Eine Innenarchitektin bekommt Abstände zwischen Sofa und Couchtisch, Sofa und Fernseher sowie die freien Laufwege im Raum, damit der Raum gut aussieht und trotzdem bequem begehbar bleibt.
 
@@ -101,3 +101,19 @@
 - Gegeben die Rückfrage, wenn ich abbreche, dann bleibt alles erhalten.
 
 **Fertig, wenn:** Ich gebe Raum und Sofa ein, lade die Seite neu und sehe Zusammenfassung, Liste und Empfehlung wie vorher.
+
+## Issue 8: Esstisch und Leuchte ✅ fertig
+
+**Ziel:** Eine Innenarchitektin gibt einen Esstisch (rechteckig oder rund) ein und bekommt Platz für Personen, nötigen Freiraum um den Tisch sowie Durchmesser und Hängehöhe der Leuchte darüber, damit Esstisch und Leuchte wie Teppich und Vorhang mit Regel und Quelle belegt sind.
+
+**Nicht im Umfang:** Auswahl von Leuchten, Tischen oder Stühlen, Stuhlmaße, ovale Tische, mehrere Leuchten über einem langen Tisch, Position des Tisches im Raum.
+
+**Akzeptanzkriterien:**
+- Gegeben die Art „Esstisch“, wenn ich ein Möbelstück hinzufüge, dann wähle ich die Form „rechteckig“ oder „rund“ und sehe passende Felder (Breite und Tiefe bzw. Durchmesser, dazu Höhe) mit derselben Fehlerprüfung wie die anderen Felder.
+- Gegeben ein Esstisch, wenn ich die Empfehlung öffne, dann sehe ich den Platz für Personen als Bereich, den Durchmesser der Leuchte (Hälfte bis zwei Drittel der Tischbreite) und die Hängehöhe der Unterkante über der Tischplatte, jeweils mit Regel und Quelle.
+- Gegeben ein Esstisch und ein Raum, wenn der Freiraum je Seite unter 90 cm liegt, dann sehe ich eine deutliche Warnung mit dem Wert, der fehlt.
+- Gegeben ein Raum mit Deckenhöhe, wenn die Leuchte nicht mehr unter die Decke passt, dann sehe ich einen Hinweis statt einer Zahl.
+- Gegeben kein Esstisch, dann sehe ich einen Satz und einen Link zur Eingabe; ohne Raum fehlen nur die raumabhängigen Teile, mit Satz und Link.
+- Gegeben ein Handy mit 375 px Breite, dann sind die Ergebnisse lesbar und nichts ragt über den Rand.
+
+**Fertig, wenn:** Ich gebe einen runden Tisch mit 120 cm Durchmesser in einem engen Raum ein und sehe Personen, Leuchte 60–80 cm und eine Platz-Warnung; in einem großen Raum bleibt die Warnung aus.

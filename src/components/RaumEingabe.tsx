@@ -6,16 +6,20 @@ import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import Fehler from "@/components/Fehler";
+import EsstischEmpfehlung from "@/components/EsstischEmpfehlung";
 import PasstCheck from "@/components/PasstCheck";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
+import { TISCH_HOEHE_STANDARD_CM } from "@/lib/esstisch";
 import { leseZentimeter } from "@/lib/zentimeter";
 
-const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard"] as const;
+const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard", "Esstisch"] as const;
 type Art = (typeof ARTEN)[number];
 
+type Form = "rechteckig" | "rund";
+
 type Raum = { laenge: number; breite: number; hoehe: number };
-type Eintrag = { id: number; art: Art; breite: number; hoehe: number; tiefe?: number };
+type Eintrag = { id: number; art: Art; breite: number; hoehe: number; tiefe?: number; form?: Form };
 
 const SPEICHER_KEY = "proportio-eingaben";
 
@@ -78,6 +82,7 @@ function RaumEingabeInhalt() {
   const [eintragFehler, setEintragFehler] = useState<FeldFehler>({});
   const [naechsteId, setNaechsteId] = useState(gespeichert.naechsteId ?? 1);
   const [art, setArt] = useState<Art>("Sofa");
+  const [tischForm, setTischForm] = useState<Form>("rechteckig");
   // Wechselt beim Zurücksetzen, damit die Formulare mit leeren Feldern neu aufgebaut werden.
   const [formularNr, setFormularNr] = useState(0);
 
@@ -105,7 +110,8 @@ function RaumEingabeInhalt() {
     if (Object.keys(fehler).length === 0) setRaum(werte as Raum);
   }
 
-  const hatTiefe = art === "Sofa" || art === "Couchtisch";
+  const istRunderTisch = art === "Esstisch" && tischForm === "rund";
+  const hatTiefe = art === "Sofa" || art === "Couchtisch" || (art === "Esstisch" && !istRunderTisch);
 
   function eintragHinzufuegen(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -113,7 +119,10 @@ function RaumEingabeInhalt() {
     const daten = new FormData(form);
     const fehler: FeldFehler = {};
     const breite = leseZentimeter(String(daten.get("breite") ?? ""));
-    const hoehe = leseZentimeter(String(daten.get("hoehe") ?? ""));
+    // Beim Esstisch ist die Höhe freiwillig und gilt ohne Eintrag als 75 cm.
+    const hoeheText = String(daten.get("hoehe") ?? "");
+    const hoehe =
+      art === "Esstisch" && hoeheText.trim() === "" ? { wert: TISCH_HOEHE_STANDARD_CM } : leseZentimeter(hoeheText);
     if ("fehler" in breite) fehler.breite = breite.fehler;
     if ("fehler" in hoehe) fehler.hoehe = hoehe.fehler;
     const tiefe = hatTiefe ? leseZentimeter(String(daten.get("tiefe") ?? "")) : null;
@@ -122,6 +131,10 @@ function RaumEingabeInhalt() {
     if ("wert" in breite && "wert" in hoehe && (!tiefe || "wert" in tiefe)) {
       const neu: Eintrag = { id: naechsteId, art, breite: breite.wert, hoehe: hoehe.wert };
       if (tiefe && "wert" in tiefe) neu.tiefe = tiefe.wert;
+      if (art === "Esstisch") {
+        neu.form = tischForm;
+        if (istRunderTisch) neu.tiefe = breite.wert;
+      }
       setEintraege((alt) => [...alt, neu]);
       setNaechsteId((n) => n + 1);
       form.reset();
@@ -136,6 +149,7 @@ function RaumEingabeInhalt() {
     setRaumFehler({});
     setEintragFehler({});
     setArt("Sofa");
+    setTischForm("rechteckig");
     setFormularNr((n) => n + 1);
   }
 
@@ -213,16 +227,36 @@ function RaumEingabeInhalt() {
                 ))}
               </select>
             </div>
+            {art === "Esstisch" && (
+              <div>
+                <label htmlFor={`${uid}-form`} className="font-medium">
+                  Form
+                </label>
+                <select
+                  id={`${uid}-form`}
+                  name="form"
+                  value={tischForm}
+                  onChange={(e) => setTischForm(e.target.value as Form)}
+                  className={feldKlasse}
+                >
+                  <option value="rechteckig">rechteckig</option>
+                  <option value="rund">rund</option>
+                </select>
+              </div>
+            )}
             {(
               [
-                ["breite", "Breite"],
+                ["breite", istRunderTisch ? "Durchmesser" : "Breite"],
                 ["hoehe", "Höhe"],
                 ...(hatTiefe ? [["tiefe", "Tiefe"]] : []),
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
                 <label htmlFor={`${uid}-e-${name}`} className="font-medium">
-                  {label} <span className="font-normal text-muted">(in cm)</span>
+                  {label}{" "}
+                  <span className="font-normal text-muted">
+                    {art === "Esstisch" && name === "hoehe" ? "(in cm, ohne Eintrag 75)" : "(in cm)"}
+                  </span>
                 </label>
                 <input
                   id={`${uid}-e-${name}`}
@@ -302,8 +336,9 @@ function RaumEingabeInhalt() {
                   <span>
                     <span className="font-semibold">{x.art}</span>
                     <span className="block text-muted">
-                      {formatZahl(x.breite, 1)} cm breit, {formatZahl(x.hoehe, 1)} cm hoch
-                      {x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm tief` : ""}
+                      {x.form === "rund"
+                        ? `rund, Durchmesser ${formatZahl(x.breite, 1)} cm, ${formatZahl(x.hoehe, 1)} cm hoch`
+                        : `${formatZahl(x.breite, 1)} cm breit, ${formatZahl(x.hoehe, 1)} cm hoch${x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm tief` : ""}`}
                     </span>
                   </span>
                   <button
@@ -345,6 +380,18 @@ function RaumEingabeInhalt() {
           sofas={eintraege.filter((x) => x.art === "Sofa")}
           couchtische={eintraege.filter((x) => x.art === "Couchtisch")}
           fernseher={eintraege.filter((x) => x.art === "Fernseher")}
+        />
+
+        <EsstischEmpfehlung
+          raum={raum}
+          tische={eintraege
+            .filter((x) => x.art === "Esstisch")
+            .map((x) => ({
+              form: x.form ?? "rechteckig",
+              breite: x.breite,
+              tiefe: x.tiefe ?? x.breite,
+              hoehe: x.hoehe,
+            }))}
         />
 
         <PasstCheck
