@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
-import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import Fehler from "@/components/Fehler";
@@ -30,9 +29,11 @@ function formatZahl(n: number, nachkommastellen = 0) {
 }
 
 const feldKlasse =
-  "mt-1 block min-h-11 w-full rounded-lg border border-border bg-card px-3 text-base";
+  "mt-2 block min-h-12 w-full rounded-sm border border-dark-600 bg-white px-4 text-base aria-invalid:border-2 aria-invalid:border-foreground";
+const zweitKnopfKlasse =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle";
 const knopfKlasse =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-4 font-semibold text-background";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-foreground px-6 font-normal text-background transition-colors duration-150 hover:bg-dark-800";
 
 type Gespeichert = { raum?: Raum; eintraege?: Eintrag[]; naechsteId?: number };
 
@@ -158,17 +159,17 @@ function RaumEingabeInhalt() {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
-      <div className="flex flex-col gap-8">
+    <div className="layout-grid gap-y-16">
+      <div className="col-span-full flex flex-col gap-16 lg:col-span-5">
         <section
           id="raum-formular"
           aria-labelledby={`${uid}-raum`}
-          className="rounded-xl border border-border bg-card p-4 sm:p-6"
+          className="border-t border-foreground pt-6"
         >
-          <h2 id={`${uid}-raum`} className="text-xl font-semibold">
+          <h2 id={`${uid}-raum`} className="font-display text-h3 font-normal tracking-heading">
             Raum
           </h2>
-          <p className="mt-1 text-muted">Alle Maße in Zentimetern.</p>
+          <p className="mt-2 text-muted">Alle Maße in Zentimetern.</p>
           <form key={`raum-${formularNr}`} onSubmit={raumUebernehmen} noValidate className="mt-4 flex flex-col gap-4">
             {(
               [
@@ -178,7 +179,7 @@ function RaumEingabeInhalt() {
               ] as const
             ).map(([name, label, hinweis]) => (
               <div key={name}>
-                <label htmlFor={`${uid}-raum-${name}`} className="font-medium">
+                <label htmlFor={`${uid}-raum-${name}`} className="text-sm font-normal">
                   {label} <span className="font-normal text-muted">({hinweis})</span>
                 </label>
                 <input
@@ -203,14 +204,14 @@ function RaumEingabeInhalt() {
         <section
           id="moebel-formular"
           aria-labelledby={`${uid}-moebel`}
-          className="rounded-xl border border-border bg-card p-4 sm:p-6"
+          className="border-t border-foreground pt-6"
         >
-          <h2 id={`${uid}-moebel`} className="text-xl font-semibold">
+          <h2 id={`${uid}-moebel`} className="font-display text-h3 font-normal tracking-heading">
             Möbel oder Fenster hinzufügen
           </h2>
           <form key={`moebel-${formularNr}`} onSubmit={eintragHinzufuegen} noValidate className="mt-4 flex flex-col gap-4">
             <div>
-              <label htmlFor={`${uid}-art`} className="font-medium">
+              <label htmlFor={`${uid}-art`} className="text-sm font-normal">
                 Art
               </label>
               <select
@@ -229,7 +230,7 @@ function RaumEingabeInhalt() {
             </div>
             {art === "Esstisch" && (
               <div>
-                <label htmlFor={`${uid}-form`} className="font-medium">
+                <label htmlFor={`${uid}-form`} className="text-sm font-normal">
                   Form
                 </label>
                 <select
@@ -252,7 +253,7 @@ function RaumEingabeInhalt() {
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
-                <label htmlFor={`${uid}-e-${name}`} className="font-medium">
+                <label htmlFor={`${uid}-e-${name}`} className="text-sm font-normal">
                   {label}{" "}
                   <span className="font-normal text-muted">
                     {art === "Esstisch" && name === "hoehe" ? "(in cm, ohne Eintrag 75)" : "(in cm)"}
@@ -271,40 +272,38 @@ function RaumEingabeInhalt() {
                 <Fehler id={`${uid}-e-${name}-fehler`} text={eintragFehler[name]} />
               </div>
             ))}
-            <button type="submit" className={knopfKlasse}>
-              <Plus className="h-5 w-5" aria-hidden="true" />
+            <button type="submit" className={zweitKnopfKlasse}>
               Hinzufügen
             </button>
           </form>
         </section>
       </div>
 
-      <div className="flex flex-col gap-8">
-        <section aria-labelledby={`${uid}-zusammenfassung`} className="rounded-xl border border-border bg-card p-4 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 id={`${uid}-zusammenfassung`} className="text-xl font-semibold">
+      <div className="col-span-full flex flex-col gap-16 lg:col-span-6 lg:col-start-7">
+        <section aria-labelledby={`${uid}-zusammenfassung`} className="border-t border-foreground pt-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2 id={`${uid}-zusammenfassung`} className="font-display text-h3 font-normal tracking-heading">
               Zusammenfassung
             </h2>
             <button
               type="button"
               onClick={allesZuruecksetzen}
-              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg border border-border px-3 font-medium"
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm border border-foreground px-4 font-normal transition-colors duration-150 hover:bg-subtle"
             >
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
               Neu beginnen
             </button>
           </div>
           <div aria-live="polite">
             {raum ? (
-              <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
+              <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4">
                 <dt className="text-muted">Länge</dt>
-                <dd className="font-semibold">{formatZahl(raum.laenge, 1)} cm</dd>
+                <dd className="font-medium">{formatZahl(raum.laenge, 1)} cm</dd>
                 <dt className="text-muted">Breite</dt>
-                <dd className="font-semibold">{formatZahl(raum.breite, 1)} cm</dd>
+                <dd className="font-medium">{formatZahl(raum.breite, 1)} cm</dd>
                 <dt className="text-muted">Deckenhöhe</dt>
-                <dd className="font-semibold">{formatZahl(raum.hoehe, 1)} cm</dd>
+                <dd className="font-medium">{formatZahl(raum.hoehe, 1)} cm</dd>
                 <dt className="text-muted">Raumfläche</dt>
-                <dd className="font-semibold">{formatZahl((raum.laenge * raum.breite) / 10000, 2)} m²</dd>
+                <dd className="font-medium">{formatZahl((raum.laenge * raum.breite) / 10000, 2)} m²</dd>
               </dl>
             ) : (
               <p className="mt-4 text-muted">
@@ -314,27 +313,27 @@ function RaumEingabeInhalt() {
           </div>
         </section>
 
-        <section aria-labelledby={`${uid}-liste`} className="rounded-xl border border-border bg-card p-4 sm:p-6">
-          <h2 id={`${uid}-liste`} className="text-xl font-semibold">
+        <section aria-labelledby={`${uid}-liste`} className="border-t border-foreground pt-6">
+          <h2 id={`${uid}-liste`} className="font-display text-h3 font-normal tracking-heading">
             Möbel und Fenster
           </h2>
           {eintraege.length === 0 ? (
             <p className="mt-4 text-muted">
               Noch nichts eingetragen.{" "}
-              <a href="#moebel-formular" className="inline-block font-medium text-foreground underline">
+              <a href="#moebel-formular" className="inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4">
                 Zum Formular, um ein Sofa oder Fenster hinzuzufügen
               </a>
               .
             </p>
           ) : (
-            <ul className="mt-4 flex flex-col gap-3">
+            <ul className="mt-4 flex flex-col">
               {eintraege.map((x) => (
                 <li
                   key={x.id}
-                  className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2"
+                  className="flex items-center justify-between gap-4 border-t border-border py-4"
                 >
                   <span>
-                    <span className="font-semibold">{x.art}</span>
+                    <span className="font-medium">{x.art}</span>
                     <span className="block text-muted">
                       {x.form === "rund"
                         ? `rund, Durchmesser ${formatZahl(x.breite, 1)} cm, ${formatZahl(x.hoehe, 1)} cm hoch`
@@ -345,9 +344,8 @@ function RaumEingabeInhalt() {
                     type="button"
                     onClick={() => eintragEntfernen(x.id)}
                     aria-label={`${x.art} entfernen`}
-                    className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg border border-border px-3 font-medium"
+                    className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm border border-foreground px-4 font-normal transition-colors duration-150 hover:bg-subtle"
                   >
-                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                     Entfernen
                   </button>
                 </li>

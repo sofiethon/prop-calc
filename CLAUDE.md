@@ -1,4 +1,4 @@
-# Proportio — NDU Coding 2026
+# prop-calc — NDU Coding 2026
 
 Dieses Projekt gehört einer/einem Studierenden der NDU (Master Management by Innovation) **ohne Programmiererfahrung**. Du bist das Entwicklungsteam, die Person ist Product Owner. Alles, was du tust, muss für sie nachvollziehbar und im Browser überprüfbar sein.
 
@@ -37,12 +37,30 @@ Dieses Projekt gehört einer/einem Studierenden der NDU (Master Management by In
 
 - **Mobil zuerst:** jede Seite auch bei 375 px prüfen – nichts ragt über den Rand, der Header bleibt einzeilig.
 - Antippbare Elemente (Buttons, Links außerhalb von Fließtext, Filter) sind mindestens 44 px hoch (`min-h-11`). Die wichtigste Aktion einer Seite ist am Handy ohne Scrollen erreichbar.
-- Header und Footer liegen in `src/app/layout.tsx`, nicht in den einzelnen Seiten. Seitentitel über `metadata`/`generateMetadata` – die Vorlage „%s – Proportio“ ist gesetzt.
+- Header und Footer liegen in `src/app/layout.tsx`, nicht in den einzelnen Seiten. Seitentitel über `metadata`/`generateMetadata` – die Vorlage „%s – prop-calc“ ist gesetzt.
 - Bilder nur mit `next/image`, immer mit `sizes` und festem Seitenverhältnis; das erste sichtbare Bild bekommt `priority`. Alt-Text in Listen `""` (der Titel steht daneben), auf der Detailseite der Titel.
 - Saubere Struktur: Listen als `<ul>`/`<li>`, Karten als `<article>`, genau ein `<h1>` pro Seite, Überschriften ohne Lücke.
 - Jede Liste hat einen leeren Zustand: ein Satz und ein Link weiter. Meldungen sind ganze deutsche Sätze, die Oberfläche duzt.
 - Schriften über `next/font/google` in `src/app/layout.tsx` laden (nichts installieren). Farben nur als Tokens in `src/app/globals.css`, nicht als Hex in den Komponenten.
 - Kleiner Text (unter 14 px) nie in der Akzentfarbe auf hellem Grund. Den Fokus-Rahmen nie entfernen, nur ersetzen. „Bewegung reduzieren“ regelt `globals.css` nur für CSS-Animationen; für Motion sorgt `<MotionConfig reducedMotion="user">` in `src/app/layout.tsx` dafür – um alles innerhalb von `<body>`, auch Header und Footer (anlegen, sobald Motion installiert wird).
+
+## SoTho Design System (gilt für die ganze Oberfläche)
+
+Zurückhaltend, präzise, architektonisch – „eine Architekturpublikation als funktionales System“. Jedes Element braucht einen Grund; was Hierarchie, Verständnis oder Funktion nicht verbessert, entfällt.
+
+- **Tokens:** alle Farben, Abstände, Schriftgrößen und Zeiten stehen in `src/app/globals.css` (`:root` und `@theme`). Komponenten nutzen nur Tailwind-Klassen, die darauf zeigen (`bg-background`, `text-foreground`, `text-muted`, `bg-subtle`, `border-border`, `text-h1` … `text-h3`) – keine Hex-Werte, keine freien Pixelmaße.
+- **Palette:** Ink `#171717` (Text, Primärknopf), Paper `#F3F0E9` (Hintergrund), Greige `#C7BFB2` (nur Nebenflächen, nie dominant). Etwa 70–80 % hell, 15–25 % dunkel, 5–10 % Greige. Keine Farbe außerhalb der Palette, kein Reinschwarz auf großen Flächen. Status wird mit Text und Icon gezeigt, nicht mit Farbe.
+- **Schrift:** Superclarendon (Adobe Fonts, Kit-ID in `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID`, Ersatz Georgia) nur für Logo, Display, H1–H3; Klasse `font-display`, Laufweite `tracking-display` (H1) bzw. `tracking-heading` (H3). Nie in Absätzen, Formularen oder Tabellen. Montserrat (Light 300 als Fließtext; 400 unter 15 px und für Labels/Knöpfe; 500 nur für funktionale Hierarchie) kommt über `next/font`. Kontrast entsteht über Größe und Abstand, nicht über Fettschrift.
+- **Raster:** 4 / 8 / 12 Spalten (< 768 / 768–1199 / ≥ 1200 px), Seitenrand 16 / 32 / 64 px. Hilfsklassen `page-container` und `layout-grid`; Inhalte spannen mit `col-span-*`. Textblöcke höchstens `max-w-measure` (62 ch). Linksbündig, Asymmetrie nur über Spalten. Abstände in Vielfachen von 8 px (Tailwind 2, 4, 6, 8 …); `mt-1`, `gap-3`, `px-3` u. ä. nicht verwenden.
+- **Formen:** Rundung höchstens 2 px (Eingaben, Knöpfe) bzw. 4 px (Karten); keine Schatten, Verläufe, Glas-Effekte, Pillen, Abzeichen. Trennung über Abstand, Tonwert und 1-px-Linien.
+- **Knöpfe:** Primär = Ink-Fläche, Paper-Text, mindestens 48 px hoch, **ein Primärknopf pro Seite**; sekundär = 1 px Ink-Rahmen; tertiär = unterstrichener Link (`underline-offset-4`). Hover höchstens `duration-150`.
+- **Eingaben:** Label immer sichtbar über dem Feld (14 px, 400), Feld 48 px hoch, weiß, 1 px `border-dark-600`; Fehler = Text plus Rahmenwechsel auf Ink (`aria-invalid`).
+- **Icons:** nur wenn funktional (Warnung, Status), Lucide mit `strokeWidth={1.25}`; keine dekorativen Icons an Knöpfen.
+- **Bilder:** groß, einzeln, architektonisch; Bildunterschrift klein und zurückhaltend; keine Filter.
+- **Bewegung:** nur leichtes Ein-/Ausblenden und Verschieben (8–16 px), `--dur-base`, `--ease`; kein Springen, Drehen, Parallax. Mit „Bewegung reduzieren“ entfällt sie.
+- **Fokus & Barrierefreiheit:** `:focus-visible` mit 2 px Ink-Rahmen und 3 px Abstand (auf dunklem Grund Paper); WCAG AA; antippbare Ziele mindestens 44 px. Barrierefreiheit geht vor Optik.
+- **Texte:** kurze Sätze, keine Ausrufezeichen, keine Luxus-Floskeln.
+- **Vor „fertig“ prüfen:** Palette, Schrift, 8-px-Raster, Rasterbezug, Reduktion, Hierarchie, Kontrast/Fokus, Mobilansicht.
 
 ## Projektstruktur
 

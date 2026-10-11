@@ -8,8 +8,8 @@ type Props = {
   fernseher: { breite: number }[];
 };
 
-const linkKlasse = "inline-block font-medium text-foreground underline";
-const warnKlasse = "mt-1 flex items-start gap-1.5 font-medium text-accent";
+const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
+const warnKlasse = "mt-2 flex items-start gap-2 font-medium text-foreground";
 
 export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher }: Props) {
   // Bei mehreren Sofas zählt das breiteste, beim Couchtisch der tiefste, beim Fernseher der breiteste.
@@ -38,19 +38,19 @@ export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher 
     const e = empfehleAbstaende(raum, sofaTiefe, tischTiefe, couchtische.length > 0, tvBreite);
     inhalt = (
       <>
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-1">
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
           <dt className="text-muted">Sofa – Couchtisch</dt>
-          <dd className="text-lg font-bold">
+          <dd className="text-lg font-medium">
             {e.couchtisch.von}–{e.couchtisch.bis} cm
           </dd>
           <dt className="text-muted">Sofa – Fernseher</dt>
-          <dd className="text-lg font-bold">{e.fernseher === null ? "–" : `etwa ${e.fernseher} cm`}</dd>
+          <dd className="text-lg font-medium">{e.fernseher === null ? "–" : `etwa ${e.fernseher} cm`}</dd>
           <dt className="text-muted">Freier Laufweg</dt>
-          <dd className="text-lg font-bold">{e.laufweg === null ? "–" : `${e.laufweg.frei} cm`}</dd>
+          <dd className="text-lg font-medium">{e.laufweg === null ? "–" : `${e.laufweg.frei} cm`}</dd>
         </dl>
 
         {e.fernseher === null && (
-          <p className="mt-3 text-muted">
+          <p className="mt-4 text-muted">
             Für den Fernsehabstand brauche ich einen Fernseher.{" "}
             <a href="#moebel-formular" className={linkKlasse}>
               Zurück zur Eingabe
@@ -60,14 +60,14 @@ export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher 
         )}
         {e.fernseherZuWeit && e.fernseher !== null && (
           <p className={warnKlasse}>
-            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
             Der empfohlene Fernsehabstand von {e.fernseher} cm passt nicht in den Raum. Ein kleinerer Fernseher
             würde näher ans Sofa passen.
           </p>
         )}
 
         {e.laufweg === null ? (
-          <p className="mt-3 text-muted">
+          <p className="mt-4 text-muted">
             Für den Laufweg brauche ich einen Raum.{" "}
             <a href="#raum-formular" className={linkKlasse}>
               Zurück zur Eingabe
@@ -76,17 +76,17 @@ export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher 
           </p>
         ) : e.laufweg.fehlt > 0 ? (
           <p className={warnKlasse}>
-            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
             Der Laufweg ist zu schmal: Es bleiben {e.laufweg.frei} cm, empfohlen sind mindestens {LAUFWEG_MIN_CM}{" "}
             cm. Es fehlen {e.laufweg.fehlt} cm.
           </p>
         ) : (
-          <p className="mt-3 text-muted">
+          <p className="mt-4 text-muted">
             Der Laufweg reicht: {e.laufweg.frei} cm bei mindestens {LAUFWEG_MIN_CM} cm.
           </p>
         )}
         {e.laufweg && (
-          <p className="mt-1 text-muted">
+          <p className="mt-2 text-muted">
             Gerechnet mit der kurzen Raumseite vor dem Sofa: {e.laufweg.platzVorSofa} cm nach dem Sofa (
             {sofaTiefe} cm tief)
             {couchtische.length > 0 ? `, davon gehen der Tischabstand von ${e.couchtisch.von} cm` : ""}
@@ -95,9 +95,9 @@ export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher 
           </p>
         )}
 
-        <h3 className="mt-4 font-semibold">Regel</h3>
+        <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h3>
         <p>{ABSTAENDE_REGEL}</p>
-        <h3 className="mt-4 font-semibold">Quelle</h3>
+        <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Quelle</h3>
         <p>
           <a href={ABSTAENDE_QUELLE.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
             {ABSTAENDE_QUELLE.name}
@@ -108,8 +108,8 @@ export default function AbstandEmpfehlung({ raum, sofas, couchtische, fernseher 
   }
 
   return (
-    <details className="rounded-xl border border-border bg-card p-4 sm:p-6">
-      <summary className="flex min-h-11 cursor-pointer items-center text-xl font-semibold">
+    <details className="border-t border-foreground pt-2">
+      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
         Abstände und Laufwege
       </summary>
       <div className="mt-4" aria-live="polite">

@@ -1,4 +1,4 @@
-# Produkt-Brief — Proportio
+# Produkt-Brief — prop-calc
 
 **Stand:** 2026-10-11 — MVP aus `/ndu-brainstorm` ergänzt (5 Funktionen, Issues 1–5 im Backlog)
 

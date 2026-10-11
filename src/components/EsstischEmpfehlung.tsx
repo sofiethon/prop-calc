@@ -18,16 +18,16 @@ type Props = {
   tische: Esstisch[];
 };
 
-const linkKlasse = "inline-block font-medium text-foreground underline";
-const warnKlasse = "mt-1 flex items-start gap-1.5 font-medium text-accent";
+const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
+const warnKlasse = "mt-2 flex items-start gap-2 font-medium text-foreground";
 
 function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; url: string }[] }) {
   return (
     <>
-      <h4 className="mt-3 font-semibold">Regel</h4>
+      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h4>
       <p>{regel}</p>
-      <h4 className="mt-3 font-semibold">{quellen.length > 1 ? "Quellen" : "Quelle"}</h4>
-      <ul className="list-disc pl-5">
+      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">{quellen.length > 1 ? "Quellen" : "Quelle"}</h4>
+      <ul className="list-disc pl-6">
         {quellen.map((q) => (
           <li key={q.url}>
             <a href={q.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
@@ -62,23 +62,23 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
     const e = empfehleEsstisch(tisch, raum);
     inhalt = (
       <>
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-1">
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
           <dt className="text-muted">Platz für</dt>
-          <dd className="text-lg font-bold">
+          <dd className="text-lg font-medium">
             {e.personen.von === e.personen.bis ? e.personen.von : `${e.personen.von}–${e.personen.bis}`} Personen
           </dd>
           <dt className="text-muted">Leuchte, Durchmesser</dt>
-          <dd className="text-lg font-bold">
+          <dd className="text-lg font-medium">
             {e.leuchteDurchmesser.von}–{e.leuchteDurchmesser.bis} cm
           </dd>
           <dt className="text-muted">Leuchte, Unterkante</dt>
-          <dd className="text-lg font-bold">
+          <dd className="text-lg font-medium">
             {e.leuchteHoeheUeberTisch.von}–{e.leuchteHoeheUeberTisch.bis} cm über der Tischplatte
           </dd>
         </dl>
 
         {e.leuchteImRaum === null ? (
-          <p className="mt-3 text-muted">
+          <p className="mt-4 text-muted">
             Für die Höhe über dem Boden und den Freiraum brauche ich einen Raum.{" "}
             <a href="#raum-formular" className={linkKlasse}>
               Zurück zur Eingabe
@@ -87,11 +87,11 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
           </p>
         ) : e.leuchteImRaum.art === "hinweis" ? (
           <p className={warnKlasse}>
-            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
             {e.leuchteImRaum.grund}
           </p>
         ) : (
-          <p className="mt-3 text-muted">
+          <p className="mt-4 text-muted">
             Die Unterkante der Leuchte hängt {e.leuchteImRaum.von}–{e.leuchteImRaum.bis} cm über dem Boden (Tisch{" "}
             {tisch.hoehe} cm hoch), bis zur Decke bleiben mindestens {e.leuchteImRaum.platzBisDecke} cm.
           </p>
@@ -100,13 +100,13 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
         {e.platz &&
           (e.platz.fehlt > 0 ? (
             <p className={warnKlasse}>
-              <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
               Um den Tisch ist es zu eng: Es bleiben {e.platz.frei} cm je Seite, empfohlen sind mindestens{" "}
               {PLATZ_MIN_CM} cm. Es fehlen {e.platz.fehlt} cm je Seite, der Raum müsste mindestens{" "}
               {e.platz.mindestBreite} cm breit sein.
             </p>
           ) : (
-            <p className="mt-3 text-muted">
+            <p className="mt-4 text-muted">
               Der Freiraum reicht: {e.platz.frei} cm je Seite bei mindestens {PLATZ_MIN_CM} cm
               {e.platz.frei < PLATZ_DURCHGANG_VON_CM
                 ? `; für einen Durchgang hinter den Stühlen wären ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm nötig.`
@@ -114,26 +114,26 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
             </p>
           ))}
         {e.platz && (
-          <p className="mt-1 text-muted">
+          <p className="mt-2 text-muted">
             Gerechnet mit der kurzen Raumseite und dem Tisch mittig darin: {e.platz.tischMass} cm Tischmaß, der Rest
             teilt sich auf beide Seiten.
           </p>
         )}
 
-        <h3 className="mt-4 text-lg font-semibold">Regeln und Quellen</h3>
-        <h4 className="mt-3 font-semibold">Platz um den Tisch</h4>
+        <h3 className="mt-8 text-lg font-medium">Regeln und Quellen</h3>
+        <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Platz um den Tisch</h4>
         <Quellen regel={PLATZ_REGEL} quellen={PLATZ_QUELLEN} />
-        <h4 className="mt-4 font-semibold">Personen am Tisch</h4>
+        <h4 className="mt-6 font-medium">Personen am Tisch</h4>
         <Quellen regel={PERSONEN_REGEL} quellen={PERSONEN_QUELLEN} />
-        <h4 className="mt-4 font-semibold">Leuchte</h4>
+        <h4 className="mt-6 font-medium">Leuchte</h4>
         <Quellen regel={LEUCHTE_REGEL} quellen={LEUCHTE_QUELLEN} />
       </>
     );
   }
 
   return (
-    <details className="rounded-xl border border-border bg-card p-4 sm:p-6">
-      <summary className="flex min-h-11 cursor-pointer items-center text-xl font-semibold">
+    <details className="border-t border-foreground pt-2">
+      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
         Esstisch und Leuchte
       </summary>
       <div className="mt-4" aria-live="polite">

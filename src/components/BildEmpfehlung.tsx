@@ -6,7 +6,7 @@ type Props = {
   sofas: { breite: number; hoehe: number }[];
 };
 
-const linkKlasse = "inline-block font-medium text-foreground underline";
+const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
 
 export default function BildEmpfehlung({ raum, sofas }: Props) {
   // Bei mehreren Sofas zählt das breiteste.
@@ -32,29 +32,29 @@ export default function BildEmpfehlung({ raum, sofas }: Props) {
     const e = empfehleBild(sofa.breite, sofa.hoehe, raum.hoehe);
     if (e.art === "hinweis") {
       inhalt = (
-        <p className="flex items-start gap-1.5 font-medium text-accent">
-          <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+        <p className="flex items-start gap-2 font-medium text-foreground">
+          <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
           {e.grund}
         </p>
       );
     } else {
       inhalt = (
         <>
-          <dl className="grid grid-cols-2 gap-x-4 gap-y-1">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
             <dt className="text-muted">Bildbreite</dt>
-            <dd className="text-lg font-bold">
+            <dd className="text-lg font-medium">
               {e.breiteVon}–{e.breiteBis} cm
             </dd>
             <dt className="text-muted">Hängehöhe</dt>
-            <dd className="text-lg font-bold">Unterkante bei {e.hangHoehe} cm</dd>
+            <dd className="text-lg font-medium">Unterkante bei {e.hangHoehe} cm</dd>
           </dl>
-          <p className="mt-1 text-muted">
+          <p className="mt-2 text-muted">
             Bis zur Decke bleiben {e.platzBisDecke} cm für das Bild (Sofa: {sofa.breite} cm breit, {sofa.hoehe} cm
             hoch).
           </p>
-          <h3 className="mt-4 font-semibold">Regel</h3>
+          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h3>
           <p>{BILD_REGEL}</p>
-          <h3 className="mt-4 font-semibold">Quelle</h3>
+          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Quelle</h3>
           <p>
             <a href={BILD_QUELLE.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
               {BILD_QUELLE.name}
@@ -66,8 +66,8 @@ export default function BildEmpfehlung({ raum, sofas }: Props) {
   }
 
   return (
-    <details className="rounded-xl border border-border bg-card p-4 sm:p-6">
-      <summary className="flex min-h-11 cursor-pointer items-center text-xl font-semibold">
+    <details className="border-t border-foreground pt-2">
+      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
         Bildempfehlung
       </summary>
       <div className="mt-4" aria-live="polite">

@@ -18,10 +18,10 @@ type Props = {
 
 type Gepruefte = { art: "Teppich"; a: number; b: number } | { art: "Stange"; breite: number; fensterId: number };
 
-const linkKlasse = "inline-block font-medium text-foreground underline";
-const feldKlasse = "mt-1 block min-h-11 w-full rounded-lg border border-border bg-card px-3 text-base";
+const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
+const feldKlasse = "mt-2 block min-h-12 w-full rounded-sm border border-dark-600 bg-white px-4 text-base aria-invalid:border-2 aria-invalid:border-foreground";
 const knopfKlasse =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-4 font-semibold text-background";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle";
 
 function zahl(n: number) {
   return n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
@@ -29,9 +29,8 @@ function zahl(n: number) {
 
 function Stufe({ bewertung }: { bewertung: Bewertung }) {
   const Icon = bewertung.stufe === "passt" ? CircleCheck : bewertung.stufe === "grenzwertig" ? TriangleAlert : CircleX;
-  const farbe = bewertung.stufe === "passt" ? "text-foreground" : "text-accent";
-  return (
-    <p className={`flex items-center gap-2 text-2xl font-bold ${farbe}`}>
+    return (
+    <p className="flex items-center gap-2 text-2xl font-normal">
       <Icon className="h-6 w-6 shrink-0" aria-hidden="true" />
       {bewertung.stufe === "passt" ? "Passt" : bewertung.stufe === "grenzwertig" ? "Grenzwertig" : bewertung.stufe === "zu klein" ? "Zu klein" : "Zu groß"}
     </p>
@@ -110,7 +109,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
       <>
         <form onSubmit={pruefen} noValidate className="flex flex-col gap-4">
           <div>
-            <label htmlFor={`${uid}-art`} className="font-medium">
+            <label htmlFor={`${uid}-art`} className="text-sm font-normal">
               Was möchtest du prüfen?
             </label>
             <select
@@ -144,7 +143,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
                     ] as const
                   ).map(([name, label]) => (
                     <div key={name}>
-                      <label htmlFor={`${uid}-${name}`} className="font-medium">
+                      <label htmlFor={`${uid}-${name}`} className="text-sm font-normal">
                         {label} <span className="font-normal text-muted">(in cm)</span>
                       </label>
                       <input
@@ -164,7 +163,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
               ) : (
                 <>
                   <div>
-                    <label htmlFor={`${uid}-fenster`} className="font-medium">
+                    <label htmlFor={`${uid}-fenster`} className="text-sm font-normal">
                       Für welches Fenster?
                     </label>
                     <select id={`${uid}-fenster`} name="fenster" className={feldKlasse}>
@@ -176,7 +175,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor={`${uid}-breite`} className="font-medium">
+                    <label htmlFor={`${uid}-breite`} className="text-sm font-normal">
                       Breite der Stange <span className="font-normal text-muted">(in cm)</span>
                     </label>
                     <input
@@ -204,12 +203,12 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
           {bewertung && (
             <>
               <Stufe bewertung={bewertung} />
-              <p className="mt-1">{bewertung.grund}</p>
-              <h3 className="mt-4 font-semibold">Regel</h3>
+              <p className="mt-2">{bewertung.grund}</p>
+              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h3>
               <p>
-                {regel} „Grenzwertig“ heißt: höchstens {TOLERANZ_CM} cm neben dem Richtwert (Annahme von Proportio).
+                {regel} „Grenzwertig“ heißt: höchstens {TOLERANZ_CM} cm neben dem Richtwert (Annahme von prop-calc).
               </p>
-              <h3 className="mt-4 font-semibold">Quelle</h3>
+              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Quelle</h3>
               <p>
                 <a href={quelle.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
                   {quelle.name}
@@ -223,8 +222,8 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
   }
 
   return (
-    <details className="rounded-xl border border-border bg-card p-4 sm:p-6">
-      <summary className="flex min-h-11 cursor-pointer items-center text-xl font-semibold">Passt-Check</summary>
+    <details className="border-t border-foreground pt-2">
+      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">Passt-Check</summary>
       <div className="mt-4">{inhalt}</div>
     </details>
   );

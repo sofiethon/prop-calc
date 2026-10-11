@@ -1,6 +1,6 @@
 import { UEBERSTAND_CM, VORNE_CM, WANDABSTAND_CM } from "@/lib/teppich";
 
-/** Annahme von Proportio (keine Norm): bis so viele cm neben dem Richtwert gilt ein Maß noch als „grenzwertig“. */
+/** Annahme von prop-calc (keine Norm): bis so viele cm neben dem Richtwert gilt ein Maß noch als „grenzwertig“. */
 export const TOLERANZ_CM = 10;
 /** Quellen nennen für den Überstand der Stange 3 bis 6 Zoll je Seite; wir runden auf 8 bis 15 cm. */
 export const STANGE_UEBERSTAND_MIN_CM = 8;

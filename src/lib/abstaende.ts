@@ -24,7 +24,7 @@ export type AbstaendeErgebnis = {
 };
 
 /**
- * Annahme von Proportio: Das Sofa steht mit dem Rücken an einer Wand der langen Seite,
+ * Annahme von prop-calc: Das Sofa steht mit dem Rücken an einer Wand der langen Seite,
  * davor liegt die kurze Raumseite. Vom Platz davor gehen Sofatiefe, Abstand zum Couchtisch
  * (kleinster empfohlener Wert) und Tischtiefe ab; der Rest ist der Laufweg.
  */

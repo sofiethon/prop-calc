@@ -82,7 +82,7 @@ export type EsstischErgebnis = {
 };
 
 /**
- * Annahme von Proportio: Der Tisch steht mittig, die kurze Raumseite liegt quer zu seinem
+ * Annahme von prop-calc: Der Tisch steht mittig, die kurze Raumseite liegt quer zu seinem
  * kleineren Maß; links und rechts bleibt je die Hälfte des Rests.
  */
 export function empfehleEsstisch(

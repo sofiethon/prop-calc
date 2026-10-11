@@ -7,9 +7,9 @@ const STANDARDGROESSEN = [
 
 /** Der Teppich soll auf jeder Seite des Sofas etwa 15 cm (6 Zoll) überstehen. */
 export const UEBERSTAND_CM = 15;
-/** Annahme von Proportio (keine Norm): so viel Boden bleibt zwischen Teppich und Wand frei. */
+/** Annahme von prop-calc (keine Norm): so viel Boden bleibt zwischen Teppich und Wand frei. */
 export const WANDABSTAND_CM = 20;
-/** Annahme von Proportio (keine Norm): so weit ragt der Teppich vor dem Sofa in den Raum. */
+/** Annahme von prop-calc (keine Norm): so weit ragt der Teppich vor dem Sofa in den Raum. */
 export const VORNE_CM = 40;
 
 export const TEPPICH_REGEL =

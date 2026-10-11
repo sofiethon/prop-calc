@@ -14,7 +14,7 @@
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
-      "label": "Proportio (npm run dev)",
+      "label": "prop-calc (npm run dev)",
       "onAutoForward": "openPreview"
     }
   },

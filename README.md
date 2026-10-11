@@ -1,4 +1,4 @@
-# Proportio — NDU Coding 2026
+# prop-calc — NDU Coding 2026
 
 **Live:** https://prop-calc-nine.vercel.app
 

@@ -2,11 +2,15 @@ import RaumEingabe from "@/components/RaumEingabe";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 py-8 sm:py-12">
-      <h1 className="mb-2 text-3xl font-bold leading-tight sm:text-4xl">Raum und Möbel eingeben</h1>
-      <p className="mb-8 max-w-xl text-lg text-muted">
-        Trag die Maße des Raums und der wichtigsten Möbel ein. Daraus entstehen später die Empfehlungen.
-      </p>
+    <main className="page-container flex flex-1 flex-col py-16 md:py-20 lg:py-24">
+      <div className="mb-16 max-w-measure">
+        <h1 className="mb-4 font-display text-h1 font-normal tracking-display text-foreground">
+          Raum und Möbel eingeben
+        </h1>
+        <p className="text-body">
+          Trag die Maße des Raums und der wichtigsten Möbel ein. Daraus entstehen später die Empfehlungen.
+        </p>
+      </div>
       <RaumEingabe />
     </main>
   );
