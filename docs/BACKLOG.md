@@ -4,7 +4,7 @@
 > Status: ⬜ offen · 🔧 in Arbeit · ✅ fertig (alle Kriterien im Browser geprüft)
 > Aufbau jedes Issues: **Ziel** (was danach möglich ist, für wen und warum – „damit …“) · **Nicht im Umfang** · **Akzeptanzkriterien** (Gegeben … wenn … dann …) · **Fertig, wenn** (woran man es prüft).
 
-## Issue 1: Raum und Möbel eingeben ⬜ offen
+## Issue 1: Raum und Möbel eingeben ✅ fertig
 
 **Ziel:** Eine Innenarchitektin kann am Handy die Maße eines Raums und seiner wichtigsten Möbel und Fenster eingeben, damit alle späteren Empfehlungen auf echten Zahlen vom Kundentermin beruhen.
 
