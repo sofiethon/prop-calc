@@ -1,5 +1,7 @@
 # Proportio — NDU Coding 2026
 
+**Live:** https://prop-calc-nine.vercel.app
+
 Die Vorlage für dein **eigenes Produkt** im Kurs **„Programmieren mit AI“** (MSc Management by Innovation, NDU). Wie die Kursvorlage mit Leihbar, nur ohne das Übungsprodukt: leere Startseite, leerer Backlog. Anleitung: [Neues Projekt starten](https://ndu.datamonkeys.ai/neues-projekt).
 Du arbeitest lokal auf deinem Laptop – eingerichtet wie unter [Setup → Lokal](https://ndu.datamonkeys.ai/setup#lokal).
 Am Mac holt ein Befehl im Terminal das Repo und öffnet es in VS Code – was er tut, steht in [`setup-mac.sh`](setup-mac.sh):
