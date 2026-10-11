@@ -47,7 +47,7 @@
 
 **Fertig, wenn:** Ich gebe Fenster und Sofa ein und sehe beide Empfehlungen mit Regel und Quelle; ein zu hohes Fenster erzeugt einen Hinweis.
 
-## Issue 4: Sitzabstände und Laufwege ⬜ offen
+## Issue 4: Sitzabstände und Laufwege 🔧 in Arbeit
 
 **Ziel:** Eine Innenarchitektin bekommt Abstände zwischen Sofa und Couchtisch, Sofa und Fernseher sowie die freien Laufwege im Raum, damit der Raum gut aussieht und trotzdem bequem begehbar bleibt.
 

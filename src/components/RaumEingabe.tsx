@@ -3,6 +3,7 @@
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
 import { CircleAlert, Plus, RotateCcw, Trash2 } from "lucide-react";
+import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
@@ -115,6 +116,8 @@ function RaumEingabeInhalt() {
     if (Object.keys(fehler).length === 0) setRaum(werte as Raum);
   }
 
+  const hatTiefe = art === "Sofa" || art === "Couchtisch";
+
   function eintragHinzufuegen(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -124,7 +127,7 @@ function RaumEingabeInhalt() {
     const hoehe = leseZentimeter(String(daten.get("hoehe") ?? ""));
     if ("fehler" in breite) fehler.breite = breite.fehler;
     if ("fehler" in hoehe) fehler.hoehe = hoehe.fehler;
-    const tiefe = art === "Sofa" ? leseZentimeter(String(daten.get("tiefe") ?? "")) : null;
+    const tiefe = hatTiefe ? leseZentimeter(String(daten.get("tiefe") ?? "")) : null;
     if (tiefe && "fehler" in tiefe) fehler.tiefe = tiefe.fehler;
     setEintragFehler(fehler);
     if ("wert" in breite && "wert" in hoehe && (!tiefe || "wert" in tiefe)) {
@@ -225,7 +228,7 @@ function RaumEingabeInhalt() {
               [
                 ["breite", "Breite"],
                 ["hoehe", "Höhe"],
-                ...(art === "Sofa" ? [["tiefe", "Tiefe"]] : []),
+                ...(hatTiefe ? [["tiefe", "Tiefe"]] : []),
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
@@ -346,6 +349,13 @@ function RaumEingabeInhalt() {
           sofas={eintraege
             .filter((x) => x.art === "Sofa")
             .map((x) => ({ breite: x.breite, hoehe: x.hoehe }))}
+        />
+
+        <AbstandEmpfehlung
+          raum={raum}
+          sofas={eintraege.filter((x) => x.art === "Sofa")}
+          couchtische={eintraege.filter((x) => x.art === "Couchtisch")}
+          fernseher={eintraege.filter((x) => x.art === "Fernseher")}
         />
       </div>
     </div>
