@@ -75,7 +75,7 @@
 
 **Fertig, wenn:** Ich gebe zu einem Sofa einen deutlich zu kleinen und einen passenden Teppich ein und bekomme zwei verschiedene Bewertungen mit Begründung.
 
-## Issue 6: Sofa-Tiefe und Verhältnis bei der Teppichempfehlung 🔧 in Arbeit
+## Issue 6: Sofa-Tiefe und Verhältnis bei der Teppichempfehlung ✅ fertig
 
 **Ziel:** Eine Innenarchitektin gibt die Tiefe des Sofas an und sieht zur Teppichgröße das Verhältnis Teppich zu Sofa, damit die Empfehlung die vorderen Sofafüße berücksichtigt und die Proportion für den Kunden greifbar wird.
 
