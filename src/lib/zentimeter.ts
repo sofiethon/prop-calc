@@ -1,0 +1,11 @@
+/** Liest eine Zahl in Zentimetern. Gibt entweder den Wert oder eine verständliche Meldung zurück. */
+export function leseZentimeter(text: string): { wert: number } | { fehler: string } {
+  const t = text.trim();
+  if (t === "") return { fehler: "Bitte trag einen Wert in Zentimetern ein." };
+  if (!/^-?\d+([.,]\d+)?$/.test(t)) {
+    return { fehler: "Das ist keine Zahl. Bitte nur Ziffern eingeben, zum Beispiel 420." };
+  }
+  const wert = Number(t.replace(",", "."));
+  if (wert <= 0) return { fehler: "Der Wert muss größer als null sein." };
+  return { wert };
+}

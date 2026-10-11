@@ -2,11 +2,14 @@
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
-import { CircleAlert, Plus, RotateCcw, Trash2 } from "lucide-react";
+import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
+import Fehler from "@/components/Fehler";
+import PasstCheck from "@/components/PasstCheck";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
+import { leseZentimeter } from "@/lib/zentimeter";
 
 const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard"] as const;
 type Art = (typeof ARTEN)[number];
@@ -18,30 +21,8 @@ const SPEICHER_KEY = "proportio-eingaben";
 
 type FeldFehler = Record<string, string>;
 
-/** Liest eine Zahl in Zentimetern. Gibt entweder den Wert oder eine verständliche Meldung zurück. */
-function leseZentimeter(text: string): { wert: number } | { fehler: string } {
-  const t = text.trim();
-  if (t === "") return { fehler: "Bitte trag einen Wert in Zentimetern ein." };
-  if (!/^-?\d+([.,]\d+)?$/.test(t)) {
-    return { fehler: "Das ist keine Zahl. Bitte nur Ziffern eingeben, zum Beispiel 420." };
-  }
-  const wert = Number(t.replace(",", "."));
-  if (wert <= 0) return { fehler: "Der Wert muss größer als null sein." };
-  return { wert };
-}
-
 function formatZahl(n: number, nachkommastellen = 0) {
   return n.toLocaleString("de-DE", { maximumFractionDigits: nachkommastellen });
-}
-
-function Fehler({ id, text }: { id: string; text?: string }) {
-  if (!text) return null;
-  return (
-    <p id={id} className="mt-1 flex items-start gap-1.5 text-base font-medium text-accent">
-      <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-      {text}
-    </p>
-  );
 }
 
 const feldKlasse =
@@ -356,6 +337,13 @@ function RaumEingabeInhalt() {
           sofas={eintraege.filter((x) => x.art === "Sofa")}
           couchtische={eintraege.filter((x) => x.art === "Couchtisch")}
           fernseher={eintraege.filter((x) => x.art === "Fernseher")}
+        />
+
+        <PasstCheck
+          key={`passt-${formularNr}`}
+          raum={raum}
+          sofas={eintraege.filter((x) => x.art === "Sofa")}
+          fenster={eintraege.filter((x) => x.art === "Fenster")}
         />
       </div>
     </div>

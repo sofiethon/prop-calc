@@ -61,7 +61,7 @@
 
 **Fertig, wenn:** Ich gebe einen engen Raum mit großem Sofa ein und sehe eine Laufweg-Warnung; mit einem großen Raum bleibt sie aus.
 
-## Issue 5: Passt-Check für vorhandene oder geplante Möbel ⬜ offen
+## Issue 5: Passt-Check für vorhandene oder geplante Möbel ✅ fertig
 
 **Ziel:** Eine Innenarchitektin gibt ein, was der Kunde schon hat oder kaufen will (zum Beispiel einen Teppich oder eine Stange), und sieht sofort, ob es passt, damit teure Fehlkäufe vor dem Kauf auffallen.
 
