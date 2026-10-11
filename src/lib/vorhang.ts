@@ -1,3 +1,6 @@
+import { WAND_NAME_DATIV, WAND_VON, wandLaenge } from "@/lib/fenster";
+import type { Wand } from "@/lib/fenster";
+
 /** Die Stange sitzt etwa 10 cm (4 Zoll) über dem Fensterrahmen. */
 export const STANGE_ABSTAND_OBEN_CM = 10;
 /** Die Stange ragt auf jeder Seite etwa 10 cm über den Fensterrahmen hinaus (Quellen nennen 3–6 Zoll). */
@@ -33,4 +36,30 @@ export function empfehleVorhang(fensterBreite: number, fensterHoehe: number, dec
     abstandOben: STANGE_ABSTAND_OBEN_CM,
     ueberstand: STANGE_UEBERSTAND_CM,
   };
+}
+
+/**
+ * Hinweise, wenn die Stange an der Wand nicht auf beiden Seiten ihren Überstand hat.
+ * Gemessen wird der Platz zwischen Fensterrahmen und Wandende (Ecke).
+ */
+export function stangePlatzHinweise(
+  wand: Wand,
+  abstand: number,
+  fensterBreite: number,
+  raum: { laenge: number; breite: number },
+): string[] {
+  const zahl = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+  const hinweise: string[] = [];
+  const rest = wandLaenge(wand, raum) - abstand - fensterBreite;
+  if (abstand < STANGE_UEBERSTAND_CM) {
+    hinweise.push(
+      `Bis zur ${WAND_VON[wand]} der ${WAND_NAME_DATIV[wand]} sind es nur ${zahl(abstand)} cm, die Stange ragt aber ${STANGE_UEBERSTAND_CM} cm über das Fenster hinaus. Sie hat dort nicht ganz Platz.`,
+    );
+  }
+  if (rest < STANGE_UEBERSTAND_CM) {
+    hinweise.push(
+      `Am anderen Ende der ${WAND_NAME_DATIV[wand]} sind es nur ${zahl(rest)} cm bis zur Ecke, die Stange ragt aber ${STANGE_UEBERSTAND_CM} cm über das Fenster hinaus. Sie hat dort nicht ganz Platz.`,
+    );
+  }
+  return hinweise;
 }

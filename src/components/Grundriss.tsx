@@ -2,14 +2,27 @@
 
 import { useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
+import { WAND_NAME, WAND_VON } from "@/lib/fenster";
+import type { Wand } from "@/lib/fenster";
 import { BLICKRICHTUNG, begrenzeLage } from "@/lib/grundriss";
 import type { Drehung, Platziert } from "@/lib/grundriss";
+
+export type FensterImPlan = {
+  id: number;
+  nummer: number;
+  breite: number;
+  wand?: Wand;
+  abstand?: number;
+  /** Mit dem aktuellen Raum ragt das Fenster über die Wand hinaus. */
+  zuLang: boolean;
+};
 
 type Props = {
   raum: { laenge: number; breite: number } | null;
   moebel: Platziert[];
   /** Arten, die noch keine Tiefe haben und deshalb nicht im Grundriss erscheinen. */
   ohneGrundriss: string[];
+  fenster: FensterImPlan[];
   onLage: (id: number, lage: { x: number; y: number; drehung: Drehung }) => void;
   onDrehen: (id: number) => void;
 };
@@ -46,7 +59,7 @@ const vorderkanteKlasse: Record<Drehung, string> = {
   270: "inset-y-0 right-0 w-0.5",
 };
 
-export default function Grundriss({ raum, moebel, ohneGrundriss, onLage, onDrehen }: Props) {
+export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage, onDrehen }: Props) {
   const flaeche = useRef<HTMLDivElement>(null);
   const start = useRef<{
     id: number;
@@ -126,10 +139,10 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, onLage, onDrehe
         .
       </p>
     );
-  } else if (moebel.length === 0) {
+  } else if (moebel.length === 0 && fenster.length === 0) {
     inhalt = (
       <p className="text-muted">
-        Für den Grundriss brauche ich ein Sofa, einen Couchtisch oder einen Esstisch mit Tiefe.{" "}
+        Für den Grundriss brauche ich ein Sofa, einen Couchtisch oder einen Esstisch mit Tiefe oder ein Fenster mit Wand.{" "}
         <a href="#moebel-formular" className={linkKlasse}>
           Zurück zur Eingabe
         </a>
@@ -151,6 +164,30 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, onLage, onDrehe
           className="relative mt-4 w-full overflow-hidden border border-foreground bg-background"
           style={{ aspectRatio: `${raum.laenge} / ${raum.breite}` }}
         >
+          {fenster.map((f) => {
+            if (f.wand === undefined || f.abstand === undefined || f.zuLang) return null;
+            const quer = f.wand === "oben" || f.wand === "unten";
+            const laenge = quer ? raum.laenge : raum.breite;
+            const stil = quer
+              ? {
+                  left: `${(f.abstand / laenge) * 100}%`,
+                  width: `${(f.breite / laenge) * 100}%`,
+                  [f.wand === "oben" ? "top" : "bottom"]: 0,
+                }
+              : {
+                  top: `${(f.abstand / laenge) * 100}%`,
+                  height: `${(f.breite / laenge) * 100}%`,
+                  [f.wand === "links" ? "left" : "right"]: 0,
+                };
+            return (
+              <div
+                key={`fenster-${f.id}`}
+                aria-hidden="true"
+                className={`absolute bg-foreground ${quer ? "h-2" : "w-2"}`}
+                style={stil}
+              />
+            );
+          })}
           {moebel.map((m) => {
             const lage = ziehen && ziehen.id === m.id ? { x: ziehen.x, y: ziehen.y } : m.rect;
             const name = namen.get(m.id) ?? m.art;
@@ -211,6 +248,23 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, onLage, onDrehe
             );
           })}
         </ul>
+
+        {fenster.length > 0 && (
+          <ul className="mt-6 flex flex-col">
+            {fenster.map((f) => (
+              <li key={f.id} className="border-t border-border py-4">
+                <span className="font-medium">Fenster {f.nummer}</span>
+                <span className="block text-muted">
+                  {f.wand === undefined || f.abstand === undefined
+                    ? "Wand fehlt. Lege sie in der Liste „Möbel und Fenster“ fest."
+                    : f.zuLang
+                      ? `Ragt mit dem jetzigen Raum über die ${WAND_NAME[f.wand]} hinaus. Ändere den Abstand in der Liste „Möbel und Fenster“.`
+                      : `${WAND_NAME[f.wand]}, ${formatZahl(f.abstand)} cm von der ${WAND_VON[f.wand]}, ${formatZahl(f.breite)} cm breit`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
 
         {ohneGrundriss.length > 0 && (
           <p className="mt-4 text-muted">

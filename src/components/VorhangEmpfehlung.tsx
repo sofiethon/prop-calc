@@ -1,9 +1,10 @@
 import { CircleAlert } from "lucide-react";
-import { empfehleVorhang, VORHANG_QUELLE, VORHANG_REGEL } from "@/lib/vorhang";
+import type { Wand } from "@/lib/fenster";
+import { empfehleVorhang, stangePlatzHinweise, VORHANG_QUELLE, VORHANG_REGEL } from "@/lib/vorhang";
 
 type Props = {
-  raum: { hoehe: number } | null;
-  fenster: { id: number; breite: number; hoehe: number }[];
+  raum: { laenge: number; breite: number; hoehe: number } | null;
+  fenster: { id: number; breite: number; hoehe: number; wand?: Wand; abstand?: number }[];
 };
 
 const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
@@ -32,6 +33,10 @@ export default function VorhangEmpfehlung({ raum, fenster }: Props) {
         <ul className="flex flex-col gap-4">
           {fenster.map((f, i) => {
             const e = empfehleVorhang(f.breite, f.hoehe, raum.hoehe);
+            const platz =
+              e.art === "stange" && f.wand !== undefined && f.abstand !== undefined
+                ? stangePlatzHinweise(f.wand, f.abstand, f.breite, raum)
+                : [];
             return (
               <li key={f.id} className="rounded-sm border border-border p-3">
                 <h3 className="font-medium">
@@ -50,6 +55,12 @@ export default function VorhangEmpfehlung({ raum, fenster }: Props) {
                     <dd className="text-lg font-medium">{e.abstandOben} cm über dem Fensterrahmen</dd>
                   </dl>
                 )}
+                {platz.map((h) => (
+                  <p key={h} className="mt-2 flex items-start gap-2 font-medium text-foreground">
+                    <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
+                    {h}
+                  </p>
+                ))}
               </li>
             );
           })}

@@ -6,11 +6,15 @@ import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import Fehler from "@/components/Fehler";
 import EsstischEmpfehlung from "@/components/EsstischEmpfehlung";
+import FensterLageFelder from "@/components/FensterLageFelder";
+import FensterLageForm from "@/components/FensterLageForm";
 import Grundriss from "@/components/Grundriss";
 import PasstCheck from "@/components/PasstCheck";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
 import { TISCH_HOEHE_STANDARD_CM } from "@/lib/esstisch";
+import { istWand, leseFensterLage, pruefeFensterLage, WAND_NAME, WAND_VON } from "@/lib/fenster";
+import type { Wand } from "@/lib/fenster";
 import { DREHUNGEN, drehenUmMitte, istPlanArt, lagenBerechnen } from "@/lib/grundriss";
 import type { Drehung, PlanMoebel, Platziert } from "@/lib/grundriss";
 import { leseZentimeter } from "@/lib/zentimeter";
@@ -32,6 +36,9 @@ type Eintrag = {
   x?: number;
   y?: number;
   drehung?: Drehung;
+  /** Nur bei Fenstern: Wand und Abstand von der Ecke (cm), sobald die Person sie gesetzt hat. */
+  wand?: Wand;
+  abstand?: number;
 };
 
 const SPEICHER_KEY = "proportio-eingaben";
@@ -53,7 +60,10 @@ type Gespeichert = { raum?: Raum; eintraege?: Eintrag[]; naechsteId?: number };
 
 /** Behält Lage und Drehung nur, wenn beide Zahlen brauchbar sind. */
 function bereinigeLage(e: Eintrag): Eintrag {
-  const { x, y, drehung, ...rest } = e;
+  const { x, y, drehung, wand, abstand, ...ohneLage } = e;
+  const wandOk =
+    e.art === "Fenster" && istWand(wand) && typeof abstand === "number" && Number.isFinite(abstand) && abstand >= 0;
+  const rest: Eintrag = wandOk ? { ...ohneLage, wand, abstand } : ohneLage;
   const lageOk = typeof x === "number" && Number.isFinite(x) && typeof y === "number" && Number.isFinite(y);
   if (!lageOk) return rest;
   const drehungOk = DREHUNGEN.includes(drehung as Drehung);
@@ -107,6 +117,7 @@ function RaumEingabeInhalt() {
   const [naechsteId, setNaechsteId] = useState(gespeichert.naechsteId ?? 1);
   const [art, setArt] = useState<Art>("Sofa");
   const [tischForm, setTischForm] = useState<Form>("rechteckig");
+  const [fensterWand, setFensterWand] = useState<Wand | "">("");
   // Wechselt beim Zurücksetzen, damit die Formulare mit leeren Feldern neu aufgebaut werden.
   const [formularNr, setFormularNr] = useState(0);
 
@@ -151,16 +162,28 @@ function RaumEingabeInhalt() {
     if ("fehler" in hoehe) fehler.hoehe = hoehe.fehler;
     const tiefe = hatTiefe ? leseZentimeter(String(daten.get("tiefe") ?? "")) : null;
     if (tiefe && "fehler" in tiefe) fehler.tiefe = tiefe.fehler;
+    // Wand und Abstand gibt es nur beim Fenster und erst, wenn die Breite gültig ist.
+    let fensterLage: { wand?: Wand; abstand?: number } = {};
+    if (art === "Fenster" && "wert" in breite) {
+      const lage = leseFensterLage(daten, breite.wert, raum);
+      if ("fehler" in lage) fehler.abstand = lage.fehler.abstand;
+      else fensterLage = lage;
+    }
     setEintragFehler(fehler);
-    if ("wert" in breite && "wert" in hoehe && (!tiefe || "wert" in tiefe)) {
+    if (Object.keys(fehler).length === 0 && "wert" in breite && "wert" in hoehe && (!tiefe || "wert" in tiefe)) {
       const neu: Eintrag = { id: naechsteId, art, breite: breite.wert, hoehe: hoehe.wert };
       if (tiefe && "wert" in tiefe) neu.tiefe = tiefe.wert;
+      if (art === "Fenster" && fensterLage.wand !== undefined) {
+        neu.wand = fensterLage.wand;
+        neu.abstand = fensterLage.abstand;
+      }
       if (art === "Esstisch") {
         neu.form = tischForm;
         if (istRunderTisch) neu.tiefe = breite.wert;
       }
       setEintraege((alt) => [...alt, neu]);
       setNaechsteId((n) => n + 1);
+      setFensterWand("");
       form.reset();
     }
   }
@@ -174,6 +197,7 @@ function RaumEingabeInhalt() {
     setEintragFehler({});
     setArt("Sofa");
     setTischForm("rechteckig");
+    setFensterWand("");
     setFormularNr((n) => n + 1);
   }
 
@@ -196,6 +220,34 @@ function RaumEingabeInhalt() {
         .map((m) => m.art),
     ),
   ];
+
+  // Fenster tragen dieselbe Nummer wie in der Vorhangempfehlung und im Passt-Check.
+  const fensterImPlan = eintraege
+    .filter((m) => m.art === "Fenster")
+    .map((m, i) => ({
+      id: m.id,
+      nummer: i + 1,
+      breite: m.breite,
+      wand: m.wand,
+      abstand: m.abstand,
+      // Der Raum kann nach dem Eintragen kleiner geworden sein.
+      zuLang:
+        raum !== null && m.wand !== undefined && m.abstand !== undefined
+          ? pruefeFensterLage(m.wand, m.abstand, m.breite, raum) !== null
+          : false,
+    }));
+
+  function fensterWandSetzen(id: number, lage: { wand?: Wand; abstand?: number }) {
+    setEintraege((alt) =>
+      alt.map((m) => {
+        if (m.id !== id) return m;
+        const ohne: Eintrag = { ...m };
+        delete ohne.wand;
+        delete ohne.abstand;
+        return lage.wand !== undefined ? { ...ohne, wand: lage.wand, abstand: lage.abstand } : ohne;
+      }),
+    );
+  }
 
   function lageSetzen(id: number, lage: { x: number; y: number; drehung: Drehung }) {
     setEintraege((alt) => alt.map((m) => (m.id === id ? { ...m, ...lage } : m)));
@@ -321,6 +373,14 @@ function RaumEingabeInhalt() {
                 <Fehler id={`${uid}-e-${name}-fehler`} text={eintragFehler[name]} />
               </div>
             ))}
+            {art === "Fenster" && (
+              <FensterLageFelder
+                uid={`${uid}-neu`}
+                wand={fensterWand}
+                onWand={setFensterWand}
+                fehler={eintragFehler.abstand}
+              />
+            )}
             <button type="submit" className={zweitKnopfKlasse}>
               Hinzufügen
             </button>
@@ -377,10 +437,8 @@ function RaumEingabeInhalt() {
           ) : (
             <ul className="mt-4 flex flex-col">
               {eintraege.map((x) => (
-                <li
-                  key={x.id}
-                  className="flex items-center justify-between gap-4 border-t border-border py-4"
-                >
+                <li key={x.id} className="border-t border-border py-4">
+                  <div className="flex items-center justify-between gap-4">
                   <span>
                     <span className="font-medium">{x.art}</span>
                     <span className="block text-muted">
@@ -388,6 +446,13 @@ function RaumEingabeInhalt() {
                         ? `rund, Durchmesser ${formatZahl(x.breite, 1)} cm, ${formatZahl(x.hoehe, 1)} cm hoch`
                         : `${formatZahl(x.breite, 1)} cm breit, ${formatZahl(x.hoehe, 1)} cm hoch${x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm tief` : ""}`}
                     </span>
+                    {x.art === "Fenster" && (
+                      <span className="block text-muted">
+                        {x.wand !== undefined && x.abstand !== undefined
+                          ? `${WAND_NAME[x.wand]}, ${formatZahl(x.abstand, 1)} cm von der ${WAND_VON[x.wand]}`
+                          : "Wand fehlt"}
+                      </span>
+                    )}
                   </span>
                   <button
                     type="button"
@@ -397,6 +462,20 @@ function RaumEingabeInhalt() {
                   >
                     Entfernen
                   </button>
+                  </div>
+                  {x.art === "Fenster" && (
+                    <details className="mt-2">
+                      <summary className="flex min-h-11 cursor-pointer items-center font-normal underline underline-offset-4">
+                        {x.wand !== undefined ? "Wand ändern" : "Wand festlegen"}
+                      </summary>
+                      <FensterLageForm
+                        key={`${x.id}-${x.wand ?? ""}-${x.abstand ?? ""}-${formularNr}`}
+                        raum={raum}
+                        fenster={x}
+                        onSpeichern={(lage) => fensterWandSetzen(x.id, lage)}
+                      />
+                    </details>
+                  )}
                 </li>
               ))}
             </ul>
@@ -407,6 +486,7 @@ function RaumEingabeInhalt() {
           raum={raum}
           moebel={lagen}
           ohneGrundriss={ohneGrundriss}
+          fenster={fensterImPlan}
           onLage={lageSetzen}
           onDrehen={eintragDrehen}
         />

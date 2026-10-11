@@ -133,7 +133,7 @@
 
 **Fertig, wenn:** Ich gebe einen Raum 500 × 400 cm, Sofa und Couchtisch ein, öffne den Grundriss, schiebe den Tisch nah ans Sofa und sehe die Abstandswarnung; ich drehe das Sofa und sehe Breite und Tiefe vertauscht.
 
-## Issue 10: Fenster an eine Wand setzen ⬜ offen
+## Issue 10: Fenster an eine Wand setzen 🔧 in Arbeit
 
 **Ziel:** Eine Innenarchitektin ordnet jedem Fenster eine Wand und eine Lage darauf zu, damit die Fenster im Grundriss stehen und die Vorhangstange mit der echten Wand gerechnet wird statt mit der Annahme.
 
