@@ -19,3 +19,4 @@
 - 2026-10-11 — Superclarendon braucht ein Adobe-Fonts-Web-Projekt; Kit-ID kommt in `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID` (.env.local). Bis dahin Ersatzschrift Georgia — Lizenz liegt bei der Person
 - 2026-10-11 — Fehler und Warnungen werden mit Text, Icon und Rahmenwechsel gezeigt, nicht mit Rot (Palette kennt keine Statusfarben); pro Seite nur ein Primärknopf („Raum übernehmen“) — folgt aus dem Design-System
 - 2026-10-11 — Produktname jetzt prop-calc (vorher Proportio) — Wunsch der Person; gilt in Oberfläche, Brief, Backlog und Doku
+- 2026-10-11 — MVP erweitert (Issues 9–12): Grundriss mit verschiebbaren und um 90° drehbaren Möbeln, Fenster an einer Wand, Schlafzimmer, Kunden-Karte. Sind Positionen gesetzt, rechnen Laufweg und Freiraum damit; sonst gelten die bisherigen Annahmen. Türen, Fernsehgröße aus dem Sitzabstand, Offline und 3D sind „Später“ — Wunsch der Person aus `/ndu-brainstorm`

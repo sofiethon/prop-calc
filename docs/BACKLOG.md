@@ -117,3 +117,63 @@
 - Gegeben ein Handy mit 375 px Breite, dann sind die Ergebnisse lesbar und nichts ragt über den Rand.
 
 **Fertig, wenn:** Ich gebe einen runden Tisch mit 120 cm Durchmesser in einem engen Raum ein und sehe Personen, Leuchte 60–80 cm und eine Platz-Warnung; in einem großen Raum bleibt die Warnung aus.
+
+## Issue 9: Grundriss – Möbel verschieben und drehen ✅ fertig
+
+**Ziel:** Eine Innenarchitektin sieht den Raum maßstabsgetreu von oben, schiebt Sofa, Couchtisch und Esstisch mit dem Finger an ihren Platz und dreht sie in 90°-Schritten, damit Laufweg und Freiraum mit der echten Lage gerechnet werden statt mit Annahmen.
+
+**Nicht im Umfang:** Fenster und Türen im Grundriss (Issue 10), Drehen in beliebigen Winkeln, 3D-Ansicht, automatisches Anordnen, Warnung bei überlappenden Möbeln, Teppich, Bild und Leuchte im Grundriss, mehrere Varianten speichern.
+
+**Akzeptanzkriterien:**
+- Gegeben ein Raum mit mindestens einem Möbelstück, wenn ich den Grundriss öffne, dann sehe ich den Raum von oben im Maßstab mit beschrifteter Länge und Breite und jedes Möbelstück als Fläche mit seinem Namen (der runde Esstisch als Kreis).
+- Gegeben ein Möbelstück im Grundriss, wenn ich es mit dem Finger verschiebe, dann bleibt es an der neuen Stelle, auch nach dem Neuladen der Seite; wenn ich es über die Raumwand hinausziehe, dann bleibt es innerhalb des Raums.
+- Gegeben ein Möbelstück, wenn ich „Drehen“ antippe, dann dreht es sich um 90° und Breite und Tiefe sind im Grundriss und in den Rechnungen vertauscht.
+- Gegeben Sofa und Couchtisch mit verschobener Lage, wenn der Abstand oder der Laufweg unter dem Richtwert liegt, dann sehe ich die Warnung mit dem fehlenden Wert und dem Hinweis „aus der Lage im Grundriss gerechnet“; wurde ein Möbelstück nie verschoben, steht dort weiter der Hinweis auf die Annahme.
+- Gegeben ein Handy mit 375 px Breite, dann passt der Grundriss in die Breite, nichts ragt über den Rand, und „Drehen“ ist mindestens 44 px hoch.
+
+**Fertig, wenn:** Ich gebe einen Raum 500 × 400 cm, Sofa und Couchtisch ein, öffne den Grundriss, schiebe den Tisch nah ans Sofa und sehe die Abstandswarnung; ich drehe das Sofa und sehe Breite und Tiefe vertauscht.
+
+## Issue 10: Fenster an eine Wand setzen ⬜ offen
+
+**Ziel:** Eine Innenarchitektin ordnet jedem Fenster eine Wand und eine Lage darauf zu, damit die Fenster im Grundriss stehen und die Vorhangstange mit der echten Wand gerechnet wird statt mit der Annahme.
+
+**Nicht im Umfang:** Türen und Türaufschlag, Fensterunterkante (Höhe über dem Boden), Heizkörper, Fenster in Ecken oder schräg, Erker und Gauben.
+
+**Akzeptanzkriterien:**
+- Gegeben ein Fenster, wenn ich ihm eine Wand (oben, unten, links, rechts) und einen Abstand von der Ecke in Zentimetern gebe, dann erscheint es im Grundriss auf dieser Wand in seiner Breite.
+- Gegeben ein Fenster, wenn es mit diesem Abstand breiter ist als die Wand oder über ihr Ende hinausragt, dann sehe ich eine Fehlermeldung am Feld und es wird nichts übernommen.
+- Gegeben ein Fenster mit Wand, wenn der Abstand zur Ecke kleiner ist als der Überstand der Vorhangstange (10 cm je Seite), dann sehe ich in der Vorhangempfehlung einen Hinweis, dass die Stange dort nicht ganz Platz hat.
+- Gegeben ein Fenster ohne Wand (zum Beispiel aus früheren Eingaben), dann bleibt es in der Liste und in der Vorhangempfehlung wie bisher, und im Grundriss steht der Hinweis „Wand fehlt“.
+- Gegeben ein Fenster mit Wand, wenn ich die Seite neu lade, dann sind Wand und Abstand noch da.
+
+**Fertig, wenn:** Ich setze ein Fenster mit 120 cm Breite auf die obere Wand, sehe es im Grundriss an der richtigen Stelle; mit einem Abstand, der über die Wand hinausragt, bekomme ich eine Fehlermeldung.
+
+## Issue 11: Schlafzimmer – Bett und Platz drumherum ⬜ offen
+
+**Ziel:** Eine Innenarchitektin gibt ein Bett ein und bekommt Freiraum um das Bett und die Höhe des Nachttischs mit Regel und Quelle, damit die App auch im Schlafzimmer belegte Maße liefert.
+
+**Nicht im Umfang:** Kleiderschrank, Matratzen- oder Bettauswahl, Lattenrost, Nachttisch als eigenes Möbelstück im Grundriss.
+
+**Akzeptanzkriterien:**
+- Gegeben die Art „Bett“, wenn ich ein Möbelstück hinzufüge, dann gibt es Felder für Breite, Länge und Höhe der Matratzenoberkante mit derselben Fehlerprüfung wie die anderen Felder.
+- Gegeben ein Bett, wenn ich die Empfehlung öffne, dann sehe ich den Freiraum seitlich und am Fußende sowie die Höhe des Nachttischs als Wert oder Bereich in Zentimetern, jeweils mit Regel und benannter Quelle.
+- Gegeben ein Bett und ein Raum, wenn der Freiraum unter dem Mindestmaß liegt, dann sehe ich eine deutliche Warnung mit dem Wert, der fehlt.
+- Gegeben ein Bett, dann erscheint es im Grundriss und lässt sich wie die anderen Möbel verschieben und drehen.
+- Gegeben kein Bett, dann sehe ich einen Satz und einen Link zur Eingabe; ohne Raum fehlen nur die raumabhängigen Teile, mit Satz und Link. Auf einem Handy mit 375 px Breite ragt nichts über den Rand.
+
+**Fertig, wenn:** Ich gebe ein Bett 160 × 200 cm in einem engen und in einem großen Schlafzimmer ein und sehe Freiraum und Nachttischhöhe mit Quelle; im engen Raum erscheint die Platz-Warnung, im großen nicht.
+
+## Issue 12: Kunden-Karte zum Teilen ⬜ offen
+
+**Ziel:** Eine Innenarchitektin öffnet eine Seite mit Raummaßen, Grundriss, allen Empfehlungen, Regeln und Quellen und gibt sie dem Kunden als Link oder Ausdruck mit, damit die Begründung nach dem Termin beim Kunden bleibt.
+
+**Nicht im Umfang:** Konten und Anmeldung, Kundenverwaltung, Speichern auf einem Server oder in der Datenbank, eigenes Logo oder Layout des Büros, Kommentare oder Unterschrift auf der Karte, Preise.
+
+**Akzeptanzkriterien:**
+- Gegeben ein Raum und mindestens ein Möbelstück, wenn ich „Kunden-Karte“ öffne, dann sehe ich eine eigene Seite mit Raummaßen, Grundriss und allen Empfehlungen, jeweils mit Regel und Quelle.
+- Gegeben die Karte, wenn eine Regel eine Annahme von prop-calc ist (keine Norm), dann ist das auf der Karte mit Text als Annahme gekennzeichnet.
+- Gegeben die Karte, wenn ich „Link kopieren“ antippe und den Link in einem privaten Fenster öffne, dann sehe ich dieselbe Karte ohne Eingabefelder und ohne Möglichkeit, etwas zu ändern.
+- Gegeben die Karte, wenn ich „Drucken“ antippe, dann zeigt die Druckansicht die Karte ohne Knöpfe und ohne Navigation.
+- Gegeben noch kein Raum, dann sehe ich einen Satz und einen Link zur Eingabe statt einer leeren Karte.
+
+**Fertig, wenn:** Ich gebe Raum, Sofa und Fenster ein, öffne die Kunden-Karte, kopiere den Link, öffne ihn in einem privaten Fenster und sehe dieselbe Karte mit Grundriss, Regeln und Quellen.

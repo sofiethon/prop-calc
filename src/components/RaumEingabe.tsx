@@ -6,10 +6,13 @@ import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import Fehler from "@/components/Fehler";
 import EsstischEmpfehlung from "@/components/EsstischEmpfehlung";
+import Grundriss from "@/components/Grundriss";
 import PasstCheck from "@/components/PasstCheck";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
 import { TISCH_HOEHE_STANDARD_CM } from "@/lib/esstisch";
+import { DREHUNGEN, drehenUmMitte, istPlanArt, lagenBerechnen } from "@/lib/grundriss";
+import type { Drehung, PlanMoebel, Platziert } from "@/lib/grundriss";
 import { leseZentimeter } from "@/lib/zentimeter";
 
 const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard", "Esstisch"] as const;
@@ -18,7 +21,18 @@ type Art = (typeof ARTEN)[number];
 type Form = "rechteckig" | "rund";
 
 type Raum = { laenge: number; breite: number; hoehe: number };
-type Eintrag = { id: number; art: Art; breite: number; hoehe: number; tiefe?: number; form?: Form };
+/** x, y (linke obere Ecke im Raum, cm) und drehung gibt es erst, wenn das Möbelstück bewegt wurde. */
+type Eintrag = {
+  id: number;
+  art: Art;
+  breite: number;
+  hoehe: number;
+  tiefe?: number;
+  form?: Form;
+  x?: number;
+  y?: number;
+  drehung?: Drehung;
+};
 
 const SPEICHER_KEY = "proportio-eingaben";
 
@@ -37,6 +51,15 @@ const knopfKlasse =
 
 type Gespeichert = { raum?: Raum; eintraege?: Eintrag[]; naechsteId?: number };
 
+/** Behält Lage und Drehung nur, wenn beide Zahlen brauchbar sind. */
+function bereinigeLage(e: Eintrag): Eintrag {
+  const { x, y, drehung, ...rest } = e;
+  const lageOk = typeof x === "number" && Number.isFinite(x) && typeof y === "number" && Number.isFinite(y);
+  if (!lageOk) return rest;
+  const drehungOk = DREHUNGEN.includes(drehung as Drehung);
+  return { ...rest, x, y, ...(drehungOk ? { drehung } : {}) };
+}
+
 /** Liest die zuletzt gemerkten Eingaben. Ist nichts da oder nicht lesbar, startet die App leer. */
 function leseGespeichert(): Gespeichert {
   try {
@@ -53,7 +76,7 @@ function leseGespeichert(): Gespeichert {
       );
     return {
       raum: raumOk ? d.raum : undefined,
-      eintraege: eintraegeOk ? d.eintraege : undefined,
+      eintraege: eintraegeOk ? (d.eintraege as Eintrag[]).map(bereinigeLage) : undefined,
       naechsteId: typeof d.naechsteId === "number" ? d.naechsteId : undefined,
     };
   } catch {
@@ -156,6 +179,32 @@ function RaumEingabeInhalt() {
 
   function eintragEntfernen(id: number) {
     setEintraege((alt) => alt.filter((x) => x.id !== id));
+  }
+
+  // Möbel mit Tiefe kommen in den Grundriss; ohne Raum gibt es keine Lage.
+  const planMoebel: PlanMoebel[] = eintraege.flatMap((m) =>
+    istPlanArt(m.art) && m.tiefe !== undefined
+      ? [{ id: m.id, art: m.art, breite: m.breite, tiefe: m.tiefe, rund: m.form === "rund", x: m.x, y: m.y, drehung: m.drehung }]
+      : [],
+  );
+  const lagen: Platziert[] = raum ? lagenBerechnen(raum, planMoebel) : [];
+  const lagenNachId: Record<number, Platziert> = Object.fromEntries(lagen.map((p) => [p.id, p]));
+  const ohneGrundriss = [
+    ...new Set(
+      eintraege
+        .filter((m) => m.art !== "Fenster" && !(istPlanArt(m.art) && m.tiefe !== undefined))
+        .map((m) => m.art),
+    ),
+  ];
+
+  function lageSetzen(id: number, lage: { x: number; y: number; drehung: Drehung }) {
+    setEintraege((alt) => alt.map((m) => (m.id === id ? { ...m, ...lage } : m)));
+  }
+
+  function eintragDrehen(id: number) {
+    const p = lagenNachId[id];
+    if (!p || !raum) return;
+    lageSetzen(id, drehenUmMitte(p, raum));
   }
 
   return (
@@ -354,6 +403,14 @@ function RaumEingabeInhalt() {
           )}
         </section>
 
+        <Grundriss
+          raum={raum}
+          moebel={lagen}
+          ohneGrundriss={ohneGrundriss}
+          onLage={lageSetzen}
+          onDrehen={eintragDrehen}
+        />
+
         <TeppichEmpfehlung
           raum={raum}
           sofas={eintraege
@@ -378,13 +435,16 @@ function RaumEingabeInhalt() {
           sofas={eintraege.filter((x) => x.art === "Sofa")}
           couchtische={eintraege.filter((x) => x.art === "Couchtisch")}
           fernseher={eintraege.filter((x) => x.art === "Fernseher")}
+          lagen={lagenNachId}
         />
 
         <EsstischEmpfehlung
           raum={raum}
+          lagen={lagenNachId}
           tische={eintraege
             .filter((x) => x.art === "Esstisch")
             .map((x) => ({
+              id: x.id,
               form: x.form ?? "rechteckig",
               breite: x.breite,
               tiefe: x.tiefe ?? x.breite,

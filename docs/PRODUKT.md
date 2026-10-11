@@ -1,6 +1,6 @@
 # Produkt-Brief — prop-calc
 
-**Stand:** 2026-10-11 — MVP aus `/ndu-brainstorm` ergänzt (5 Funktionen, Issues 1–5 im Backlog)
+**Stand:** 2026-10-11 — MVP erweitert um Grundriss mit Verschieben und Drehen, Fenster an Wänden, Schlafzimmer und Kunden-Karte (Issues 9–12 im Backlog)
 
 ## 1. Für wen?
 Innenarchitekt\*innen, die für neue Kunden eine Raumplanung machen und beim ersten Termin vor Ort schnell belastbare Maße brauchen. Privatpersonen, die selbst einrichten, kommen später dazu.
@@ -22,8 +22,13 @@ Eine Web-App für das Handy, die Innenarchitekt\*innen vor Ort aus den Raummaße
 3. Vorhangstange und Bildhöhe
 4. Sitzabstände und Laufwege
 5. Passt-Check für vorhandene oder geplante Möbel
+6. Esstisch und Leuchte (Issue 8)
+7. Grundriss: Möbel verschieben und drehen (Issue 9)
+8. Fenster an eine Wand setzen (Issue 10)
+9. Schlafzimmer: Bett und Platz drumherum (Issue 11)
+10. Kunden-Karte zum Teilen (eine Seite mit Maßen, Grundriss, Regeln und Quellen für den Kunden, Issue 12)
 
-**Später:** Kunden-Karte zum Teilen (eine Seite mit Maßen, Regeln und Quellen für den Kunden) · Esstisch und Leuchte · Funktioniert auch ohne Internet · Einfacher Grundriss oder 3D-Ansicht
+**Später:** Funktioniert auch ohne Internet · 3D-Ansicht · Türen und Türaufschlag · Fernsehgröße aus dem Sitzabstand · Möbel in beliebigen Winkeln drehen
 
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben, dass Innenarchitekt\*innen damit das Schätzen nach Faustregeln beim Raumplanen durch begründbare Maße ersetzen.

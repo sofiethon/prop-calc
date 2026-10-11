@@ -12,14 +12,28 @@ import {
   PLATZ_REGEL,
 } from "@/lib/esstisch";
 import type { Esstisch } from "@/lib/esstisch";
+import { freiraumAusLage } from "@/lib/grundriss";
+import type { Platziert, Seite } from "@/lib/grundriss";
+
+type EsstischMitNummer = Esstisch & { id: number };
 
 type Props = {
   raum: { laenge: number; breite: number; hoehe: number } | null;
-  tische: Esstisch[];
+  tische: EsstischMitNummer[];
+  /** Lage jedes Möbelstücks im Grundriss, nach Nummer. Fehlt ein Eintrag, gilt die Annahme. */
+  lagen: Record<number, Platziert>;
 };
 
 const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
 const warnKlasse = "mt-2 flex items-start gap-2 font-medium text-foreground";
+
+const SEITE_ADJEKTIV: Record<Seite, string> = {
+  links: "linken",
+  rechts: "rechten",
+  oben: "oberen",
+  unten: "unteren",
+};
+const BIS_ZU = { Wand: "zur Wand", Sofa: "zum Sofa", Couchtisch: "zum Couchtisch", Esstisch: "zum Esstisch" } as const;
 
 function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; url: string }[] }) {
   return (
@@ -40,9 +54,9 @@ function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; u
   );
 }
 
-export default function EsstischEmpfehlung({ raum, tische }: Props) {
+export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
   // Bei mehreren Esstischen zählt der größte (nach dem größeren Maß).
-  const tisch = tische.reduce<Esstisch | null>(
+  const tisch = tische.reduce<EsstischMitNummer | null>(
     (max, t) => (max === null || Math.max(t.breite, t.tiefe) > Math.max(max.breite, max.tiefe) ? t : max),
     null,
   );
@@ -60,6 +74,12 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
     );
   } else {
     const e = empfehleEsstisch(tisch, raum);
+
+    // Wurde der Tisch bewegt, rechnen wir den Freiraum aus seiner Lage im Grundriss.
+    const tischLage = lagen[tisch.id];
+    const ausLage =
+      raum && tischLage?.gesetzt ? freiraumAusLage(raum, tischLage, Object.values(lagen)) : null;
+
     inhalt = (
       <>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -97,7 +117,35 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
           </p>
         )}
 
-        {e.platz &&
+        {ausLage &&
+          (ausLage.ueberlappt ? (
+            <p className={warnKlasse}>
+              <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
+              Der Tisch überlappt {ausLage.hindernis === "Wand" ? "die Wand" : `den Eintrag „${ausLage.hindernis}“`} im
+              Grundriss. Dort bleibt kein Freiraum, empfohlen sind mindestens {PLATZ_MIN_CM} cm.
+            </p>
+          ) : ausLage.fehlt > 0 ? (
+            <p className={warnKlasse}>
+              <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
+              Um den Tisch ist es zu eng: Auf der {SEITE_ADJEKTIV[ausLage.seite]} Seite bleiben {ausLage.frei} cm bis{" "}
+              {BIS_ZU[ausLage.hindernis]}, empfohlen sind mindestens {PLATZ_MIN_CM} cm. Es fehlen {ausLage.fehlt} cm.
+            </p>
+          ) : (
+            <p className="mt-4 text-muted">
+              Der Freiraum reicht: Am engsten ist es auf der {SEITE_ADJEKTIV[ausLage.seite]} Seite mit {ausLage.frei}{" "}
+              cm bis {BIS_ZU[ausLage.hindernis]}, bei mindestens {PLATZ_MIN_CM} cm
+              {ausLage.frei < PLATZ_DURCHGANG_VON_CM
+                ? `; für einen Durchgang hinter den Stühlen wären ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm nötig.`
+                : "."}
+            </p>
+          ))}
+        {ausLage && (
+          <p className="mt-2 text-muted">
+            Aus der Lage im Grundriss gerechnet: der kleinste Abstand der Tischkante zu Wänden und anderen Möbeln.
+          </p>
+        )}
+        {!ausLage &&
+          e.platz &&
           (e.platz.fehlt > 0 ? (
             <p className={warnKlasse}>
               <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
@@ -113,7 +161,7 @@ export default function EsstischEmpfehlung({ raum, tische }: Props) {
                 : "."}
             </p>
           ))}
-        {e.platz && (
+        {!ausLage && e.platz && (
           <p className="mt-2 text-muted">
             Gerechnet mit der kurzen Raumseite und dem Tisch mittig darin: {e.platz.tischMass} cm Tischmaß, der Rest
             teilt sich auf beide Seiten.
