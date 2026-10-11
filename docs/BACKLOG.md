@@ -19,7 +19,7 @@
 
 **Fertig, wenn:** Ich öffne die Startseite, gebe einen Raum und ein Sofa ein und sehe die Zusammenfassung; mit einem leeren oder negativen Wert bekomme ich eine Fehlermeldung.
 
-## Issue 2: Teppichgröße und Möbelproportionen mit Begründung ⬜ offen
+## Issue 2: Teppichgröße und Möbelproportionen mit Begründung ✅ fertig
 
 **Ziel:** Eine Innenarchitektin bekommt aus Raum und Sofa eine passende Teppichgröße, bei der die Regel und ihre Quelle mit angezeigt werden, damit sie die Zahl dem Kunden mit Fakten statt mit „mache ich immer so“ begründen kann.
 
@@ -74,3 +74,30 @@
 - Gegeben noch kein Raum eingegeben, dann sehe ich einen Satz und einen Link zur Eingabe.
 
 **Fertig, wenn:** Ich gebe zu einem Sofa einen deutlich zu kleinen und einen passenden Teppich ein und bekomme zwei verschiedene Bewertungen mit Begründung.
+
+## Issue 6: Sofa-Tiefe und Verhältnis bei der Teppichempfehlung 🔧 in Arbeit
+
+**Ziel:** Eine Innenarchitektin gibt die Tiefe des Sofas an und sieht zur Teppichgröße das Verhältnis Teppich zu Sofa, damit die Empfehlung die vorderen Sofafüße berücksichtigt und die Proportion für den Kunden greifbar wird.
+
+**Nicht im Umfang:** Tiefe für andere Möbel, Teppichform (rund, oval), Verhältnis zu anderen Möbeln.
+
+**Akzeptanzkriterien:**
+- Gegeben die Art „Sofa“, wenn ich ein Möbelstück hinzufüge, dann gibt es ein Feld „Tiefe“ in Zentimetern mit derselben Fehlerprüfung wie die anderen Felder.
+- Gegeben ein Sofa mit Tiefe, dann zeigt die Liste die Tiefe und die Empfehlung nennt Mindestbreite und Mindesttiefe des Teppichs.
+- Gegeben eine Empfehlung, dann steht darunter das Verhältnis „Der Teppich ist x-mal so breit wie das Sofa“.
+
+**Fertig, wenn:** Ich gebe ein Sofa mit 200 cm Breite und 95 cm Tiefe ein und sehe 230 × 160 cm mit dem Verhältnis 1,15.
+
+## Issue 7: Eingaben beim Neuladen behalten 🔧 in Arbeit
+
+**Ziel:** Eine Innenarchitektin verliert beim Neuladen der Seite ihre Eingaben nicht, damit sie vor Ort nicht von vorn anfangen muss.
+
+**Nicht im Umfang:** Konten, Synchronisation zwischen Geräten, mehrere Räume oder Projekte (Datenbank).
+
+**Akzeptanzkriterien:**
+- Gegeben ein eingegebener Raum und Möbel, wenn ich die Seite neu lade, dann sind Raum und Möbelliste noch da.
+- Gegeben ein entferntes Möbelstück, wenn ich die Seite neu lade, dann bleibt es entfernt.
+- Gegeben eingegebene Daten, wenn ich „Neu beginnen“ antippe und die Rückfrage bestätige, dann sind Raum, Möbelliste und Formularfelder leer, auch nach dem Neuladen.
+- Gegeben die Rückfrage, wenn ich abbreche, dann bleibt alles erhalten.
+
+**Fertig, wenn:** Ich gebe Raum und Sofa ein, lade die Seite neu und sehe Zusammenfassung, Liste und Empfehlung wie vorher.

@@ -1,14 +1,17 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
-import { CircleAlert, Plus, Trash2 } from "lucide-react";
+import { CircleAlert, Plus, RotateCcw, Trash2 } from "lucide-react";
+import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
 
 const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard"] as const;
 type Art = (typeof ARTEN)[number];
 
 type Raum = { laenge: number; breite: number; hoehe: number };
-type Eintrag = { id: number; art: Art; breite: number; hoehe: number };
+type Eintrag = { id: number; art: Art; breite: number; hoehe: number; tiefe?: number };
+
+const SPEICHER_KEY = "proportio-eingaben";
 
 type FeldFehler = Record<string, string>;
 
@@ -43,13 +46,57 @@ const feldKlasse =
 const knopfKlasse =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-4 font-semibold text-background";
 
+type Gespeichert = { raum?: Raum; eintraege?: Eintrag[]; naechsteId?: number };
+
+/** Liest die zuletzt gemerkten Eingaben. Ist nichts da oder nicht lesbar, startet die App leer. */
+function leseGespeichert(): Gespeichert {
+  try {
+    const roh = window.localStorage.getItem(SPEICHER_KEY);
+    if (!roh) return {};
+    const d = JSON.parse(roh);
+    return {
+      raum: d.raum ?? undefined,
+      eintraege: Array.isArray(d.eintraege) ? d.eintraege : undefined,
+      naechsteId: typeof d.naechsteId === "number" ? d.naechsteId : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
+
+const keinAbo = () => () => {};
+
 export default function RaumEingabe() {
+  // Auf dem Server gibt es keinen Browser-Speicher; erst im Browser zeigen wir das Formular.
+  const imBrowser = useSyncExternalStore(
+    keinAbo,
+    () => true,
+    () => false,
+  );
+  if (!imBrowser) return <div className="min-h-96" aria-hidden="true" />;
+  return <RaumEingabeInhalt />;
+}
+
+function RaumEingabeInhalt() {
   const uid = useId();
-  const [raum, setRaum] = useState<Raum | null>(null);
+  const [gespeichert] = useState(leseGespeichert);
+  const [raum, setRaum] = useState<Raum | null>(gespeichert.raum ?? null);
   const [raumFehler, setRaumFehler] = useState<FeldFehler>({});
-  const [eintraege, setEintraege] = useState<Eintrag[]>([]);
+  const [eintraege, setEintraege] = useState<Eintrag[]>(gespeichert.eintraege ?? []);
   const [eintragFehler, setEintragFehler] = useState<FeldFehler>({});
-  const [naechsteId, setNaechsteId] = useState(1);
+  const [naechsteId, setNaechsteId] = useState(gespeichert.naechsteId ?? 1);
+  const [art, setArt] = useState<Art>("Sofa");
+  // Wechselt beim Zurücksetzen, damit die Formulare mit leeren Feldern neu aufgebaut werden.
+  const [formularNr, setFormularNr] = useState(0);
+
+  // Eingaben für das nächste Neuladen merken (nur im Browser dieses Geräts).
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SPEICHER_KEY, JSON.stringify({ raum, eintraege, naechsteId }));
+    } catch {
+      // Speichern nicht möglich (zum Beispiel privates Fenster): die App funktioniert trotzdem.
+    }
+  }, [raum, eintraege, naechsteId]);
 
   function raumUebernehmen(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -70,18 +117,32 @@ export default function RaumEingabe() {
     e.preventDefault();
     const form = e.currentTarget;
     const daten = new FormData(form);
-    const art = String(daten.get("art")) as Art;
     const fehler: FeldFehler = {};
     const breite = leseZentimeter(String(daten.get("breite") ?? ""));
     const hoehe = leseZentimeter(String(daten.get("hoehe") ?? ""));
     if ("fehler" in breite) fehler.breite = breite.fehler;
     if ("fehler" in hoehe) fehler.hoehe = hoehe.fehler;
+    const tiefe = art === "Sofa" ? leseZentimeter(String(daten.get("tiefe") ?? "")) : null;
+    if (tiefe && "fehler" in tiefe) fehler.tiefe = tiefe.fehler;
     setEintragFehler(fehler);
-    if ("wert" in breite && "wert" in hoehe) {
-      setEintraege((alt) => [...alt, { id: naechsteId, art, breite: breite.wert, hoehe: hoehe.wert }]);
+    if ("wert" in breite && "wert" in hoehe && (!tiefe || "wert" in tiefe)) {
+      const neu: Eintrag = { id: naechsteId, art, breite: breite.wert, hoehe: hoehe.wert };
+      if (tiefe && "wert" in tiefe) neu.tiefe = tiefe.wert;
+      setEintraege((alt) => [...alt, neu]);
       setNaechsteId((n) => n + 1);
       form.reset();
     }
+  }
+
+  function allesZuruecksetzen() {
+    if (!window.confirm("Raum und alle Möbel wirklich löschen? Das lässt sich nicht rückgängig machen.")) return;
+    setRaum(null);
+    setEintraege([]);
+    setNaechsteId(1);
+    setRaumFehler({});
+    setEintragFehler({});
+    setArt("Sofa");
+    setFormularNr((n) => n + 1);
   }
 
   function eintragEntfernen(id: number) {
@@ -91,12 +152,16 @@ export default function RaumEingabe() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <div className="flex flex-col gap-8">
-        <section aria-labelledby={`${uid}-raum`} className="rounded-xl border border-border bg-card p-4 sm:p-6">
+        <section
+          id="raum-formular"
+          aria-labelledby={`${uid}-raum`}
+          className="rounded-xl border border-border bg-card p-4 sm:p-6"
+        >
           <h2 id={`${uid}-raum`} className="text-xl font-semibold">
             Raum
           </h2>
           <p className="mt-1 text-muted">Alle Maße in Zentimetern.</p>
-          <form onSubmit={raumUebernehmen} noValidate className="mt-4 flex flex-col gap-4">
+          <form key={`raum-${formularNr}`} onSubmit={raumUebernehmen} noValidate className="mt-4 flex flex-col gap-4">
             {(
               [
                 ["laenge", "Länge", "zum Beispiel 520"],
@@ -135,12 +200,18 @@ export default function RaumEingabe() {
           <h2 id={`${uid}-moebel`} className="text-xl font-semibold">
             Möbel oder Fenster hinzufügen
           </h2>
-          <form onSubmit={eintragHinzufuegen} noValidate className="mt-4 flex flex-col gap-4">
+          <form key={`moebel-${formularNr}`} onSubmit={eintragHinzufuegen} noValidate className="mt-4 flex flex-col gap-4">
             <div>
               <label htmlFor={`${uid}-art`} className="font-medium">
                 Art
               </label>
-              <select id={`${uid}-art`} name="art" defaultValue="Sofa" className={feldKlasse}>
+              <select
+                id={`${uid}-art`}
+                name="art"
+                value={art}
+                onChange={(e) => setArt(e.target.value as Art)}
+                className={feldKlasse}
+              >
                 {ARTEN.map((a) => (
                   <option key={a} value={a}>
                     {a}
@@ -152,6 +223,7 @@ export default function RaumEingabe() {
               [
                 ["breite", "Breite"],
                 ["hoehe", "Höhe"],
+                ...(art === "Sofa" ? [["tiefe", "Tiefe"]] : []),
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
@@ -181,9 +253,19 @@ export default function RaumEingabe() {
 
       <div className="flex flex-col gap-8">
         <section aria-labelledby={`${uid}-zusammenfassung`} className="rounded-xl border border-border bg-card p-4 sm:p-6">
-          <h2 id={`${uid}-zusammenfassung`} className="text-xl font-semibold">
-            Zusammenfassung
-          </h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 id={`${uid}-zusammenfassung`} className="text-xl font-semibold">
+              Zusammenfassung
+            </h2>
+            <button
+              type="button"
+              onClick={allesZuruecksetzen}
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg border border-border px-3 font-medium"
+            >
+              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+              Neu beginnen
+            </button>
+          </div>
           <div aria-live="polite">
             {raum ? (
               <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
@@ -227,6 +309,7 @@ export default function RaumEingabe() {
                     <span className="font-semibold">{x.art}</span>
                     <span className="block text-muted">
                       {formatZahl(x.breite, 1)} cm breit, {formatZahl(x.hoehe, 1)} cm hoch
+                      {x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm tief` : ""}
                     </span>
                   </span>
                   <button
@@ -243,6 +326,13 @@ export default function RaumEingabe() {
             </ul>
           )}
         </section>
+
+        <TeppichEmpfehlung
+          raum={raum}
+          sofas={eintraege
+            .filter((x) => x.art === "Sofa")
+            .map((x) => ({ breite: x.breite, tiefe: x.tiefe }))}
+        />
       </div>
     </div>
   );
