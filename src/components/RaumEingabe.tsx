@@ -3,7 +3,9 @@
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
 import { CircleAlert, Plus, RotateCcw, Trash2 } from "lucide-react";
+import BildEmpfehlung from "@/components/BildEmpfehlung";
 import TeppichEmpfehlung from "@/components/TeppichEmpfehlung";
+import VorhangEmpfehlung from "@/components/VorhangEmpfehlung";
 
 const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard"] as const;
 type Art = (typeof ARTEN)[number];
@@ -332,6 +334,18 @@ function RaumEingabeInhalt() {
           sofas={eintraege
             .filter((x) => x.art === "Sofa")
             .map((x) => ({ breite: x.breite, tiefe: x.tiefe }))}
+        />
+
+        <VorhangEmpfehlung
+          raum={raum}
+          fenster={eintraege.filter((x) => x.art === "Fenster")}
+        />
+
+        <BildEmpfehlung
+          raum={raum}
+          sofas={eintraege
+            .filter((x) => x.art === "Sofa")
+            .map((x) => ({ breite: x.breite, hoehe: x.hoehe }))}
         />
       </div>
     </div>

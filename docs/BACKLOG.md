@@ -33,7 +33,7 @@
 
 **Fertig, wenn:** Ich gebe Raum und Sofa ein, öffne die Teppichempfehlung und sehe Größe, Regel und Quelle; mit einem zu kleinen Raum sehe ich einen Hinweis statt einer Zahl.
 
-## Issue 3: Vorhangstange und Bildhöhe ⬜ offen
+## Issue 3: Vorhangstange und Bildhöhe 🔧 in Arbeit
 
 **Ziel:** Eine Innenarchitektin bekommt aus Fenster und Sofa die Breite und Höhe der Vorhangstange sowie Größe und Hängehöhe eines Bildes über dem Sofa, damit zwei oft geschätzte Maße belegt sind.
 
