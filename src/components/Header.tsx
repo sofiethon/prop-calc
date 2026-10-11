@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import MenuDropdown from "@/components/MenuDropdown";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Header() {
+export default async function Header() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getClaims();
+  const angemeldet = Boolean(data?.claims);
+
   return (
     <header className="border-b border-border">
       <div className="page-container flex items-center justify-between gap-4 py-4">
@@ -19,6 +25,7 @@ export default function Header() {
           </span>
           <span className="text-caption font-normal tracking-eyebrow text-muted">prop-calc</span>
         </Link>
+        <MenuDropdown angemeldet={angemeldet} />
       </div>
     </header>
   );

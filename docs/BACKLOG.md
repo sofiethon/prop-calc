@@ -148,6 +148,22 @@
 
 **Fertig, wenn:** Ich setze ein Fenster mit 120 cm Breite auf die obere Wand, sehe es im Grundriss an der richtigen Stelle; mit einem Abstand, der über die Wand hinausragt, bekomme ich eine Fehlermeldung.
 
+## Issue 13: Startseite mit Hero, Menü und Anmeldung 🔧 in Arbeit
+
+**Ziel:** Besucher*innen sehen beim Öffnen eine ruhige Startseite „SoTho Interiors“ mit Menü rechts und können sich anmelden, damit der Rechner nur für Angemeldete unter „Get creative“ erreichbar ist.
+
+**Nicht im Umfang:** Echte Inhalte für Über uns, Portfolio, Buchungen und Kontakt (zunächst Platzhaltertexte), Buchungsformular mit Versand, Passwort zurücksetzen, Profilseite, Konten-Verwaltung, eigene Tabellen in der Datenbank.
+
+**Akzeptanzkriterien:**
+- Gegeben die Startseite, dann sehe ich „SoTho Interiors“ als Hero auf hellem Grund und rechts oben ein Dropdown mit Über uns, Portfolio, Buchungen, Kontakt und Anmelden.
+- Gegeben das Dropdown, wenn ich Über uns, Portfolio, Buchungen oder Kontakt antippe, dann springt die Startseite zum jeweiligen Abschnitt mit Platzhaltertext unter dem Hero; mit Escape oder einem Tipp daneben schließt das Dropdown.
+- Gegeben die Login-Seite, wenn ich mich mit E-Mail und Passwort registriere oder anmelde, dann bin ich angemeldet und sehe im Dropdown „Get creative“ und „Abmelden“.
+- Gegeben ich bin nicht angemeldet, wenn ich die Seite des Rechners direkt aufrufe, dann lande ich auf der Login-Seite; „Get creative“ erscheint nicht im Dropdown.
+- Gegeben ein leeres oder ungültiges Feld oder falsche Zugangsdaten, dann sehe ich einen verständlichen Satz am Formular.
+- Gegeben ein Handy mit 375 px Breite, dann bleibt der Header einzeilig, das Dropdown ragt nicht über den Rand und alle Ziele sind mindestens 44 px hoch.
+
+**Fertig, wenn:** Ich öffne die Startseite, sehe den Hero, melde mich an und komme über „Get creative“ zum Rechner; abgemeldet führt der Weg zum Rechner zum Login.
+
 ## Issue 11: Schlafzimmer – Bett und Platz drumherum ⬜ offen
 
 **Ziel:** Eine Innenarchitektin gibt ein Bett ein und bekommt Freiraum um das Bett und die Höhe des Nachttischs mit Regel und Quelle, damit die App auch im Schlafzimmer belegte Maße liefert.
