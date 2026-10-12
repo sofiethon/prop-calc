@@ -115,6 +115,7 @@
   --shadow-*: initial;
   --drop-shadow-*: initial;
 
+  --breakpoint-md: 768px;
   --breakpoint-lg: 1200px;
   --container-page: 1440px;
   --container-measure: 62ch;

@@ -3,15 +3,35 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 // Die Ankerziele (id) müssen zu den Links in src/components/MenuDropdown.tsx passen.
+const INTRO = [
+  "SoTho is an interior design studio in Austria, focused on residential interiors and home staging. At the core of every project is the same question: how does a space work, and how should it feel to live in it?",
+  "For me, good design starts with understanding the room itself, but also the people who will use it. The goal is to create spaces that feel considered, balanced and natural rather than overdesigned.",
+];
+
 const LEISTUNGEN = [
   {
     titel: "Interior Design",
-    text: "Residential concepts built on layout, proportion and circulation. Furniture, colour, light and materials are decided together, so every room has a clear hierarchy and a calm, lasting character. We don’t follow trends. We design interiors that stay right.",
+    absaetze: [
+      "I create residential interiors that are built around layout, proportion and the way people move through a space. Furniture, colour, light and materials are not treated as separate decisions, but as parts of one overall concept.",
+      "The result should feel clear and calm, with a strong sense of balance and character. I do not design around short-lived trends. I prefer interiors that feel personal, functional and lasting, so they still feel right years later.",
+    ],
   },
   {
     titel: "Home Staging",
-    text: "For real-estate agents, developers and private sellers. We prepare a property so buyers recognise each room’s purpose, understand its proportions and can imagine living there. Refined and broadly accessible, never overly personal.",
+    absaetze: [
+      "For real estate agents, developers and private sellers, I prepare properties in a way that helps potential buyers understand them more easily.",
+      "Home staging should make the purpose of each room clear, show its proportions and help people imagine how they could live there. The aim is not to create an overly specific lifestyle, but to give the property warmth, structure and a sense of possibility.",
+      "The result is refined and inviting, while still leaving enough space for buyers to imagine their own life in the home.",
+    ],
   },
+];
+
+const WENIGER_IST_MEHR = [
+  "For me, this is more than a design principle. It is something I genuinely believe in, and a rule I come back to in both design and everyday life.",
+  "I am from Austria, but I grew up in New York City. Living there shaped the way I see space, architecture and movement. I was surrounded by strong lines, modern buildings, contrast, energy and a certain confidence in simplicity. That still influences the way I design today.",
+  "Mies van der Rohe has always been one of my biggest influences. His approach to proportion, structure and reduction taught me that a space does not need more to feel complete. It needs the right elements, in the right relationship to each other.",
+  "I began my interior design studies at Parsons School of Design at The New School in New York. After moving back to Austria, I completed my degree at New Design University. That mix of New York and Austria is still very present in my work: the energy and architectural clarity of the city, combined with a more grounded and considered way of living.",
+  "When I design a space, I want it to feel clear, calm and natural to live in. I look at how people move through a room, how light changes it, how materials work together and how every element relates to the next. I do not believe in adding decoration just to fill a space. I believe in creating the right balance.",
 ];
 
 const ABSCHNITTE = [
@@ -58,18 +78,22 @@ export default async function Startseite() {
             <p className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">
               Space, understood.
             </p>
-            <p className="mb-12 max-w-measure text-body">
-              SoTho is an interior design studio in Austria. We plan residential interiors and stage properties for
-              sale. Both begin with the same question: how does a space work, and how should it feel?
-            </p>
-            <h3 className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">Less is more</h3>
-            <p className="max-w-measure text-body">
-              Good design comes from relationships, not decoration: between space and proportion, function and material,
-              light, colour and movement. We reduce until what remains is clear. Reduction, not emptiness.
-            </p>
+            {INTRO.map((t) => (
+              <p key={t} className="mb-6 max-w-measure text-body">
+                {t}
+              </p>
+            ))}
+            <h3 className="mb-6 mt-12 font-display text-h3 font-normal tracking-heading text-foreground">
+              Less is more
+            </h3>
+            {WENIGER_IST_MEHR.map((t) => (
+              <p key={t} className="mb-6 max-w-measure text-body last:mb-0">
+                {t}
+              </p>
+            ))}
           </div>
 
-          <figure className="col-span-4 md:col-span-3 lg:col-span-5 lg:col-start-8">
+          <figure className="col-span-4 md:sticky md:top-24 md:col-span-3 md:self-start lg:col-span-5 lg:col-start-8">
             <Image
               src="/about-portrait.jpg"
               alt="Portrait of Sofie Thonhauser, founder and designer of SoTho Interiors"
@@ -94,14 +118,18 @@ export default async function Startseite() {
           <ul className="col-span-4 mb-12 grid grid-cols-subgrid gap-y-8 md:col-span-8 lg:col-span-12">
             {LEISTUNGEN.map((l) => (
               <li key={l.titel} className="col-span-4 lg:col-span-6">
-                <h3 className="mb-2 font-display text-h3 font-normal tracking-heading text-foreground">{l.titel}</h3>
-                <p className="max-w-measure text-body">{l.text}</p>
+                <h3 className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">{l.titel}</h3>
+                {l.absaetze.map((t) => (
+                  <p key={t} className="mb-6 max-w-measure text-body last:mb-0">
+                    {t}
+                  </p>
+                ))}
               </li>
             ))}
           </ul>
           <div className="col-span-4 md:col-span-8 lg:col-span-12">
             <p className="mb-8 max-w-measure text-body text-muted">
-              Where we work: Vienna, its surroundings and Lower Austria.
+              Where I work: Vienna, its surroundings and Lower Austria.
             </p>
             <Link
               href="#kontakt"
