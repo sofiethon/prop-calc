@@ -210,3 +210,49 @@
 - Gegeben noch kein Raum, dann sehe ich einen Satz und einen Link zur Eingabe statt einer leeren Karte.
 
 **Fertig, wenn:** Ich gebe Raum, Sofa und Fenster ein, öffne die Kunden-Karte, kopiere den Link, öffne ihn in einem privaten Fenster und sehe dieselbe Karte mit Grundriss, Regeln und Quellen.
+
+## Issue 15: Hero mit Bild und zweitem Weg ⬜ offen
+
+**Ziel:** Besucher*innen sehen im Hero der Startseite ein großes Bild und einen ruhigen zweiten Weg „Start a project“, damit sofort klar ist, welche Art von Räumen SoTho gestaltet und wie man ein Projekt anfragt.
+
+**Nicht im Umfang:** Das endgültige Raumfoto (zunächst ein Platzhalterbild, das später ausgetauscht wird), Proportions-Linien im Hero, Animationen (Issue 16), Änderungen am Menü oder Header (Issue 17), mehrere Bilder oder Bildwechsel.
+
+**Akzeptanzkriterien:**
+- Gegeben die Startseite, dann sehe ich im Hero zusätzlich zu Titel und Satz ein großes Bild mit festem Seitenverhältnis, ohne Filter und ohne Schatten.
+- Gegeben der Hero, dann steht neben dem Primärknopf ein unterstrichener Link „Start a project“; wenn ich ihn antippe, springt die Seite zum Kontaktbereich.
+- Gegeben der Hero, dann gibt es genau einen Primärknopf („Sign in“ bzw. „Get creative“ wie bisher); „Start a project“ ist kein gefüllter Knopf.
+- Gegeben ich bin abgemeldet oder angemeldet, dann zeigt der Primärknopf weiter den jeweils richtigen Text und führt zum Login bzw. zum Rechner.
+- Gegeben ein Handy mit 375 px Breite, dann ragt nichts über den Rand, der Primärknopf ist ohne Scrollen zu sehen und beide Ziele sind mindestens 44 px hoch.
+
+**Fertig, wenn:** Ich öffne die Startseite, sehe Titel, Bild, den Primärknopf und den Link „Start a project“, tippe auf den Link und lande beim Kontaktformular; am Handy sehe ich den Primärknopf ohne zu scrollen.
+
+## Issue 16: Sanftes Einblenden beim Laden und Scrollen ⬜ offen
+
+**Ziel:** Besucher*innen erleben die Startseite ruhig und geführt: Hero-Elemente erscheinen nacheinander, die Abschnitte blenden beim Scrollen ein, damit die lange Seite hochwertig und nicht überladen wirkt.
+
+**Nicht im Umfang:** Sanfter Scroll zu Abschnitten, Bewegung im Menü (Issue 17), Animationen im Rechner und auf der Login-Seite, Parallax, Dauerschleifen, Bildwechsel.
+
+**Akzeptanzkriterien:**
+- Gegeben die Startseite wird geladen, dann erscheinen Titel, Satz und Knopf nacheinander mit leichtem Einblenden und Verschieben um 8–16 px; jede Bewegung dauert höchstens 0,6 s und danach ist alles sichtbar und bedienbar.
+- Gegeben ich scrolle nach unten, wenn About, Services, Portfolio und Contact ins Bild kommen, dann blenden sie sanft ein und bleiben danach sichtbar.
+- Gegeben im Betriebssystem ist „Bewegung reduzieren“ eingeschaltet, dann erscheinen alle Inhalte sofort und ohne Bewegung.
+- Gegeben ich springe über das Menü oder die Adresse (zum Beispiel `/#services`) direkt zu einem Abschnitt, dann ist dieser sichtbar und nicht leer.
+- Gegeben die Startseite, dann läuft nirgends eine Bewegung in Dauerschleife.
+
+**Fertig, wenn:** Ich lade die Startseite und sehe Titel, Satz und Knopf nacheinander erscheinen, scrolle und sehe die Abschnitte einblenden; mit eingeschaltetem „Bewegung reduzieren“ ist alles sofort da.
+
+## Issue 17: Menü mit weichem Übergang und Orientierung ⬜ offen
+
+**Ziel:** Besucher*innen bedienen ein Menü, das weich ein- und ausblendet, ihnen zeigt, in welchem Abschnitt sie gerade sind, und das den Hero nicht mit einem zweiten Logo belastet, damit die Startseite aufgeräumt und gut zu navigieren ist.
+
+**Nicht im Umfang:** Neue Menüpunkte, Änderungen an Anmeldung und Abmeldung, sanfter Scroll zu Abschnitten, Einblenden der Abschnitte (Issue 16), ein anderes Logo.
+
+**Akzeptanzkriterien:**
+- Gegeben das Menü, wenn ich es öffne oder schließe, dann blendet es weich ein bzw. aus (höchstens 0,3 s); Escape und ein Tipp daneben schließen es wie bisher.
+- Gegeben die Startseite, wenn ich zu einem Abschnitt scrolle (zum Beispiel Services), dann ist im geöffneten Menü genau dieser Eintrag mit Unterstreichung markiert und für Screenreader als aktuell gekennzeichnet; die anderen Einträge sind es nicht.
+- Gegeben die Startseite ganz oben, dann zeigt der Header kein kleines Logo und der Menüknopf bleibt an seiner Stelle; sobald der Hero aus dem Bild ist, erscheint das Logo und der Menüknopf springt nicht.
+- Gegeben die Login-Seite oder der Rechner, dann ist das Logo im Header immer sichtbar.
+- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann erscheint das Menü ohne Bewegung.
+- Gegeben ein Handy mit 375 px Breite, dann bleibt der Header einzeilig, das Menü ragt nicht über den Rand und alle Einträge sind mindestens 44 px hoch.
+
+**Fertig, wenn:** Ich öffne die Startseite, sehe oben keinen Logo-Eintrag im Header, scrolle zu Services, öffne das Menü und sehe „Services“ markiert und das Logo im Header; auf der Login-Seite ist das Logo von Anfang an da.

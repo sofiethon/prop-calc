@@ -1,6 +1,6 @@
 # Produkt-Brief — prop-calc
 
-**Stand:** 2026-10-11 — MVP erweitert um Grundriss mit Verschieben und Drehen, Fenster an Wänden, Schlafzimmer und Kunden-Karte (Issues 9–12 im Backlog)
+**Stand:** 2026-10-12 — MVP erweitert um Hero mit Bild, Einblend-Animationen und ein ruhigeres Menü auf der Startseite (Issues 15–17 im Backlog); davor 2026-10-11: Grundriss, Fenster an Wänden, Schlafzimmer, Kunden-Karte (Issues 9–12)
 
 ## 1. Für wen?
 Innenarchitekt\*innen, die für neue Kunden eine Raumplanung machen und beim ersten Termin vor Ort schnell belastbare Maße brauchen. Privatpersonen, die selbst einrichten, kommen später dazu.
@@ -27,8 +27,11 @@ Eine Web-App für das Handy, die Innenarchitekt\*innen vor Ort aus den Raummaße
 8. Fenster an eine Wand setzen (Issue 10)
 9. Schlafzimmer: Bett und Platz drumherum (Issue 11)
 10. Kunden-Karte zum Teilen (eine Seite mit Maßen, Grundriss, Regeln und Quellen für den Kunden, Issue 12)
+11. Hero mit Bild und zweitem Weg „Start a project“ (Issue 15)
+12. Sanftes Einblenden beim Laden und Scrollen (Issue 16)
+13. Menü mit weichem Übergang, markiertem Abschnitt und Logo erst nach dem Hero (Issue 17)
 
-**Später:** Funktioniert auch ohne Internet · 3D-Ansicht · Türen und Türaufschlag · Fernsehgröße aus dem Sitzabstand · Möbel in beliebigen Winkeln drehen
+**Später:** Funktioniert auch ohne Internet · 3D-Ansicht · Türen und Türaufschlag · Fernsehgröße aus dem Sitzabstand · Möbel in beliebigen Winkeln drehen · Sanfter Scroll zu den Abschnitten · Proportions-Linien im Hero
 
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben, dass Innenarchitekt\*innen damit das Schätzen nach Faustregeln beim Raumplanen durch begründbare Maße ersetzen.
