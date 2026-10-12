@@ -120,24 +120,26 @@ export default async function Startseite() {
             {LEISTUNGEN.map((l) => (
               <li key={l.titel} className="col-span-4 flex flex-col lg:col-span-6">
                 <h3 className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">{l.titel}</h3>
-                {l.absaetze.map((t) => (
-                  <p key={t} className="mb-6 max-w-measure text-body last:mb-0 last:mt-auto">
-                    {t}
-                  </p>
-                ))}
+                <div className="flex flex-1 flex-col">
+                  {l.absaetze.map((t) => (
+                    <p key={t} className="mb-6 max-w-measure text-body last:mb-0 last:mt-auto">
+                      {t}
+                    </p>
+                  ))}
+                </div>
+                <Link
+                  href="#kontakt"
+                  className="mt-8 inline-flex min-h-12 items-center justify-center self-start rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle"
+                >
+                  Start a project
+                </Link>
               </li>
             ))}
           </ul>
           <div className="col-span-4 md:col-span-8 lg:col-span-12">
-            <p className="mb-8 max-w-measure text-body text-muted">
-              Where I work: Vienna, its surroundings and Lower Austria.
+            <p className="max-w-measure text-body text-muted">
+              Where I work: Vienna and Lower Austria. Online Interior Consultings are also possible.
             </p>
-            <Link
-              href="#kontakt"
-              className="inline-flex min-h-12 items-center justify-center rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle"
-            >
-              Start a project
-            </Link>
           </div>
         </div>
       </section>
