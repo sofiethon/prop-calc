@@ -13,7 +13,8 @@ const LEISTUNGEN = [
     titel: "Interior Design",
     absaetze: [
       "I create residential interiors that are built around layout, proportion and the way people move through a space. Furniture, colour, light and materials are not treated as separate decisions, but as parts of one overall concept.",
-      "The result should feel clear and calm, with a strong sense of balance and character. I do not design around short-lived trends. I prefer interiors that feel personal, functional and lasting, so they still feel right years later.",
+      "The result should feel clear and calm, with a strong sense of balance and character. I do not design around short-lived trends.",
+      "I prefer interiors that feel personal, functional and lasting, so they still feel right years later.",
     ],
   },
   {
@@ -117,10 +118,10 @@ export default async function Startseite() {
           </h2>
           <ul className="col-span-4 mb-12 grid grid-cols-subgrid gap-y-8 md:col-span-8 lg:col-span-12">
             {LEISTUNGEN.map((l) => (
-              <li key={l.titel} className="col-span-4 lg:col-span-6">
+              <li key={l.titel} className="col-span-4 flex flex-col lg:col-span-6">
                 <h3 className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">{l.titel}</h3>
                 {l.absaetze.map((t) => (
-                  <p key={t} className="mb-6 max-w-measure text-body last:mb-0">
+                  <p key={t} className="mb-6 max-w-measure text-body last:mb-0 last:mt-auto">
                     {t}
                   </p>
                 ))}
