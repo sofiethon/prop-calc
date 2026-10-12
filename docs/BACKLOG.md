@@ -226,7 +226,7 @@
 
 **Fertig, wenn:** Ich öffne die Startseite, sehe Titel, Bild, den Primärknopf und den Link „Start a project“, tippe auf den Link und lande beim Kontaktformular; am Handy sehe ich den Primärknopf ohne zu scrollen.
 
-## Issue 16: Sanftes Einblenden beim Laden und Scrollen ⬜ offen
+## Issue 16: Sanftes Einblenden beim Laden und Scrollen 🔧 in Arbeit
 
 **Ziel:** Besucher*innen erleben die Startseite ruhig und geführt: Hero-Elemente erscheinen nacheinander, die Abschnitte blenden beim Scrollen ein, damit die lange Seite hochwertig und nicht überladen wirkt.
 

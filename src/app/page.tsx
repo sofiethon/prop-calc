@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
+import { Reveal, RevealSection } from "@/components/Reveal";
 import { createClient } from "@/lib/supabase/server";
 
 // Die Ankerziele (id) müssen zu den Links in src/components/MenuDropdown.tsx passen.
@@ -58,32 +59,36 @@ export default async function Startseite() {
         />
         <div className="page-container layout-grid py-16 md:py-24 lg:py-32">
           <div className="col-span-4 md:col-span-8 lg:col-span-9">
-            <h1 className="mb-8 font-display text-display font-normal tracking-display text-foreground">
-              SoTho Interiors
-            </h1>
-            <p className="mb-12 max-w-measure text-body">
-              Rooms whose measurements can be justified. Calmly planned, with documented numbers.
-            </p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Reveal>
+              <h1 className="mb-8 font-display text-display font-normal tracking-display text-foreground">
+                SoTho Interiors
+              </h1>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="mb-12 max-w-measure text-body">
+                Rooms whose measurements can be justified. Calmly planned, with documented numbers.
+              </p>
+            </Reveal>
+            <Reveal delay={0.3} className="flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
                 href={angemeldet ? "/get-creative" : "/login"}
                 className="inline-flex min-h-12 items-center justify-center rounded-sm bg-foreground px-6 font-normal text-background transition-colors duration-150 hover:bg-dark-800"
               >
                 {angemeldet ? "Get creative" : "Sign in"}
               </Link>
-              <Link
+              <a
                 href="#kontakt"
                 className="inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4"
               >
                 Start a project
-              </Link>
-            </div>
+              </a>
+            </Reveal>
           </div>
 
         </div>
       </section>
 
-      <section id="about" aria-labelledby="about-titel" className="border-t border-border">
+      <RevealSection id="about" aria-labelledby="about-titel" className="border-t border-border">
         <div className="page-container layout-grid py-16 md:py-20">
           <h2
             id="about-titel"
@@ -123,9 +128,9 @@ export default async function Startseite() {
             <figcaption className="mt-2 text-caption text-muted">Sofie Thonhauser, Founder &amp; Designer</figcaption>
           </figure>
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="services" aria-labelledby="services-titel" className="border-t border-border">
+      <RevealSection id="services" aria-labelledby="services-titel" className="border-t border-border">
         <div className="page-container layout-grid py-16 md:py-20">
           <h2
             id="services-titel"
@@ -144,12 +149,12 @@ export default async function Startseite() {
                     </p>
                   ))}
                 </div>
-                <Link
+                <a
                   href="#kontakt"
                   className="mt-8 inline-flex min-h-12 items-center justify-center self-start rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle"
                 >
                   Start a project
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
@@ -159,10 +164,10 @@ export default async function Startseite() {
             </p>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {ABSCHNITTE.map((a) => (
-        <section key={a.id} id={a.id} aria-labelledby={`${a.id}-titel`} className="border-t border-border">
+        <RevealSection key={a.id} id={a.id} aria-labelledby={`${a.id}-titel`} className="border-t border-border">
           <div className="page-container layout-grid py-16 md:py-20">
             <h2
               id={`${a.id}-titel`}
@@ -172,9 +177,9 @@ export default async function Startseite() {
             </h2>
             <p className="col-span-4 max-w-measure text-body md:col-span-5 lg:col-span-6">{a.text}</p>
           </div>
-        </section>
+        </RevealSection>
       ))}
-      <section id="kontakt" aria-labelledby="kontakt-titel" className="border-t border-border">
+      <RevealSection id="kontakt" aria-labelledby="kontakt-titel" className="border-t border-border">
         <div className="page-container layout-grid py-16 md:py-20">
           <h2
             id="kontakt-titel"
@@ -209,7 +214,7 @@ export default async function Startseite() {
             <ContactForm />
           </div>
         </div>
-      </section>
+      </RevealSection>
     </main>
   );
 }
