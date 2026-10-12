@@ -7,8 +7,8 @@ import { abmelden } from "@/app/login/actions";
 
 const SEITEN = [
   { href: "/#about", label: "About" },
+  { href: "/#services", label: "Services" },
   { href: "/#portfolio", label: "Portfolio" },
-  { href: "/#buchung", label: "Bookings" },
   { href: "/#kontakt", label: "Contact" },
 ];
 
