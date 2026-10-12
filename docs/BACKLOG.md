@@ -211,7 +211,7 @@
 
 **Fertig, wenn:** Ich gebe Raum, Sofa und Fenster ein, öffne die Kunden-Karte, kopiere den Link, öffne ihn in einem privaten Fenster und sehe dieselbe Karte mit Grundriss, Regeln und Quellen.
 
-## Issue 15: Hero mit Bild und zweitem Weg 🔧 in Arbeit
+## Issue 15: Hero mit Bild und zweitem Weg ✅ fertig
 
 **Ziel:** Besucher*innen sehen im Hero der Startseite ein großes Bild und einen ruhigen zweiten Weg „Start a project“, damit sofort klar ist, welche Art von Räumen SoTho gestaltet und wie man ein Projekt anfragt.
 
