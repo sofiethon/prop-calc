@@ -47,8 +47,16 @@ export default async function Startseite() {
 
   return (
     <main className="flex flex-1 flex-col">
-      <section className="page-container py-16 md:py-24 lg:py-32">
-        <div className="layout-grid">
+      <section className="relative isolate overflow-hidden">
+        <Image
+          src="/hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover object-center opacity-20"
+        />
+        <div className="page-container layout-grid py-16 md:py-24 lg:py-32">
           <div className="col-span-4 md:col-span-8 lg:col-span-9">
             <h1 className="mb-8 font-display text-display font-normal tracking-display text-foreground">
               SoTho Interiors
@@ -56,13 +64,22 @@ export default async function Startseite() {
             <p className="mb-12 max-w-measure text-body">
               Rooms whose measurements can be justified. Calmly planned, with documented numbers.
             </p>
-            <Link
-              href={angemeldet ? "/get-creative" : "/login"}
-              className="inline-flex min-h-12 items-center justify-center rounded-sm bg-foreground px-6 font-normal text-background transition-colors duration-150 hover:bg-dark-800"
-            >
-              {angemeldet ? "Get creative" : "Sign in"}
-            </Link>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link
+                href={angemeldet ? "/get-creative" : "/login"}
+                className="inline-flex min-h-12 items-center justify-center rounded-sm bg-foreground px-6 font-normal text-background transition-colors duration-150 hover:bg-dark-800"
+              >
+                {angemeldet ? "Get creative" : "Sign in"}
+              </Link>
+              <Link
+                href="#kontakt"
+                className="inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4"
+              >
+                Start a project
+              </Link>
+            </div>
           </div>
+
         </div>
       </section>
 
