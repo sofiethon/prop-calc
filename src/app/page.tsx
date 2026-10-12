@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
 import { createClient } from "@/lib/supabase/server";
 
 // Die Ankerziele (id) müssen zu den Links in src/components/MenuDropdown.tsx passen.
@@ -37,7 +38,6 @@ const WENIGER_IST_MEHR = [
 
 const ABSCHNITTE = [
   { id: "portfolio", titel: "Portfolio", text: "Selected projects will appear here. The selection will follow." },
-  { id: "kontakt", titel: "Contact", text: "Contact details will appear here. They will follow." },
 ];
 
 export default async function Startseite() {
@@ -157,6 +157,42 @@ export default async function Startseite() {
           </div>
         </section>
       ))}
+      <section id="kontakt" aria-labelledby="kontakt-titel" className="border-t border-border">
+        <div className="page-container layout-grid py-16 md:py-20">
+          <h2
+            id="kontakt-titel"
+            className="col-span-4 mb-8 font-display text-h2 font-normal tracking-heading text-foreground md:col-span-8 lg:col-span-12"
+          >
+            Contact
+          </h2>
+
+          <div className="col-span-4 mb-12 md:col-span-8 lg:col-span-5">
+            <p className="mb-6 font-display text-h3 font-normal tracking-heading text-foreground">
+              Every project starts with a conversation.
+            </p>
+            <p className="mb-8 max-w-measure text-body">
+              Tell us about your home or property. We reply within [two working days].
+            </p>
+            <dl className="max-w-measure text-body">
+              {[
+                ["Email", "[hello@sotho.at]"],
+                ["Phone", "[+43 000 000 0000]"],
+                ["Studio", "[Street, postcode, city]"],
+                ["Service area", "Vienna, its surroundings and Lower Austria"],
+              ].map(([k, v]) => (
+                <div key={k} className="mb-4">
+                  <dt className="text-sm font-normal text-muted">{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
+            <ContactForm />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

@@ -166,6 +166,21 @@
 
 **Nachtrag 2026-10-12:** Die Oberfläche ist komplett englisch (Menü: About, Portfolio, Bookings, Contact, Sign in, Sign out); der Abschnitt About hat den echten Text. Die Kriterien oben gelten sinngemäß mit den englischen Bezeichnungen.
 
+## Issue 14: Kontaktbereich mit Formular 🔧 in Arbeit
+
+**Ziel:** Besucher*innen der Startseite sehen unter „Contact“ Kontaktdaten und ein Anfrageformular und können eine Anfrage ausfüllen, damit der Weg zu einem Projekt klar ist.
+
+**Nicht im Umfang:** Versand oder Speichern der Anfrage (Formular zeigt nur die Bestätigung, es wird nichts verschickt), Datenschutzseite (der Link zeigt vorerst ins Leere), echte Kontaktdaten (Platzhalter in eckigen Klammern).
+
+**Akzeptanzkriterien:**
+- Gegeben die Startseite, dann sehe ich unter „Contact“ die Überschrift „Every project starts with a conversation.“, E-Mail, Telefon, Studio-Adresse und Einsatzgebiet links und das Formular rechts; am Handy steht alles untereinander.
+- Gegeben das Formular, dann gibt es Name, Email, Phone (freiwillig), Service (Interior Design, Home Staging, Not sure yet), Property location (freiwillig), Message und eine Datenschutz-Checkbox.
+- Gegeben fehlende Pflichtfelder, eine ungültige Email oder nicht gesetzte Checkbox, wenn ich „Send enquiry“ antippe, dann sehe ich pro Feld einen Satz und das Formular bleibt ausgefüllt.
+- Gegeben alle Pflichtfelder gültig, wenn ich „Send enquiry“ antippe, dann sehe ich eine Bestätigung statt des Formulars.
+- Gegeben ein Handy mit 375 px Breite, dann ragt nichts über den Rand und alle Felder und Knöpfe sind mindestens 44 px hoch.
+
+**Fertig, wenn:** Ich öffne die Startseite, wähle im Menü „Contact“, sehe Daten und Formular, lasse Felder leer und sehe die Fehlersätze, fülle alles aus und sehe die Bestätigung.
+
 ## Issue 11: Schlafzimmer – Bett und Platz drumherum ⬜ offen
 
 **Ziel:** Eine Innenarchitektin gibt ein Bett ein und bekommt Freiraum um das Bett und die Höhe des Nachttischs mit Regel und Quelle, damit die App auch im Schlafzimmer belegte Maße liefert.
