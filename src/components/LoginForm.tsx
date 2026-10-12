@@ -19,7 +19,7 @@ export default function LoginForm() {
 
       <div>
         <label htmlFor={`${uid}-email`} className="text-sm font-normal">
-          E-Mail
+          Email
         </label>
         <input
           id={`${uid}-email`}
@@ -36,8 +36,8 @@ export default function LoginForm() {
 
       <div>
         <label htmlFor={`${uid}-passwort`} className="text-sm font-normal">
-          Passwort{" "}
-          {!istAnmelden && <span className="font-normal text-muted">(mindestens 8 Zeichen)</span>}
+          Password{" "}
+          {!istAnmelden && <span className="font-normal text-muted">(at least 8 characters)</span>}
         </label>
         <input
           id={`${uid}-passwort`}
@@ -63,17 +63,17 @@ export default function LoginForm() {
         disabled={laeuft}
         className="inline-flex min-h-12 items-center justify-center rounded-sm bg-foreground px-6 font-normal text-background transition-colors duration-150 hover:bg-dark-800 disabled:opacity-60"
       >
-        {istAnmelden ? "Anmelden" : "Registrieren"}
+        {istAnmelden ? "Sign in" : "Sign up"}
       </button>
 
       <p className="text-base">
-        {istAnmelden ? "Noch kein Konto? " : "Schon ein Konto? "}
+        {istAnmelden ? "No account yet? " : "Already have an account? "}
         <button
           type="button"
           onClick={() => setModus(istAnmelden ? "registrieren" : "anmelden")}
           className="min-h-11 font-normal text-foreground underline underline-offset-4"
         >
-          {istAnmelden ? "Registrieren" : "Anmelden"}
+          {istAnmelden ? "Sign up" : "Sign in"}
         </button>
       </p>
     </form>

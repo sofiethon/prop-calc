@@ -148,7 +148,7 @@
 
 **Fertig, wenn:** Ich setze ein Fenster mit 120 cm Breite auf die obere Wand, sehe es im Grundriss an der richtigen Stelle; mit einem Abstand, der über die Wand hinausragt, bekomme ich eine Fehlermeldung.
 
-## Issue 13: Startseite mit Hero, Menü und Anmeldung 🔧 in Arbeit
+## Issue 13: Startseite mit Hero, Menü und Anmeldung ✅ fertig
 
 **Ziel:** Besucher*innen sehen beim Öffnen eine ruhige Startseite „SoTho Interiors“ mit Menü rechts und können sich anmelden, damit der Rechner nur für Angemeldete unter „Get creative“ erreichbar ist.
 
@@ -163,6 +163,8 @@
 - Gegeben ein Handy mit 375 px Breite, dann bleibt der Header einzeilig, das Dropdown ragt nicht über den Rand und alle Ziele sind mindestens 44 px hoch.
 
 **Fertig, wenn:** Ich öffne die Startseite, sehe den Hero, melde mich an und komme über „Get creative“ zum Rechner; abgemeldet führt der Weg zum Rechner zum Login.
+
+**Nachtrag 2026-10-12:** Die Oberfläche ist komplett englisch (Menü: About, Portfolio, Bookings, Contact, Sign in, Sign out); der Abschnitt About hat den echten Text. Die Kriterien oben gelten sinngemäß mit den englischen Bezeichnungen.
 
 ## Issue 11: Schlafzimmer – Bett und Platz drumherum ⬜ offen
 

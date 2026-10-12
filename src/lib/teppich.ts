@@ -13,9 +13,9 @@ export const WANDABSTAND_CM = 20;
 export const VORNE_CM = 40;
 
 export const TEPPICH_REGEL =
-  "Der Teppich ragt auf beiden Seiten etwa 15 cm (6 Zoll) über das Sofa hinaus und liegt mindestens unter den vorderen Sofafüßen, damit Sofa und Teppich als eine Einheit wirken.";
+  "The rug extends about 15 cm (6 in) beyond the sofa on both sides and lies at least under the front sofa feet, so that sofa and rug read as one unit.";
 export const TEPPICH_QUELLE = {
-  name: "Houzz: „11 Area Rug Rules and How to Break Them“ (Designprinzip)",
+  name: "Houzz: „11 Area Rug Rules and How to Break Them“ (design principle)",
   url: "https://www.houzz.com/magazine/11-area-rug-rules-and-how-to-break-them-stsetivw-vs~222609",
 };
 
@@ -43,7 +43,7 @@ export function empfehleTeppich(
   if (passendZumSofa.length === 0) {
     return {
       art: "hinweis",
-      grund: `Das Sofa braucht einen Teppich von mindestens ${mindestBreite} × ${mindestTiefe} cm. Das ist größer als die gängigen Standardgrößen – hier käme nur eine Maßanfertigung infrage.`,
+      grund: `The sofa needs a rug of at least ${mindestBreite} × ${mindestTiefe} cm. That is larger than the common standard sizes, so only a custom-made rug would work.`,
     };
   }
   const treffer = passendZumSofa.find((g) => g.lang <= platzLang && g.kurz <= platzKurz);
@@ -51,7 +51,7 @@ export function empfehleTeppich(
     const kleinste = passendZumSofa[0];
     return {
       art: "hinweis",
-      grund: `Der Raum ist zu klein: Für dieses Sofa braucht der Teppich mindestens ${kleinste.lang} × ${kleinste.kurz} cm. Mit ${WANDABSTAND_CM} cm Abstand zur Wand stehen nur ${Math.max(platzLang, 0)} × ${Math.max(platzKurz, 0)} cm zur Verfügung.`,
+      grund: `The room is too small: for this sofa the rug needs at least ${kleinste.lang} × ${kleinste.kurz} cm. With ${WANDABSTAND_CM} cm clearance to the walls, only ${Math.max(platzLang, 0)} × ${Math.max(platzKurz, 0)} cm are available.`,
     };
   }
   return {

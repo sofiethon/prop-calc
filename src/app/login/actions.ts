@@ -19,11 +19,11 @@ export async function zugang(_vorher: ZugangZustand, formData: FormData): Promis
   const email = String(formData.get("email") ?? "").trim();
   const passwort = String(formData.get("passwort") ?? "");
 
-  if (!email) return { email, feld: "email", fehler: "Trag deine E-Mail-Adresse ein." };
+  if (!email) return { email, feld: "email", fehler: "Enter your email address." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { email, feld: "email", fehler: "Das ist keine gültige E-Mail-Adresse." };
+    return { email, feld: "email", fehler: "That is not a valid email address." };
   }
-  if (!passwort) return { email, feld: "passwort", fehler: "Trag dein Passwort ein." };
+  if (!passwort) return { email, feld: "passwort", fehler: "Enter your password." };
 
   const supabase = await createClient();
 
@@ -31,15 +31,15 @@ export async function zugang(_vorher: ZugangZustand, formData: FormData): Promis
     const { error } = await supabase.auth.signInWithPassword({ email, password: passwort });
     if (error) {
       if (error.code === "email_not_confirmed") {
-        return { email, fehler: "Bestätige zuerst deine E-Mail-Adresse. Der Link steht in der Mail, die wir dir geschickt haben." };
+        return { email, fehler: "Please confirm your email address first. The link is in the email we sent you." };
       }
-      return { email, feld: "passwort", fehler: "E-Mail oder Passwort stimmen nicht." };
+      return { email, feld: "passwort", fehler: "Email or password is incorrect." };
     }
     redirect("/get-creative");
   }
 
   if (passwort.length < PASSWORT_MIN) {
-    return { email, feld: "passwort", fehler: `Das Passwort braucht mindestens ${PASSWORT_MIN} Zeichen.` };
+    return { email, feld: "passwort", fehler: `The password needs at least ${PASSWORT_MIN} characters.` };
   }
 
   const origin = (await headers()).get("origin");
@@ -51,14 +51,14 @@ export async function zugang(_vorher: ZugangZustand, formData: FormData): Promis
 
   if (error) {
     if (error.code === "weak_password") {
-      return { email, feld: "passwort", fehler: "Dieses Passwort ist zu schwach. Wähl ein längeres oder ungewöhnlicheres." };
+      return { email, feld: "passwort", fehler: "This password is too weak. Choose a longer or less common one." };
     }
-    return { email, fehler: "Die Registrierung hat nicht geklappt. Versuch es später noch einmal oder melde dich an, falls du schon ein Konto hast." };
+    return { email, fehler: "Sign-up did not work. Please try again later, or sign in if you already have an account." };
   }
 
   if (data.session) redirect("/get-creative");
 
-  return { email, hinweis: "Wir haben dir eine E-Mail geschickt. Bestätige die Adresse mit dem Link darin, danach kannst du dich anmelden." };
+  return { email, hinweis: "We have sent you an email. Confirm your address with the link in it, then you can sign in." };
 }
 
 export async function abmelden() {

@@ -6,10 +6,10 @@ import { Menu, X } from "lucide-react";
 import { abmelden } from "@/app/login/actions";
 
 const SEITEN = [
-  { href: "/#about", label: "Über uns" },
+  { href: "/#about", label: "About" },
   { href: "/#portfolio", label: "Portfolio" },
-  { href: "/#buchung", label: "Buchungen" },
-  { href: "/#kontakt", label: "Kontakt" },
+  { href: "/#buchung", label: "Bookings" },
+  { href: "/#kontakt", label: "Contact" },
 ];
 
 const eintragKlasse =
@@ -52,14 +52,14 @@ export default function MenuDropdown({ angemeldet }: { angemeldet: boolean }) {
         onClick={() => setOffen((o) => !o)}
         className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-foreground px-4 text-base font-normal text-foreground transition-colors duration-150 hover:bg-subtle"
       >
-        Menü
+        Menu
         {offen ? <X size={20} strokeWidth={1.25} aria-hidden="true" /> : <Menu size={20} strokeWidth={1.25} aria-hidden="true" />}
       </button>
 
       {offen && (
         <nav
           id={panelId}
-          aria-label="Hauptmenü"
+          aria-label="Main menu"
           className="absolute right-0 top-full z-10 mt-2 w-64 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-background py-2"
         >
           <ul>
@@ -82,7 +82,7 @@ export default function MenuDropdown({ angemeldet }: { angemeldet: boolean }) {
                 <li>
                   <form action={abmelden}>
                     <button type="submit" className={eintragKlasse}>
-                      Abmelden
+                      Sign out
                     </button>
                   </form>
                 </li>
@@ -90,7 +90,7 @@ export default function MenuDropdown({ angemeldet }: { angemeldet: boolean }) {
             ) : (
               <li>
                 <Link href="/login" onClick={zu} className={eintragKlasse}>
-                  Anmelden
+                  Sign in
                 </Link>
               </li>
             )}

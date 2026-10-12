@@ -9,26 +9,26 @@ export function istWand(x: unknown): x is Wand {
 }
 
 export const WAND_NAME: Record<Wand, string> = {
-  oben: "obere Wand",
-  unten: "untere Wand",
-  links: "linke Wand",
-  rechts: "rechte Wand",
+  oben: "top wall",
+  unten: "bottom wall",
+  links: "left wall",
+  rechts: "right wall",
 };
 
-/** Dieselben Namen im Dativ („an der oberen Wand“). */
+/** Same names, used after a preposition ("on the top wall"); identical in English. */
 export const WAND_NAME_DATIV: Record<Wand, string> = {
-  oben: "oberen Wand",
-  unten: "unteren Wand",
-  links: "linken Wand",
-  rechts: "rechten Wand",
+  oben: "top wall",
+  unten: "bottom wall",
+  links: "left wall",
+  rechts: "right wall",
 };
 
 /** Der Abstand wird von dieser Ecke aus gemessen: bei oben und unten von links, bei links und rechts von oben. */
 export const WAND_VON: Record<Wand, string> = {
-  oben: "linken Ecke",
-  unten: "linken Ecke",
-  links: "oberen Ecke",
-  rechts: "oberen Ecke",
+  oben: "left corner",
+  unten: "left corner",
+  links: "top corner",
+  rechts: "top corner",
 };
 
 type Raum = { laenge: number; breite: number };
@@ -39,17 +39,17 @@ export function wandLaenge(wand: Wand, raum: Raum) {
 }
 
 function zahl(n: number) {
-  return n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+  return n.toLocaleString("en-GB", { maximumFractionDigits: 1 });
 }
 
 /** Meldung, wenn das Fenster mit diesem Abstand nicht auf die Wand passt; sonst null. */
 export function pruefeFensterLage(wand: Wand, abstand: number, breite: number, raum: Raum): string | null {
   const laenge = wandLaenge(wand, raum);
   if (breite > laenge) {
-    return `Das Fenster ist ${zahl(breite)} cm breit, die ${WAND_NAME[wand]} ist nur ${zahl(laenge)} cm lang.`;
+    return `The window is ${zahl(breite)} cm wide, but the ${WAND_NAME[wand]} is only ${zahl(laenge)} cm long.`;
   }
   if (abstand + breite > laenge) {
-    return `Das Fenster ist ${zahl(breite)} cm breit. Mit ${zahl(abstand)} cm Abstand ragt es über das Ende der ${WAND_NAME_DATIV[wand]} hinaus (${zahl(laenge)} cm lang). Der Abstand darf höchstens ${zahl(laenge - breite)} cm sein.`;
+    return `The window is ${zahl(breite)} cm wide. With a distance of ${zahl(abstand)} cm it extends past the end of the ${WAND_NAME_DATIV[wand]} (${zahl(laenge)} cm long). The distance may be at most ${zahl(laenge - breite)} cm.`;
   }
   return null;
 }
@@ -65,7 +65,7 @@ export function leseFensterLage(
   const abstand = leseAbstand(String(daten.get("abstand") ?? ""));
   if ("fehler" in abstand) return { fehler: { abstand: abstand.fehler } };
   if (!raum) {
-    return { fehler: { abstand: "Trag zuerst den Raum ein, damit ich die Länge der Wand kenne." } };
+    return { fehler: { abstand: "Enter the room first so the length of the wall is known." } };
   }
   const meldung = pruefeFensterLage(wand, abstand.wert, breite, raum);
   if (meldung) return { fehler: { abstand: meldung } };

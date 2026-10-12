@@ -11,7 +11,7 @@ export type Stufe = "passt" | "grenzwertig" | "zu klein" | "zu groß";
 export type Bewertung = { stufe: Stufe; grund: string };
 
 function cm(n: number) {
-  return n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+  return n.toLocaleString("en-GB", { maximumFractionDigits: 1 });
 }
 
 /**
@@ -39,30 +39,30 @@ export function bewerteTeppich(
   const zuwenigLang = mindestBreite - lang;
   const zuwenigKurz = mindestTiefe - kurz;
 
-  const platzText = `Im Raum stehen mit ${WANDABSTAND_CM} cm Wandabstand ${cm(Math.max(platzLang, 0))} × ${cm(Math.max(platzKurz, 0))} cm zur Verfügung.`;
-  const sofaText = `Das Sofa braucht mindestens ${cm(mindestBreite)} × ${cm(mindestTiefe)} cm.`;
+  const platzText = `With ${WANDABSTAND_CM} cm clearance to the walls, the room offers ${cm(Math.max(platzLang, 0))} × ${cm(Math.max(platzKurz, 0))} cm.`;
+  const sofaText = `The sofa needs at least ${cm(mindestBreite)} × ${cm(mindestTiefe)} cm.`;
 
   if (Math.max(zuvielLang, zuvielKurz) > TOLERANZ_CM) {
-    return { stufe: "zu groß", grund: `Der Teppich (${cm(lang)} × ${cm(kurz)} cm) ist für den Raum zu groß. ${platzText}` };
+    return { stufe: "zu groß", grund: `The rug (${cm(lang)} × ${cm(kurz)} cm) is too large for the room. ${platzText}` };
   }
   if (Math.max(zuwenigLang, zuwenigKurz) > TOLERANZ_CM) {
-    return { stufe: "zu klein", grund: `Der Teppich (${cm(lang)} × ${cm(kurz)} cm) ist für das Sofa zu klein. ${sofaText}` };
+    return { stufe: "zu klein", grund: `The rug (${cm(lang)} × ${cm(kurz)} cm) is too small for the sofa. ${sofaText}` };
   }
   if (Math.max(zuvielLang, zuvielKurz) > 0) {
     return {
       stufe: "grenzwertig",
-      grund: `Der Teppich (${cm(lang)} × ${cm(kurz)} cm) lässt weniger als ${WANDABSTAND_CM} cm Abstand zur Wand. ${platzText}`,
+      grund: `The rug (${cm(lang)} × ${cm(kurz)} cm) leaves less than ${WANDABSTAND_CM} cm to the wall. ${platzText}`,
     };
   }
   if (Math.max(zuwenigLang, zuwenigKurz) > 0) {
     return {
       stufe: "grenzwertig",
-      grund: `Der Teppich (${cm(lang)} × ${cm(kurz)} cm) ist knapp unter dem Richtwert für das Sofa. ${sofaText}`,
+      grund: `The rug (${cm(lang)} × ${cm(kurz)} cm) is just under the guideline for the sofa. ${sofaText}`,
     };
   }
   return {
     stufe: "passt",
-    grund: `Der Teppich (${cm(lang)} × ${cm(kurz)} cm) deckt das Sofa ab und lässt Platz zur Wand. ${sofaText}`,
+    grund: `The rug (${cm(lang)} × ${cm(kurz)} cm) covers the sofa and leaves room to the wall. ${sofaText}`,
   };
 }
 
@@ -70,19 +70,19 @@ export function bewerteTeppich(
 export function bewerteStange(stangeBreite: number, fensterBreite: number): Bewertung {
   const von = fensterBreite + 2 * STANGE_UEBERSTAND_MIN_CM;
   const bis = fensterBreite + 2 * STANGE_UEBERSTAND_MAX_CM;
-  const richtwert = `Für dieses Fenster (${cm(fensterBreite)} cm breit) wären ${cm(von)} bis ${cm(bis)} cm richtig.`;
+  const richtwert = `For this window (${cm(fensterBreite)} cm wide), ${cm(von)} to ${cm(bis)} cm would be right.`;
 
   if (stangeBreite < von - TOLERANZ_CM) {
-    return { stufe: "zu klein", grund: `Die Stange (${cm(stangeBreite)} cm) ist zu kurz, der Vorhang würde das Fenster verdecken. ${richtwert}` };
+    return { stufe: "zu klein", grund: `The rod (${cm(stangeBreite)} cm) is too short, the curtain would cover the window. ${richtwert}` };
   }
   if (stangeBreite > bis + TOLERANZ_CM) {
-    return { stufe: "zu groß", grund: `Die Stange (${cm(stangeBreite)} cm) ist deutlich breiter als nötig. ${richtwert}` };
+    return { stufe: "zu groß", grund: `The rod (${cm(stangeBreite)} cm) is much wider than needed. ${richtwert}` };
   }
   if (stangeBreite < von) {
-    return { stufe: "grenzwertig", grund: `Die Stange (${cm(stangeBreite)} cm) ist etwas kurz. ${richtwert}` };
+    return { stufe: "grenzwertig", grund: `The rod (${cm(stangeBreite)} cm) is a little short. ${richtwert}` };
   }
   if (stangeBreite > bis) {
-    return { stufe: "grenzwertig", grund: `Die Stange (${cm(stangeBreite)} cm) ist etwas lang. ${richtwert}` };
+    return { stufe: "grenzwertig", grund: `The rod (${cm(stangeBreite)} cm) is a little long. ${richtwert}` };
   }
-  return { stufe: "passt", grund: `Die Stange (${cm(stangeBreite)} cm) liegt im empfohlenen Bereich. ${richtwert}` };
+  return { stufe: "passt", grund: `The rod (${cm(stangeBreite)} cm) is within the recommended range. ${richtwert}` };
 }

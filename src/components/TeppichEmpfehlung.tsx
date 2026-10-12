@@ -14,7 +14,7 @@ type Props = {
 const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4";
 
 export default function TeppichEmpfehlung({ raum, sofas }: Props) {
-  // Bei mehreren Sofas zählt das breiteste; fehlt die Tiefe (alter Eintrag), rechnen wir mit 90 cm.
+  // With several sofas, the widest one counts; if the depth is missing (old entry), 90 cm is used.
   const sofa = sofas.reduce<(typeof sofas)[number] | null>(
     (max, s) => (max === null || s.breite > max.breite ? s : max),
     null,
@@ -25,11 +25,11 @@ export default function TeppichEmpfehlung({ raum, sofas }: Props) {
   if (sofaBreite === null || raum === null) {
     inhalt = (
       <p className="text-muted">
-        Für die Empfehlung brauche ich {raum === null ? "einen Raum" : ""}
-        {raum === null && sofaBreite === null ? " und " : ""}
-        {sofaBreite === null ? "ein Sofa" : ""}.{" "}
+        For the recommendation I need {raum === null ? "a room" : ""}
+        {raum === null && sofaBreite === null ? " and " : ""}
+        {sofaBreite === null ? "a sofa" : ""}.{" "}
         <a href={raum === null ? "#raum-formular" : "#moebel-formular"} className={linkKlasse}>
-          Zurück zur Eingabe
+          Back to input
         </a>
         .
       </p>
@@ -50,18 +50,18 @@ export default function TeppichEmpfehlung({ raum, sofas }: Props) {
             {ergebnis.lang} × {ergebnis.kurz} cm
           </p>
           <p className="mt-2 text-muted">
-            Die lange Seite liegt parallel zum Sofa (Sofa: {sofaBreite} cm breit, Teppich mindestens{" "}
-            {ergebnis.mindestBreite} × {ergebnis.mindestTiefe} cm; {WANDABSTAND_CM} cm Abstand zur Wand
-            eingerechnet).
+            The long side runs parallel to the sofa (sofa: {sofaBreite} cm wide, rug at least{" "}
+            {ergebnis.mindestBreite} × {ergebnis.mindestTiefe} cm; {WANDABSTAND_CM} cm clearance to the wall
+            included).
           </p>
-          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Verhältnis</h3>
+          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Proportion</h3>
           <p>
-            Der Teppich ist {ergebnis.verhaeltnis.toLocaleString("de-DE", { maximumFractionDigits: 2 })}-mal so
-            breit wie das Sofa.
+            The rug is {ergebnis.verhaeltnis.toLocaleString("en-GB", { maximumFractionDigits: 2 })} times as
+            wide as the sofa.
           </p>
-          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h3>
+          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Rule</h3>
           <p>{TEPPICH_REGEL}</p>
-          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Quelle</h3>
+          <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Source</h3>
           <p>
             <a href={TEPPICH_QUELLE.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
               {TEPPICH_QUELLE.name}
@@ -75,7 +75,7 @@ export default function TeppichEmpfehlung({ raum, sofas }: Props) {
   return (
     <details className="border-t border-foreground pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
-        Teppichempfehlung
+        Rug recommendation
       </summary>
       <div className="mt-4" aria-live="polite">
         {inhalt}

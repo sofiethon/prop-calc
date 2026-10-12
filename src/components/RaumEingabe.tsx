@@ -22,6 +22,16 @@ import { leseZentimeter } from "@/lib/zentimeter";
 const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard", "Esstisch"] as const;
 type Art = (typeof ARTEN)[number];
 
+/** Die Arten bleiben intern deutsch (so sind sie gespeichert); angezeigt wird Englisch. */
+const ART_LABEL: Record<Art, string> = {
+  Sofa: "Sofa",
+  Fenster: "Window",
+  Couchtisch: "Coffee table",
+  Fernseher: "TV",
+  Sideboard: "Sideboard",
+  Esstisch: "Dining table",
+};
+
 type Form = "rechteckig" | "rund";
 
 type Raum = { laenge: number; breite: number; hoehe: number };
@@ -46,7 +56,7 @@ const SPEICHER_KEY = "proportio-eingaben";
 type FeldFehler = Record<string, string>;
 
 function formatZahl(n: number, nachkommastellen = 0) {
-  return n.toLocaleString("de-DE", { maximumFractionDigits: nachkommastellen });
+  return n.toLocaleString("en-GB", { maximumFractionDigits: nachkommastellen });
 }
 
 const feldKlasse =
@@ -189,7 +199,7 @@ function RaumEingabeInhalt() {
   }
 
   function allesZuruecksetzen() {
-    if (!window.confirm("Raum und alle Möbel wirklich löschen? Das lässt sich nicht rückgängig machen.")) return;
+    if (!window.confirm("Really delete the room and all furniture? This cannot be undone.")) return;
     setRaum(null);
     setEintraege([]);
     setNaechsteId(1);
@@ -217,7 +227,7 @@ function RaumEingabeInhalt() {
     ...new Set(
       eintraege
         .filter((m) => m.art !== "Fenster" && !(istPlanArt(m.art) && m.tiefe !== undefined))
-        .map((m) => m.art),
+        .map((m) => ART_LABEL[m.art]),
     ),
   ];
 
@@ -268,15 +278,15 @@ function RaumEingabeInhalt() {
           className="border-t border-foreground pt-6"
         >
           <h2 id={`${uid}-raum`} className="font-display text-h3 font-normal tracking-heading">
-            Raum
+            Room
           </h2>
-          <p className="mt-2 text-muted">Alle Maße in Zentimetern.</p>
+          <p className="mt-2 text-muted">All measurements in centimetres.</p>
           <form key={`raum-${formularNr}`} onSubmit={raumUebernehmen} noValidate className="mt-4 flex flex-col gap-4">
             {(
               [
-                ["laenge", "Länge", "zum Beispiel 520"],
-                ["breite", "Breite", "zum Beispiel 420"],
-                ["hoehe", "Deckenhöhe", "zum Beispiel 250"],
+                ["laenge", "Length", "for example 520"],
+                ["breite", "Width", "for example 420"],
+                ["hoehe", "Ceiling height", "for example 250"],
               ] as const
             ).map(([name, label, hinweis]) => (
               <div key={name}>
@@ -297,7 +307,7 @@ function RaumEingabeInhalt() {
               </div>
             ))}
             <button type="submit" className={knopfKlasse}>
-              Raum übernehmen
+              Apply room
             </button>
           </form>
         </section>
@@ -308,12 +318,12 @@ function RaumEingabeInhalt() {
           className="border-t border-foreground pt-6"
         >
           <h2 id={`${uid}-moebel`} className="font-display text-h3 font-normal tracking-heading">
-            Möbel oder Fenster hinzufügen
+            Add furniture or window
           </h2>
           <form key={`moebel-${formularNr}`} onSubmit={eintragHinzufuegen} noValidate className="mt-4 flex flex-col gap-4">
             <div>
               <label htmlFor={`${uid}-art`} className="text-sm font-normal">
-                Art
+                Type
               </label>
               <select
                 id={`${uid}-art`}
@@ -324,7 +334,7 @@ function RaumEingabeInhalt() {
               >
                 {ARTEN.map((a) => (
                   <option key={a} value={a}>
-                    {a}
+                    {ART_LABEL[a]}
                   </option>
                 ))}
               </select>
@@ -332,7 +342,7 @@ function RaumEingabeInhalt() {
             {art === "Esstisch" && (
               <div>
                 <label htmlFor={`${uid}-form`} className="text-sm font-normal">
-                  Form
+                  Shape
                 </label>
                 <select
                   id={`${uid}-form`}
@@ -341,23 +351,23 @@ function RaumEingabeInhalt() {
                   onChange={(e) => setTischForm(e.target.value as Form)}
                   className={feldKlasse}
                 >
-                  <option value="rechteckig">rechteckig</option>
-                  <option value="rund">rund</option>
+                  <option value="rechteckig">rectangular</option>
+                  <option value="rund">round</option>
                 </select>
               </div>
             )}
             {(
               [
-                ["breite", istRunderTisch ? "Durchmesser" : "Breite"],
-                ["hoehe", "Höhe"],
-                ...(hatTiefe ? [["tiefe", "Tiefe"]] : []),
+                ["breite", istRunderTisch ? "Diameter" : "Width"],
+                ["hoehe", "Height"],
+                ...(hatTiefe ? [["tiefe", "Depth"]] : []),
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
                 <label htmlFor={`${uid}-e-${name}`} className="text-sm font-normal">
                   {label}{" "}
                   <span className="font-normal text-muted">
-                    {art === "Esstisch" && name === "hoehe" ? "(in cm, ohne Eintrag 75)" : "(in cm)"}
+                    {art === "Esstisch" && name === "hoehe" ? "(in cm, 75 if left empty)" : "(in cm)"}
                   </span>
                 </label>
                 <input
@@ -382,7 +392,7 @@ function RaumEingabeInhalt() {
               />
             )}
             <button type="submit" className={zweitKnopfKlasse}>
-              Hinzufügen
+              Add
             </button>
           </form>
         </section>
@@ -392,31 +402,31 @@ function RaumEingabeInhalt() {
         <section aria-labelledby={`${uid}-zusammenfassung`} className="border-t border-foreground pt-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 id={`${uid}-zusammenfassung`} className="font-display text-h3 font-normal tracking-heading">
-              Zusammenfassung
+              Summary
             </h2>
             <button
               type="button"
               onClick={allesZuruecksetzen}
               className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm border border-foreground px-4 font-normal transition-colors duration-150 hover:bg-subtle"
             >
-              Neu beginnen
+              Start over
             </button>
           </div>
           <div aria-live="polite">
             {raum ? (
               <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4">
-                <dt className="text-muted">Länge</dt>
+                <dt className="text-muted">Length</dt>
                 <dd className="font-medium">{formatZahl(raum.laenge, 1)} cm</dd>
-                <dt className="text-muted">Breite</dt>
+                <dt className="text-muted">Width</dt>
                 <dd className="font-medium">{formatZahl(raum.breite, 1)} cm</dd>
-                <dt className="text-muted">Deckenhöhe</dt>
+                <dt className="text-muted">Ceiling height</dt>
                 <dd className="font-medium">{formatZahl(raum.hoehe, 1)} cm</dd>
-                <dt className="text-muted">Raumfläche</dt>
+                <dt className="text-muted">Room area</dt>
                 <dd className="font-medium">{formatZahl((raum.laenge * raum.breite) / 10000, 2)} m²</dd>
               </dl>
             ) : (
               <p className="mt-4 text-muted">
-                Noch kein Raum übernommen. Trag Länge, Breite und Deckenhöhe ein und tippe auf „Raum übernehmen“.
+                No room applied yet. Enter length, width and ceiling height and tap “Apply room”.
               </p>
             )}
           </div>
@@ -424,13 +434,13 @@ function RaumEingabeInhalt() {
 
         <section aria-labelledby={`${uid}-liste`} className="border-t border-foreground pt-6">
           <h2 id={`${uid}-liste`} className="font-display text-h3 font-normal tracking-heading">
-            Möbel und Fenster
+            Furniture and windows
           </h2>
           {eintraege.length === 0 ? (
             <p className="mt-4 text-muted">
-              Noch nichts eingetragen.{" "}
+              Nothing entered yet.{" "}
               <a href="#moebel-formular" className="inline-flex min-h-11 items-center font-normal text-foreground underline underline-offset-4">
-                Zum Formular, um ein Sofa oder Fenster hinzuzufügen
+                Go to the form to add a sofa or window
               </a>
               .
             </p>
@@ -440,33 +450,33 @@ function RaumEingabeInhalt() {
                 <li key={x.id} className="border-t border-border py-4">
                   <div className="flex items-center justify-between gap-4">
                   <span>
-                    <span className="font-medium">{x.art}</span>
+                    <span className="font-medium">{ART_LABEL[x.art]}</span>
                     <span className="block text-muted">
                       {x.form === "rund"
-                        ? `rund, Durchmesser ${formatZahl(x.breite, 1)} cm, ${formatZahl(x.hoehe, 1)} cm hoch`
-                        : `${formatZahl(x.breite, 1)} cm breit, ${formatZahl(x.hoehe, 1)} cm hoch${x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm tief` : ""}`}
+                        ? `round, diameter ${formatZahl(x.breite, 1)} cm, ${formatZahl(x.hoehe, 1)} cm high`
+                        : `${formatZahl(x.breite, 1)} cm wide, ${formatZahl(x.hoehe, 1)} cm high${x.tiefe ? `, ${formatZahl(x.tiefe, 1)} cm deep` : ""}`}
                     </span>
                     {x.art === "Fenster" && (
                       <span className="block text-muted">
                         {x.wand !== undefined && x.abstand !== undefined
-                          ? `${WAND_NAME[x.wand]}, ${formatZahl(x.abstand, 1)} cm von der ${WAND_VON[x.wand]}`
-                          : "Wand fehlt"}
+                          ? `${WAND_NAME[x.wand]}, ${formatZahl(x.abstand, 1)} cm from the ${WAND_VON[x.wand]}`
+                          : "Wall missing"}
                       </span>
                     )}
                   </span>
                   <button
                     type="button"
                     onClick={() => eintragEntfernen(x.id)}
-                    aria-label={`${x.art} entfernen`}
+                    aria-label={`Remove ${ART_LABEL[x.art]}`}
                     className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm border border-foreground px-4 font-normal transition-colors duration-150 hover:bg-subtle"
                   >
-                    Entfernen
+                    Remove
                   </button>
                   </div>
                   {x.art === "Fenster" && (
                     <details className="mt-2">
                       <summary className="flex min-h-11 cursor-pointer items-center font-normal underline underline-offset-4">
-                        {x.wand !== undefined ? "Wand ändern" : "Wand festlegen"}
+                        {x.wand !== undefined ? "Change wall" : "Set wall"}
                       </summary>
                       <FensterLageForm
                         key={`${x.id}-${x.wand ?? ""}-${x.abstand ?? ""}-${formularNr}`}

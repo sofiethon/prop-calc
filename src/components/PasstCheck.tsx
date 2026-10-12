@@ -24,7 +24,7 @@ const knopfKlasse =
   "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle";
 
 function zahl(n: number) {
-  return n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+  return n.toLocaleString("en-GB", { maximumFractionDigits: 1 });
 }
 
 function Stufe({ bewertung }: { bewertung: Bewertung }) {
@@ -32,7 +32,7 @@ function Stufe({ bewertung }: { bewertung: Bewertung }) {
     return (
     <p className="flex items-center gap-2 text-2xl font-normal">
       <Icon className="h-6 w-6 shrink-0" aria-hidden="true" />
-      {bewertung.stufe === "passt" ? "Passt" : bewertung.stufe === "grenzwertig" ? "Grenzwertig" : bewertung.stufe === "zu klein" ? "Zu klein" : "Zu groß"}
+      {bewertung.stufe === "passt" ? "Fits" : bewertung.stufe === "grenzwertig" ? "Borderline" : bewertung.stufe === "zu klein" ? "Too small" : "Too large"}
     </p>
   );
 }
@@ -43,7 +43,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
   const [fehler, setFehler] = useState<Record<string, string>>({});
   const [geprueft, setGeprueft] = useState<Gepruefte | null>(null);
 
-  // Bei mehreren Sofas zählt das breiteste; fehlt die Tiefe (alter Eintrag), rechnen wir mit 90 cm.
+  // With several sofas, the widest one counts; if the depth is missing (old entry), 90 cm is used.
   const sofa = sofas.reduce<(typeof sofas)[number] | null>(
     (max, s) => (max === null || s.breite > max.breite ? s : max),
     null,
@@ -96,9 +96,9 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
   if (raum === null) {
     inhalt = (
       <p className="text-muted">
-        Für den Passt-Check brauche ich einen Raum.{" "}
+        For the fit check I need a room.{" "}
         <a href="#raum-formular" className={linkKlasse}>
-          Zurück zur Eingabe
+          Back to input
         </a>
         .
       </p>
@@ -110,7 +110,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
         <form onSubmit={pruefen} noValidate className="flex flex-col gap-4">
           <div>
             <label htmlFor={`${uid}-art`} className="text-sm font-normal">
-              Was möchtest du prüfen?
+              What do you want to check?
             </label>
             <select
               id={`${uid}-art`}
@@ -118,16 +118,16 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
               onChange={(e) => artWechseln(e.target.value as "Teppich" | "Stange")}
               className={feldKlasse}
             >
-              <option value="Teppich">Teppich</option>
-              <option value="Stange">Vorhangstange</option>
+              <option value="Teppich">Rug</option>
+              <option value="Stange">Curtain rod</option>
             </select>
           </div>
 
           {fehlt ? (
             <p className="text-muted">
-              Dafür brauche ich {art === "Teppich" ? "ein Sofa" : "ein Fenster"}.{" "}
+              For that I need {art === "Teppich" ? "a sofa" : "a window"}.{" "}
               <a href="#moebel-formular" className={linkKlasse}>
-                Zurück zur Eingabe
+                Back to input
               </a>
               .
             </p>
@@ -135,11 +135,11 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
             <>
               {art === "Teppich" ? (
                 <>
-                  <p className="text-muted">Die längere Seite legen wir parallel zum Sofa, die Reihenfolge ist egal.</p>
+                  <p className="text-muted">The longer side is placed parallel to the sofa, the order does not matter.</p>
                   {(
                     [
-                      ["a", "Erste Seite"],
-                      ["b", "Zweite Seite"],
+                      ["a", "First side"],
+                      ["b", "Second side"],
                     ] as const
                   ).map(([name, label]) => (
                     <div key={name}>
@@ -164,19 +164,19 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
                 <>
                   <div>
                     <label htmlFor={`${uid}-fenster`} className="text-sm font-normal">
-                      Für welches Fenster?
+                      For which window?
                     </label>
                     <select id={`${uid}-fenster`} name="fenster" className={feldKlasse}>
                       {fenster.map((f, i) => (
                         <option key={f.id} value={f.id}>
-                          Fenster {i + 1} ({zahl(f.breite)} × {zahl(f.hoehe)} cm)
+                          Window {i + 1} ({zahl(f.breite)} × {zahl(f.hoehe)} cm)
                         </option>
                       ))}
                     </select>
                   </div>
                   <div>
                     <label htmlFor={`${uid}-breite`} className="text-sm font-normal">
-                      Breite der Stange <span className="font-normal text-muted">(in cm)</span>
+                      Width of the rod <span className="font-normal text-muted">(in cm)</span>
                     </label>
                     <input
                       id={`${uid}-breite`}
@@ -193,7 +193,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
                 </>
               )}
               <button type="submit" className={knopfKlasse}>
-                Prüfen
+                Check
               </button>
             </>
           )}
@@ -204,11 +204,11 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
             <>
               <Stufe bewertung={bewertung} />
               <p className="mt-2">{bewertung.grund}</p>
-              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h3>
+              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Rule</h3>
               <p>
-                {regel} „Grenzwertig“ heißt: höchstens {TOLERANZ_CM} cm neben dem Richtwert (Annahme von prop-calc).
+                {regel} “Borderline” means: at most {TOLERANZ_CM} cm off the guideline (assumption by prop-calc).
               </p>
-              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Quelle</h3>
+              <h3 className="mt-6 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Source</h3>
               <p>
                 <a href={quelle.url} className={linkKlasse} target="_blank" rel="noopener noreferrer">
                   {quelle.name}
@@ -223,7 +223,7 @@ export default function PasstCheck({ raum, sofas, fenster }: Props) {
 
   return (
     <details className="border-t border-foreground pt-2">
-      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">Passt-Check</summary>
+      <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">Fit check</summary>
       <div className="mt-4">{inhalt}</div>
     </details>
   );

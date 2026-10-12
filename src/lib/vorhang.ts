@@ -7,9 +7,9 @@ export const STANGE_ABSTAND_OBEN_CM = 10;
 export const STANGE_UEBERSTAND_CM = 10;
 
 export const VORHANG_REGEL =
-  "Die Stange sitzt etwa 10 cm über dem Fensterrahmen und ragt auf jeder Seite etwa 10 cm über ihn hinaus, damit das Fenster größer wirkt und der Vorhang tagsüber die Scheibe freigibt.";
+  "The rod sits about 10 cm above the window frame and extends about 10 cm beyond it on each side, so the window looks larger and the curtain leaves the glass clear during the day.";
 export const VORHANG_QUELLE = {
-  name: "TaskRabbit: „How High to Hang Curtains“ (Designprinzip)",
+  name: "TaskRabbit: „How High to Hang Curtains“ (design principle)",
   url: "https://www.taskrabbit.com/blog/how-high-to-hang-curtains",
 };
 
@@ -27,7 +27,7 @@ export function empfehleVorhang(fensterBreite: number, fensterHoehe: number, dec
   if (benoetigt > deckenHoehe) {
     return {
       art: "hinweis",
-      grund: `Das Fenster ist ${fensterHoehe} cm hoch. Mit ${STANGE_ABSTAND_OBEN_CM} cm Abstand für die Stange wären das ${benoetigt} cm – das ist höher als die Deckenhöhe von ${deckenHoehe} cm. Hier lässt sich keine Stangenhöhe empfehlen; die Stange müsste direkt unter die Decke oder in die Fensterlaibung.`,
+      grund: `The window is ${fensterHoehe} cm high. With ${STANGE_ABSTAND_OBEN_CM} cm for the rod, that makes ${benoetigt} cm, which is higher than the ceiling height of ${deckenHoehe} cm. No rod height can be recommended here; the rod would have to go directly under the ceiling or inside the window reveal.`,
     };
   }
   return {
@@ -48,17 +48,17 @@ export function stangePlatzHinweise(
   fensterBreite: number,
   raum: { laenge: number; breite: number },
 ): string[] {
-  const zahl = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 1 });
+  const zahl = (n: number) => n.toLocaleString("en-GB", { maximumFractionDigits: 1 });
   const hinweise: string[] = [];
   const rest = wandLaenge(wand, raum) - abstand - fensterBreite;
   if (abstand < STANGE_UEBERSTAND_CM) {
     hinweise.push(
-      `Bis zur ${WAND_VON[wand]} der ${WAND_NAME_DATIV[wand]} sind es nur ${zahl(abstand)} cm, die Stange ragt aber ${STANGE_UEBERSTAND_CM} cm über das Fenster hinaus. Sie hat dort nicht ganz Platz.`,
+      `It is only ${zahl(abstand)} cm to the ${WAND_VON[wand]} of the ${WAND_NAME_DATIV[wand]}, but the rod extends ${STANGE_UEBERSTAND_CM} cm beyond the window. It does not quite fit there.`,
     );
   }
   if (rest < STANGE_UEBERSTAND_CM) {
     hinweise.push(
-      `Am anderen Ende der ${WAND_NAME_DATIV[wand]} sind es nur ${zahl(rest)} cm bis zur Ecke, die Stange ragt aber ${STANGE_UEBERSTAND_CM} cm über das Fenster hinaus. Sie hat dort nicht ganz Platz.`,
+      `At the other end of the ${WAND_NAME_DATIV[wand]} it is only ${zahl(rest)} cm to the corner, but the rod extends ${STANGE_UEBERSTAND_CM} cm beyond the window. It does not quite fit there.`,
     );
   }
   return hinweise;

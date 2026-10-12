@@ -19,48 +19,48 @@ export const LEUCHTE_MAX_ANTEIL = 2 / 3;
 export const TISCH_HOEHE_STANDARD_CM = 75;
 
 export const PLATZ_REGEL =
-  "Zwischen Tischkante und Wand oder Möbel bleiben mindestens 36 Zoll (90 cm), damit man den Stuhl zurückziehen kann; geht jemand hinter den Stühlen vorbei, sind es 42 bis 48 Zoll (105 bis 120 cm).";
+  "Leave at least 36 in (90 cm) between the table edge and the wall or furniture so chairs can be pulled out; if someone walks behind the chairs, leave 42 to 48 in (105 to 120 cm).";
 export const PLATZ_QUELLEN = [
   {
-    name: "Wakefit: „Dining Table Size Guide“ (Designprinzip)",
+    name: "Wakefit: „Dining Table Size Guide“ (design principle)",
     url: "https://www.wakefit.co/blog/dining-table-size-guide-4-6-8-seater-dimensions/",
   },
   {
-    name: "Arcedior: „Chair Clearance Behind Dining Tables“ (Designprinzip)",
+    name: "Arcedior: „Chair Clearance Behind Dining Tables“ (design principle)",
     url: "https://arcedior.com/blog/chair-clearance-behind-dining-tables",
   },
 ];
 
 export const PERSONEN_REGEL =
-  "Jede Person braucht 24 bis 30 Zoll (60 bis 75 cm) Tischkante. Beim rechteckigen Tisch zählen die langen Seiten, dazu kommt eine Person je Kopfende.";
+  "Each person needs 24 to 30 in (60 to 75 cm) of table edge. On a rectangular table the long sides count, plus one person at each end.";
 export const PERSONEN_QUELLEN = [
   {
-    name: "WoodWeb: „Round Dining Table Dimensions“ (Designprinzip)",
+    name: "WoodWeb: „Round Dining Table Dimensions“ (design principle)",
     url: "https://woodweb.com/knowledge_base/Round_Dining_Table_Dimensions.html",
   },
   {
-    name: "PopMaison: „Dining Table Size“ (Designprinzip)",
+    name: "PopMaison: „Dining Table Size“ (design principle)",
     url: "https://www.popmaison.com/blogs/guide/dining-table-size",
   },
 ];
 
 export const LEUCHTE_REGEL =
-  "Die Leuchte ist halb bis zwei Drittel so breit wie der Tisch und hängt mit der Unterkante 30 bis 36 Zoll (76 bis 91 cm) über der Tischplatte; bei Decken über 2,40 m kommen etwa 3 Zoll (7,5 cm) je Fuß (30 cm) Mehrhöhe dazu.";
+  "The light is half to two thirds as wide as the table and hangs with its lower edge 30 to 36 in (76 to 91 cm) above the tabletop; for ceilings above 2.40 m, add about 3 in (7.5 cm) per foot (30 cm) of extra height.";
 export const LEUCHTE_QUELLEN = [
   {
-    name: "Raymour & Flanigan: „How to Determine Chandelier Height“ (Designprinzip)",
+    name: "Raymour & Flanigan: „How to Determine Chandelier Height“ (design principle)",
     url: "https://www.raymourflanigan.com/blog/expertise/how-to/how-to-determine-chandelier-height",
   },
   {
-    name: "Montreal Lighting: „Chandelier Height Above Table“ (Designprinzip)",
+    name: "Montreal Lighting: „Chandelier Height Above Table“ (design principle)",
     url: "https://montreallighting.com/blogs/lighting-guides/chandelier-height-above-table",
   },
   {
-    name: "Drew & Jonathan: „Chandelier Height Above Dining Table“ (Designprinzip)",
+    name: "Drew & Jonathan: „Chandelier Height Above Dining Table“ (design principle)",
     url: "https://drewandjonathan.com/design-and-decor/chandelier-height-above-dining-table",
   },
   {
-    name: "Mod Lighting: „How to Choose a Dining Room Chandelier“ (Designprinzip)",
+    name: "Mod Lighting: „How to Choose a Dining Room Chandelier“ (design principle)",
     url: "https://mod-lighting.com/blogs/read/how-to-choose-a-dining-room-chandelier",
   },
 ];
@@ -125,7 +125,7 @@ export function empfehleEsstisch(
       von >= raum.hoehe
         ? {
             art: "hinweis",
-            grund: `Über dem Tisch ist kein Platz für die Leuchte: Die Unterkante läge bei mindestens ${von} cm (Tisch ${tisch.hoehe} cm + ${leuchteHoeheUeberTisch.von} cm), die Decke ist aber nur ${raum.hoehe} cm hoch.`,
+            grund: `There is no room for the light above the table: the lower edge would be at least ${von} cm (table ${tisch.hoehe} cm + ${leuchteHoeheUeberTisch.von} cm), but the ceiling is only ${raum.hoehe} cm high.`,
           }
         : { art: "hoehe", von, bis: Math.min(bis, raum.hoehe), platzBisDecke: Math.max(0, raum.hoehe - bis) };
 

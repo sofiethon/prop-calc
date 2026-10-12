@@ -45,7 +45,7 @@ export default function FensterLageForm({ raum, fenster, onSpeichern }: Props) {
         type="submit"
         className="inline-flex min-h-12 items-center justify-center rounded-sm border border-foreground px-6 font-normal text-foreground transition-colors duration-150 hover:bg-subtle"
       >
-        Wand übernehmen
+        Apply wall
       </button>
     </form>
   );

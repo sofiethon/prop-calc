@@ -28,19 +28,19 @@ const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foregroun
 const warnKlasse = "mt-2 flex items-start gap-2 font-medium text-foreground";
 
 const SEITE_ADJEKTIV: Record<Seite, string> = {
-  links: "linken",
-  rechts: "rechten",
-  oben: "oberen",
-  unten: "unteren",
+  links: "left",
+  rechts: "right",
+  oben: "top",
+  unten: "bottom",
 };
-const BIS_ZU = { Wand: "zur Wand", Sofa: "zum Sofa", Couchtisch: "zum Couchtisch", Esstisch: "zum Esstisch" } as const;
+const BIS_ZU = { Wand: "the wall", Sofa: "the sofa", Couchtisch: "the coffee table", Esstisch: "the dining table" } as const;
 
 function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; url: string }[] }) {
   return (
     <>
-      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Regel</h4>
+      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Rule</h4>
       <p>{regel}</p>
-      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">{quellen.length > 1 ? "Quellen" : "Quelle"}</h4>
+      <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">{quellen.length > 1 ? "Sources" : "Source"}</h4>
       <ul className="list-disc pl-6">
         {quellen.map((q) => (
           <li key={q.url}>
@@ -55,7 +55,7 @@ function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; u
 }
 
 export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
-  // Bei mehreren Esstischen zählt der größte (nach dem größeren Maß).
+  // With several dining tables, the largest one counts (by its larger dimension).
   const tisch = tische.reduce<EsstischMitNummer | null>(
     (max, t) => (max === null || Math.max(t.breite, t.tiefe) > Math.max(max.breite, max.tiefe) ? t : max),
     null,
@@ -65,9 +65,9 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
   if (tisch === null) {
     inhalt = (
       <p className="text-muted">
-        Für diese Empfehlung brauche ich einen Esstisch.{" "}
+        For this recommendation I need a dining table.{" "}
         <a href="#moebel-formular" className={linkKlasse}>
-          Zurück zur Eingabe
+          Back to input
         </a>
         .
       </p>
@@ -83,25 +83,25 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
     inhalt = (
       <>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
-          <dt className="text-muted">Platz für</dt>
+          <dt className="text-muted">Seats</dt>
           <dd className="text-lg font-medium">
-            {e.personen.von === e.personen.bis ? e.personen.von : `${e.personen.von}–${e.personen.bis}`} Personen
+            {e.personen.von === e.personen.bis ? e.personen.von : `${e.personen.von}–${e.personen.bis}`} people
           </dd>
-          <dt className="text-muted">Leuchte, Durchmesser</dt>
+          <dt className="text-muted">Light, diameter</dt>
           <dd className="text-lg font-medium">
             {e.leuchteDurchmesser.von}–{e.leuchteDurchmesser.bis} cm
           </dd>
-          <dt className="text-muted">Leuchte, Unterkante</dt>
+          <dt className="text-muted">Light, lower edge</dt>
           <dd className="text-lg font-medium">
-            {e.leuchteHoeheUeberTisch.von}–{e.leuchteHoeheUeberTisch.bis} cm über der Tischplatte
+            {e.leuchteHoeheUeberTisch.von}–{e.leuchteHoeheUeberTisch.bis} cm above the tabletop
           </dd>
         </dl>
 
         {e.leuchteImRaum === null ? (
           <p className="mt-4 text-muted">
-            Für die Höhe über dem Boden und den Freiraum brauche ich einen Raum.{" "}
+            For the height above the floor and the clearance I need a room.{" "}
             <a href="#raum-formular" className={linkKlasse}>
-              Zurück zur Eingabe
+              Back to input
             </a>
             .
           </p>
@@ -112,8 +112,8 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
           </p>
         ) : (
           <p className="mt-4 text-muted">
-            Die Unterkante der Leuchte hängt {e.leuchteImRaum.von}–{e.leuchteImRaum.bis} cm über dem Boden (Tisch{" "}
-            {tisch.hoehe} cm hoch), bis zur Decke bleiben mindestens {e.leuchteImRaum.platzBisDecke} cm.
+            The lower edge of the light hangs {e.leuchteImRaum.von}–{e.leuchteImRaum.bis} cm above the floor (table{" "}
+            {tisch.hoehe} cm high), at least {e.leuchteImRaum.platzBisDecke} cm remain up to the ceiling.
           </p>
         )}
 
@@ -121,27 +121,27 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
           (ausLage.ueberlappt ? (
             <p className={warnKlasse}>
               <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
-              Der Tisch überlappt {ausLage.hindernis === "Wand" ? "die Wand" : `den Eintrag „${ausLage.hindernis}“`} im
-              Grundriss. Dort bleibt kein Freiraum, empfohlen sind mindestens {PLATZ_MIN_CM} cm.
+              The table overlaps {BIS_ZU[ausLage.hindernis]} in the
+              floor plan. There is no clearance there, at least {PLATZ_MIN_CM} cm is recommended.
             </p>
           ) : ausLage.fehlt > 0 ? (
             <p className={warnKlasse}>
               <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
-              Um den Tisch ist es zu eng: Auf der {SEITE_ADJEKTIV[ausLage.seite]} Seite bleiben {ausLage.frei} cm bis{" "}
-              {BIS_ZU[ausLage.hindernis]}, empfohlen sind mindestens {PLATZ_MIN_CM} cm. Es fehlen {ausLage.fehlt} cm.
+              It is too tight around the table: on the {SEITE_ADJEKTIV[ausLage.seite]} side {ausLage.frei} cm remain to{" "}
+              {BIS_ZU[ausLage.hindernis]}, at least {PLATZ_MIN_CM} cm is recommended. {ausLage.fehlt} cm are missing.
             </p>
           ) : (
             <p className="mt-4 text-muted">
-              Der Freiraum reicht: Am engsten ist es auf der {SEITE_ADJEKTIV[ausLage.seite]} Seite mit {ausLage.frei}{" "}
-              cm bis {BIS_ZU[ausLage.hindernis]}, bei mindestens {PLATZ_MIN_CM} cm
+              The clearance is sufficient: it is tightest on the {SEITE_ADJEKTIV[ausLage.seite]} side with {ausLage.frei}{" "}
+              cm to {BIS_ZU[ausLage.hindernis]}, at least {PLATZ_MIN_CM} cm needed
               {ausLage.frei < PLATZ_DURCHGANG_VON_CM
-                ? `; für einen Durchgang hinter den Stühlen wären ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm nötig.`
+                ? `; for a passage behind the chairs ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm would be needed.`
                 : "."}
             </p>
           ))}
         {ausLage && (
           <p className="mt-2 text-muted">
-            Aus der Lage im Grundriss gerechnet: der kleinste Abstand der Tischkante zu Wänden und anderen Möbeln.
+            Calculated from the position in the floor plan: the smallest distance from the table edge to walls and other furniture.
           </p>
         )}
         {!ausLage &&
@@ -149,31 +149,31 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
           (e.platz.fehlt > 0 ? (
             <p className={warnKlasse}>
               <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.25} aria-hidden="true" />
-              Um den Tisch ist es zu eng: Es bleiben {e.platz.frei} cm je Seite, empfohlen sind mindestens{" "}
-              {PLATZ_MIN_CM} cm. Es fehlen {e.platz.fehlt} cm je Seite, der Raum müsste mindestens{" "}
-              {e.platz.mindestBreite} cm breit sein.
+              It is too tight around the table: {e.platz.frei} cm remain per side, at least{" "}
+              {PLATZ_MIN_CM} cm is recommended. {e.platz.fehlt} cm per side are missing, the room would need to be at least{" "}
+              {e.platz.mindestBreite} cm wide.
             </p>
           ) : (
             <p className="mt-4 text-muted">
-              Der Freiraum reicht: {e.platz.frei} cm je Seite bei mindestens {PLATZ_MIN_CM} cm
+              The clearance is sufficient: {e.platz.frei} cm per side, at least {PLATZ_MIN_CM} cm needed
               {e.platz.frei < PLATZ_DURCHGANG_VON_CM
-                ? `; für einen Durchgang hinter den Stühlen wären ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm nötig.`
+                ? `; for a passage behind the chairs ${PLATZ_DURCHGANG_VON_CM}–${PLATZ_DURCHGANG_BIS_CM} cm would be needed.`
                 : "."}
             </p>
           ))}
         {!ausLage && e.platz && (
           <p className="mt-2 text-muted">
-            Gerechnet mit der kurzen Raumseite und dem Tisch mittig darin: {e.platz.tischMass} cm Tischmaß, der Rest
-            teilt sich auf beide Seiten.
+            Calculated with the short side of the room and the table centred in it: {e.platz.tischMass} cm table size, the rest
+            is split between both sides.
           </p>
         )}
 
-        <h3 className="mt-8 text-lg font-medium">Regeln und Quellen</h3>
-        <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Platz um den Tisch</h4>
+        <h3 className="mt-8 text-lg font-medium">Rules and sources</h3>
+        <h4 className="mt-4 text-eyebrow font-normal uppercase tracking-eyebrow text-muted">Space around the table</h4>
         <Quellen regel={PLATZ_REGEL} quellen={PLATZ_QUELLEN} />
-        <h4 className="mt-6 font-medium">Personen am Tisch</h4>
+        <h4 className="mt-6 font-medium">People at the table</h4>
         <Quellen regel={PERSONEN_REGEL} quellen={PERSONEN_QUELLEN} />
-        <h4 className="mt-6 font-medium">Leuchte</h4>
+        <h4 className="mt-6 font-medium">Light</h4>
         <Quellen regel={LEUCHTE_REGEL} quellen={LEUCHTE_QUELLEN} />
       </>
     );
@@ -182,7 +182,7 @@ export default function EsstischEmpfehlung({ raum, tische, lagen }: Props) {
   return (
     <details className="border-t border-foreground pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
-        Esstisch und Leuchte
+        Dining table and light
       </summary>
       <div className="mt-4" aria-live="polite">
         {inhalt}

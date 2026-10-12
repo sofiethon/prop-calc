@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import LoginForm from "@/components/LoginForm";
 import { createClient } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Anmelden" };
+export const metadata: Metadata = { title: "Sign in" };
 
 export default async function LoginSeite() {
   const supabase = await createClient();
@@ -14,9 +14,9 @@ export default async function LoginSeite() {
     <main className="page-container flex flex-1 flex-col py-16 md:py-20 lg:py-24">
       <div className="layout-grid">
         <div className="col-span-4 md:col-span-6 lg:col-span-5">
-          <h1 className="mb-4 font-display text-h1 font-normal tracking-display text-foreground">Anmelden</h1>
+          <h1 className="mb-4 font-display text-h1 font-normal tracking-display text-foreground">Sign in</h1>
           <p className="mb-8 max-w-measure text-body">
-            Mit einem Konto öffnest du „Get creative“, den Rechner für Raum und Möbel.
+            With an account you can open “Get creative”, the calculator for room and furniture.
           </p>
           <LoginForm />
         </div>

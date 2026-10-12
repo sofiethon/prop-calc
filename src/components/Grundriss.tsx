@@ -31,14 +31,16 @@ const linkKlasse = "inline-flex min-h-11 items-center font-normal text-foregroun
 const SCHRITT_CM = 10;
 
 function formatZahl(n: number) {
-  return n.toLocaleString("de-DE", { maximumFractionDigits: 0 });
+  return n.toLocaleString("en-GB", { maximumFractionDigits: 0 });
 }
 
 function begrenzen(wert: number, min: number, max: number) {
   return Math.min(Math.max(wert, min), Math.max(min, max));
 }
 
-/** Namen für die Liste: „Sofa“, bei mehreren derselben Art „Sofa 1“, „Sofa 2“. */
+/** Namen für die Liste: „Sofa“, bei mehreren derselben Art „Sofa 1“, „Sofa 2“ (angezeigt auf Englisch). */
+const ART_NAME: Record<string, string> = { Sofa: "Sofa", Couchtisch: "Coffee table", Esstisch: "Dining table" };
+const RICHTUNG = { unten: "the bottom", links: "the left", oben: "the top", rechts: "the right" } as const;
 function namenVergeben(moebel: Platziert[]) {
   const gesamt: Record<string, number> = {};
   for (const m of moebel) gesamt[m.art] = (gesamt[m.art] ?? 0) + 1;
@@ -46,7 +48,8 @@ function namenVergeben(moebel: Platziert[]) {
   const namen = new Map<number, string>();
   for (const m of moebel) {
     laufend[m.art] = (laufend[m.art] ?? 0) + 1;
-    namen.set(m.id, gesamt[m.art] > 1 ? `${m.art} ${laufend[m.art]}` : m.art);
+    const anzeige = ART_NAME[m.art] ?? m.art;
+    namen.set(m.id, gesamt[m.art] > 1 ? `${anzeige} ${laufend[m.art]}` : anzeige);
   }
   return namen;
 }
@@ -132,9 +135,9 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
   if (!raum) {
     inhalt = (
       <p className="text-muted">
-        Für den Grundriss brauche ich einen Raum.{" "}
+        For the floor plan I need a room.{" "}
         <a href="#raum-formular" className={linkKlasse}>
-          Zurück zur Eingabe
+          Back to input
         </a>
         .
       </p>
@@ -142,9 +145,9 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
   } else if (moebel.length === 0 && fenster.length === 0) {
     inhalt = (
       <p className="text-muted">
-        Für den Grundriss brauche ich ein Sofa, einen Couchtisch oder einen Esstisch mit Tiefe oder ein Fenster mit Wand.{" "}
+        For the floor plan I need a sofa, a coffee table or a dining table with a depth, or a window with a wall.{" "}
         <a href="#moebel-formular" className={linkKlasse}>
-          Zurück zur Eingabe
+          Back to input
         </a>
         .
       </p>
@@ -153,10 +156,10 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
     inhalt = (
       <>
         <p className="text-muted">
-          Der Raum von oben, maßstabsgetreu: {formatZahl(raum.laenge)} cm lang und {formatZahl(raum.breite)} cm breit.
-          Zieh ein Möbelstück mit dem Finger an seinen Platz oder verschieb es mit den Pfeiltasten. Die dicke Kante
-          zeigt die Vorderseite des Sofas. Was du nicht bewegt hast, steht an einem Standardplatz nach den Annahmen
-          von prop-calc.
+          The room from above, to scale: {formatZahl(raum.laenge)} cm long and {formatZahl(raum.breite)} cm wide.
+          Drag a piece of furniture into place with your finger or move it with the arrow keys. The thick edge
+          shows the front of the sofa. Anything you have not moved stands in a default position based on the
+          prop-calc assumptions.
         </p>
 
         <div
@@ -200,7 +203,7 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
                 onPointerUp={() => loslassen(m)}
                 onPointerCancel={abbrechen}
                 onKeyDown={(e) => taste(e, m)}
-                aria-label={`${name}, ${formatZahl(m.breite)} mal ${formatZahl(m.tiefe)} Zentimeter. Mit den Pfeiltasten verschieben.`}
+                aria-label={`${name}, ${formatZahl(m.breite)} by ${formatZahl(m.tiefe)} centimetres. Move with the arrow keys.`}
                 className={`absolute flex cursor-grab touch-none items-center justify-center overflow-hidden border border-foreground p-0 text-caption font-normal text-foreground transition-none before:absolute before:left-1/2 before:top-1/2 before:h-full before:min-h-11 before:w-full before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] active:cursor-grabbing ${
                   m.art === "Sofa" ? "bg-accent" : "bg-subtle"
                 } ${m.rund ? "rounded-full" : ""} ${ziehen?.id === m.id ? "z-10" : ""}`}
@@ -229,19 +232,19 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
                   <span className="font-medium">{name}</span>
                   <span className="block text-muted">
                     {m.gesetzt
-                      ? `${formatZahl(m.rect.x)} cm von links, ${formatZahl(m.rect.y)} cm von oben`
-                      : "Standardplatz, noch nicht verschoben"}
-                    {m.art === "Sofa" ? `, blickt nach ${BLICKRICHTUNG[m.drehung]}` : ""}
+                      ? `${formatZahl(m.rect.x)} cm from the left, ${formatZahl(m.rect.y)} cm from the top`
+                      : "Default position, not moved yet"}
+                    {m.art === "Sofa" ? `, faces ${RICHTUNG[BLICKRICHTUNG[m.drehung]]}` : ""}
                   </span>
                 </span>
                 {!m.rund && (
                   <button
                     type="button"
                     onClick={() => onDrehen(m.id)}
-                    aria-label={`${name} um 90 Grad drehen`}
+                    aria-label={`Rotate ${name} by 90 degrees`}
                     className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm border border-foreground px-4 font-normal transition-colors duration-150 hover:bg-subtle"
                   >
-                    Drehen
+                    Rotate
                   </button>
                 )}
               </li>
@@ -253,13 +256,13 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
           <ul className="mt-6 flex flex-col">
             {fenster.map((f) => (
               <li key={f.id} className="border-t border-border py-4">
-                <span className="font-medium">Fenster {f.nummer}</span>
+                <span className="font-medium">Window {f.nummer}</span>
                 <span className="block text-muted">
                   {f.wand === undefined || f.abstand === undefined
-                    ? "Wand fehlt. Lege sie in der Liste „Möbel und Fenster“ fest."
+                    ? "Wall missing. Set it in the list “Furniture and windows”."
                     : f.zuLang
-                      ? `Ragt mit dem jetzigen Raum über die ${WAND_NAME[f.wand]} hinaus. Ändere den Abstand in der Liste „Möbel und Fenster“.`
-                      : `${WAND_NAME[f.wand]}, ${formatZahl(f.abstand)} cm von der ${WAND_VON[f.wand]}, ${formatZahl(f.breite)} cm breit`}
+                      ? `Extends past the ${WAND_NAME[f.wand]} with the current room. Change the distance in the list “Furniture and windows”.`
+                      : `${WAND_NAME[f.wand]}, ${formatZahl(f.abstand)} cm from the ${WAND_VON[f.wand]}, ${formatZahl(f.breite)} cm wide`}
                 </span>
               </li>
             ))}
@@ -268,7 +271,7 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
 
         {ohneGrundriss.length > 0 && (
           <p className="mt-4 text-muted">
-            Nicht im Grundriss: {ohneGrundriss.join(", ")}. Dafür ist noch keine Tiefe eingetragen.
+            Not in the floor plan: {ohneGrundriss.join(", ")}. No depth has been entered for them yet.
           </p>
         )}
       </>
@@ -278,7 +281,7 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
   return (
     <details open className="border-t border-foreground pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center font-display text-h3 font-normal tracking-heading">
-        Grundriss
+        Floor plan
       </summary>
       <div className="mt-4">{inhalt}</div>
     </details>

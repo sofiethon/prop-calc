@@ -19,7 +19,7 @@ export default function FensterLageFelder({ uid, wand, onWand, fehler, abstandSt
     <>
       <div>
         <label htmlFor={`${uid}-wand`} className="text-sm font-normal">
-          Wand <span className="font-normal text-muted">(freiwillig)</span>
+          Wall <span className="font-normal text-muted">(optional)</span>
         </label>
         <select
           id={`${uid}-wand`}
@@ -28,7 +28,7 @@ export default function FensterLageFelder({ uid, wand, onWand, fehler, abstandSt
           onChange={(e) => onWand(e.target.value as Wand | "")}
           className={feldKlasse}
         >
-          <option value="">Noch keine Wand</option>
+          <option value="">No wall yet</option>
           {WAENDE.map((w) => (
             <option key={w} value={w}>
               {WAND_NAME[w]}
@@ -39,7 +39,7 @@ export default function FensterLageFelder({ uid, wand, onWand, fehler, abstandSt
       {wand !== "" && (
         <div>
           <label htmlFor={`${uid}-abstand`} className="text-sm font-normal">
-            Abstand von der {WAND_VON[wand]} <span className="font-normal text-muted">(in cm, zum Beispiel 40)</span>
+            Distance from the {WAND_VON[wand]} <span className="font-normal text-muted">(in cm, for example 40)</span>
           </label>
           <input
             id={`${uid}-abstand`}

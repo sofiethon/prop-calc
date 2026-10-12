@@ -18,12 +18,12 @@ const adobeKitId = process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID;
 
 export const metadata: Metadata = {
   title: { default: "prop-calc", template: "%s – prop-calc" },
-  description: "prop-calc hilft Innenarchitekt*innen vor Ort, Teppiche, Vorhangstangen, Bilder und Sitzabstände nach Messzahlen statt nach Bauchgefühl zu planen.",
+  description: "prop-calc helps interior designers plan rugs, curtain rods, pictures and seating distances on site, by measurements instead of gut feeling.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="de" className={`${montserrat.variable} h-full antialiased`}>
+    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
       <head>
         {adobeKitId && <link rel="stylesheet" href={`https://use.typekit.net/${adobeKitId}.css`} />}
       </head>

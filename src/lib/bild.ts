@@ -5,9 +5,9 @@ export const BILD_MAX_ANTEIL = 3 / 4;
 export const BILD_ABSTAND_SOFA_CM = 20;
 
 export const BILD_REGEL =
-  "Das Bild ist zwei Drittel bis drei Viertel so breit wie das Sofa, hängt mittig darüber und seine Unterkante liegt etwa 20 cm (8 Zoll) über der Sofalehne, damit Sofa und Bild als eine Gruppe wirken.";
+  "The picture is two thirds to three quarters as wide as the sofa, hangs centred above it and its lower edge sits about 20 cm (8 in) above the sofa back, so that sofa and picture read as one group.";
 export const BILD_QUELLE = {
-  name: "Fine Art America: „How High to Hang Art Above a Sofa“ (Designprinzip)",
+  name: "Fine Art America: „How High to Hang Art Above a Sofa“ (design principle)",
   url: "https://blog.fineartamerica.com/how-high-to-hang-art-above-a-sofa/",
 };
 
@@ -24,7 +24,7 @@ export function empfehleBild(sofaBreite: number, sofaHoehe: number, deckenHoehe:
   if (hangHoehe >= deckenHoehe) {
     return {
       art: "hinweis",
-      grund: `Über dem Sofa ist kein Platz für ein Bild: Die Unterkante läge bei ${hangHoehe} cm (Sofa ${sofaHoehe} cm + ${BILD_ABSTAND_SOFA_CM} cm Abstand), die Decke ist aber nur ${deckenHoehe} cm hoch.`,
+      grund: `There is no room for a picture above the sofa: the lower edge would be at ${hangHoehe} cm (sofa ${sofaHoehe} cm + ${BILD_ABSTAND_SOFA_CM} cm gap), but the ceiling is only ${deckenHoehe} cm high.`,
     };
   }
   return {

@@ -7,9 +7,9 @@ export const FERNSEHER_FAKTOR = 2.75;
 export const LAUFWEG_MIN_CM = 91;
 
 export const ABSTAENDE_REGEL =
-  "Zwischen Sofa und Couchtisch bleiben 16 bis 18 Zoll (41 bis 46 cm), der Fernseher steht etwa das 2,75-Fache seiner Breite vom Sofa entfernt, und ein Weg durch den Raum ist mindestens 36 Zoll (91 cm) breit.";
+  "Leave 16 to 18 in (41 to 46 cm) between sofa and coffee table, place the TV about 2.75 times its width away from the sofa, and keep a path through the room at least 36 in (91 cm) wide.";
 export const ABSTAENDE_QUELLE = {
-  name: "Houzz: „How Much Space You Need (and What to Do if You Don’t Have It)“ (Designprinzip)",
+  name: "Houzz: „How Much Space You Need (and What to Do if You Don’t Have It)“ (design principle)",
   url: "https://www.houzz.com/magazine/how-much-space-you-need-and-what-to-do-if-you-dont-have-it-stsetivw-vs~95713633",
 };
 

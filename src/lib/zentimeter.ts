@@ -1,23 +1,23 @@
 /** Liest eine Zahl in Zentimetern. Gibt entweder den Wert oder eine verständliche Meldung zurück. */
 export function leseZentimeter(text: string): { wert: number } | { fehler: string } {
   const t = text.trim();
-  if (t === "") return { fehler: "Bitte trag einen Wert in Zentimetern ein." };
+  if (t === "") return { fehler: "Please enter a value in centimetres." };
   if (!/^-?\d+([.,]\d+)?$/.test(t)) {
-    return { fehler: "Das ist keine Zahl. Bitte nur Ziffern eingeben, zum Beispiel 420." };
+    return { fehler: "That is not a number. Please enter digits only, for example 420." };
   }
   const wert = Number(t.replace(",", "."));
-  if (wert <= 0) return { fehler: "Der Wert muss größer als null sein." };
+  if (wert <= 0) return { fehler: "The value must be greater than zero." };
   return { wert };
 }
 
 /** Wie leseZentimeter, aber 0 ist erlaubt, zum Beispiel für ein Fenster direkt an der Ecke. */
 export function leseAbstand(text: string): { wert: number } | { fehler: string } {
   const t = text.trim();
-  if (t === "") return { fehler: "Bitte trag einen Abstand in Zentimetern ein, zum Beispiel 40." };
+  if (t === "") return { fehler: "Please enter a distance in centimetres, for example 40." };
   if (!/^-?\d+([.,]\d+)?$/.test(t)) {
-    return { fehler: "Das ist keine Zahl. Bitte nur Ziffern eingeben, zum Beispiel 40." };
+    return { fehler: "That is not a number. Please enter digits only, for example 40." };
   }
   const wert = Number(t.replace(",", "."));
-  if (wert < 0) return { fehler: "Der Abstand darf nicht kleiner als null sein." };
+  if (wert < 0) return { fehler: "The distance must not be less than zero." };
   return { wert };
 }
