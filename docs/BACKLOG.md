@@ -241,7 +241,7 @@
 
 **Fertig, wenn:** Ich lade die Startseite und sehe Titel, Satz und Knopf nacheinander erscheinen, scrolle und sehe die Abschnitte einblenden; mit eingeschaltetem „Bewegung reduzieren“ blendet es ein, ohne sich zu verschieben.
 
-## Issue 17: Menü mit weichem Übergang und Orientierung 🔧 in Arbeit
+## Issue 17: Menü mit weichem Übergang und Orientierung ✅ fertig
 
 **Ziel:** Besucher*innen bedienen ein Menü, das weich ein- und ausblendet, ihnen zeigt, in welchem Abschnitt sie gerade sind, und das den Hero nicht mit einem zweiten Logo belastet, damit die Startseite aufgeräumt und gut zu navigieren ist.
 
