@@ -271,7 +271,7 @@ function RaumEingabeInhalt() {
 
   return (
     <div className="layout-grid gap-y-16">
-      <div className="col-span-full flex flex-col gap-16 lg:col-span-5">
+      <div className="col-span-full flex flex-col gap-16 lg:sticky lg:top-8 lg:col-span-5 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto">
         <section
           id="raum-formular"
           aria-labelledby={`${uid}-raum`}
