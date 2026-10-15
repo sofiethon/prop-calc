@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import HeaderLogo from "@/components/HeaderLogo";
 import MenuDropdown from "@/components/MenuDropdown";
 import { createClient } from "@/lib/supabase/server";
 
@@ -9,8 +10,9 @@ export default async function Header() {
   const angemeldet = Boolean(data?.claims);
 
   return (
-    <header className="border-b border-border">
+    <header className="sticky top-0 z-20 border-b border-border bg-background">
       <div className="page-container flex items-center justify-between gap-4 py-4">
+        <HeaderLogo>
         <Link href="/" className="flex min-h-11 flex-col items-start gap-2 text-foreground">
           {/* Das Logo hat unten freien Rand; das Feld schneidet ihn ab (Ausschnitt oben). */}
           <span className="relative block h-12 aspect-[1344/1000] overflow-hidden">
@@ -25,6 +27,7 @@ export default async function Header() {
           </span>
           <span className="text-caption font-normal tracking-eyebrow text-muted">prop-calc</span>
         </Link>
+        </HeaderLogo>
         <MenuDropdown angemeldet={angemeldet} />
       </div>
     </header>

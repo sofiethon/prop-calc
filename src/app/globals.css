@@ -161,6 +161,7 @@
 
 html {
   background: var(--bg);
+  scroll-padding-top: 7rem;
 }
 
 body {

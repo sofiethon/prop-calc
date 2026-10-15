@@ -1,14 +1,15 @@
 import { COUCHTISCH_BIS_CM, COUCHTISCH_VON_CM, LAUFWEG_MIN_CM } from "@/lib/abstaende";
+import { BETT_PLATZ_MIN_CM } from "@/lib/bett";
 import { PLATZ_MIN_CM } from "@/lib/esstisch";
 
 /** Drehung im Uhrzeigersinn. Bei 0° zeigt die Vorderseite eines Sofas nach unten. */
 export type Drehung = 0 | 90 | 180 | 270;
 export const DREHUNGEN: readonly Drehung[] = [0, 90, 180, 270];
 
-export type PlanArt = "Sofa" | "Couchtisch" | "Esstisch";
+export type PlanArt = "Sofa" | "Couchtisch" | "Esstisch" | "Bett";
 
 export function istPlanArt(art: string): art is PlanArt {
-  return art === "Sofa" || art === "Couchtisch" || art === "Esstisch";
+  return art === "Sofa" || art === "Couchtisch" || art === "Esstisch" || art === "Bett";
 }
 
 /** Ein Möbelstück mit Tiefe. x und y (linke obere Ecke in cm) fehlen, solange es nie bewegt wurde. */
@@ -86,7 +87,16 @@ function standardLagen(raum: Raum, moebel: PlanMoebel[]): Map<number, Lage> {
     moebel.filter((m) => m.art === "Esstisch"),
     (m) => Math.max(m.breite, m.tiefe),
   );
+  const bett = groesstes(
+    moebel.filter((m) => m.art === "Bett"),
+    (m) => m.breite * m.tiefe,
+  );
   const kurzeSeiteSenkrecht = raum.laenge >= raum.breite;
+
+  // Das Kopfende steht an der oberen Wand, mittig; fürs Fußende zeigt die Vorderseite nach unten.
+  if (bett) {
+    lagen.set(bett.id, { x: (raum.laenge - bett.breite) / 2, y: 0, drehung: 0 });
+  }
 
   let sofaFlaeche: Rechteck | null = null;
   let sofaDrehung: Drehung = 0;
@@ -304,4 +314,63 @@ export function freiraumAusLage(raum: Raum, tisch: Platziert, alle: Platziert[])
 
   const frei = Math.round(best.frei);
   return { ...best, frei, fehlt: Math.max(0, PLATZ_MIN_CM - frei) };
+}
+
+export type BettSeite = { seite: "left" | "right" | "foot"; frei: number; fehlt: number; hindernis: "Wand" | PlanArt };
+
+export type BettFreiraumAusLage = {
+  /** Ein anderes Möbelstück überlappt das Bett. */
+  ueberlappt: boolean;
+  seiten: BettSeite[];
+};
+
+/** Freie Strecke von einer Kante des Bettes bis zur Wand oder zum nächsten Möbelstück davor. */
+function freiVor(r: Rechteck, richtung: Blickrichtung, raum: Raum, andere: Platziert[]) {
+  let frei = 0;
+  let hindernis: BettSeite["hindernis"] = "Wand";
+  const quer = richtung === "unten" || richtung === "oben";
+  if (richtung === "unten") frei = raum.breite - (r.y + r.d);
+  if (richtung === "oben") frei = r.y;
+  if (richtung === "links") frei = r.x;
+  if (richtung === "rechts") frei = raum.laenge - (r.x + r.w);
+  for (const o of andere) {
+    const q = o.rect;
+    const daneben = quer
+      ? ueberlappt(r.x, r.x + r.w, q.x, q.x + q.w)
+      : ueberlappt(r.y, r.y + r.d, q.y, q.y + q.d);
+    if (!daneben) continue;
+    let abstand = Infinity;
+    if (richtung === "unten" && q.y >= r.y + r.d) abstand = q.y - (r.y + r.d);
+    if (richtung === "oben" && q.y + q.d <= r.y) abstand = r.y - (q.y + q.d);
+    if (richtung === "links" && q.x + q.w <= r.x) abstand = r.x - (q.x + q.w);
+    if (richtung === "rechts" && q.x >= r.x + r.w) abstand = q.x - (r.x + r.w);
+    if (abstand < frei) {
+      frei = abstand;
+      hindernis = o.art;
+    }
+  }
+  return { frei: Math.round(frei), hindernis };
+}
+
+/**
+ * Freiraum an den beiden Längsseiten und am Fußende des Bettes aus seiner Lage. Das Kopfende
+ * zählt nicht. Bei 0° liegt das Fußende unten, bei 90° links, 180° oben, 270° rechts.
+ */
+export function bettFreiraumAusLage(raum: Raum, bett: Platziert, alle: Platziert[]): BettFreiraumAusLage {
+  const r = bett.rect;
+  const andere = alle.filter((p) => p.id !== bett.id);
+  const ueberlappend = andere.some(
+    (o) => ueberlappt(r.x, r.x + r.w, o.rect.x, o.rect.x + o.rect.w) && ueberlappt(r.y, r.y + r.d, o.rect.y, o.rect.y + o.rect.d),
+  );
+  const fuss = BLICKRICHTUNG[bett.drehung];
+  const links = { unten: "links", links: "oben", oben: "rechts", rechts: "unten" } as const;
+  const rechts = { unten: "rechts", links: "unten", oben: "links", rechts: "oben" } as const;
+  const messe = (seite: BettSeite["seite"], richtung: Blickrichtung): BettSeite => {
+    const { frei, hindernis } = freiVor(r, richtung, raum, andere);
+    return { seite, frei, fehlt: Math.max(0, BETT_PLATZ_MIN_CM - frei), hindernis };
+  };
+  return {
+    ueberlappt: ueberlappend,
+    seiten: [messe("left", links[fuss]), messe("right", rechts[fuss]), messe("foot", fuss)],
+  };
 }

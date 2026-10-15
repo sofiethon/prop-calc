@@ -33,7 +33,7 @@ const SEITE_ADJEKTIV: Record<Seite, string> = {
   oben: "top",
   unten: "bottom",
 };
-const BIS_ZU = { Wand: "the wall", Sofa: "the sofa", Couchtisch: "the coffee table", Esstisch: "the dining table" } as const;
+const BIS_ZU = { Wand: "the wall", Sofa: "the sofa", Couchtisch: "the coffee table", Esstisch: "the dining table", Bett: "the bed" } as const;
 
 function Quellen({ regel, quellen }: { regel: string; quellen: { name: string; url: string }[] }) {
   return (

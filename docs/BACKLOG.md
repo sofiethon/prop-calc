@@ -133,7 +133,7 @@
 
 **Fertig, wenn:** Ich gebe einen Raum 500 × 400 cm, Sofa und Couchtisch ein, öffne den Grundriss, schiebe den Tisch nah ans Sofa und sehe die Abstandswarnung; ich drehe das Sofa und sehe Breite und Tiefe vertauscht.
 
-## Issue 10: Fenster an eine Wand setzen 🔧 in Arbeit
+## Issue 10: Fenster an eine Wand setzen ✅ fertig
 
 **Ziel:** Eine Innenarchitektin ordnet jedem Fenster eine Wand und eine Lage darauf zu, damit die Fenster im Grundriss stehen und die Vorhangstange mit der echten Wand gerechnet wird statt mit der Annahme.
 
@@ -166,7 +166,7 @@
 
 **Nachtrag 2026-10-12:** Die Oberfläche ist komplett englisch (Menü: About, Portfolio, Bookings, Contact, Sign in, Sign out); der Abschnitt About hat den echten Text. Die Kriterien oben gelten sinngemäß mit den englischen Bezeichnungen.
 
-## Issue 14: Kontaktbereich mit Formular 🔧 in Arbeit
+## Issue 14: Kontaktbereich mit Formular ✅ fertig
 
 **Ziel:** Besucher*innen der Startseite sehen unter „Contact“ Kontaktdaten und ein Anfrageformular und können eine Anfrage ausfüllen, damit der Weg zu einem Projekt klar ist.
 
@@ -181,7 +181,7 @@
 
 **Fertig, wenn:** Ich öffne die Startseite, wähle im Menü „Contact“, sehe Daten und Formular, lasse Felder leer und sehe die Fehlersätze, fülle alles aus und sehe die Bestätigung.
 
-## Issue 11: Schlafzimmer – Bett und Platz drumherum ⬜ offen
+## Issue 11: Schlafzimmer – Bett und Platz drumherum ✅ fertig
 
 **Ziel:** Eine Innenarchitektin gibt ein Bett ein und bekommt Freiraum um das Bett und die Höhe des Nachttischs mit Regel und Quelle, damit die App auch im Schlafzimmer belegte Maße liefert.
 
@@ -226,7 +226,7 @@
 
 **Fertig, wenn:** Ich öffne die Startseite, sehe Titel, Bild, den Primärknopf und den Link „Start a project“, tippe auf den Link und lande beim Kontaktformular; am Handy sehe ich den Primärknopf ohne zu scrollen.
 
-## Issue 16: Sanftes Einblenden beim Laden und Scrollen 🔧 in Arbeit
+## Issue 16: Sanftes Einblenden beim Laden und Scrollen ✅ fertig
 
 **Ziel:** Besucher*innen erleben die Startseite ruhig und geführt: Hero-Elemente erscheinen nacheinander, die Abschnitte blenden beim Scrollen ein, damit die lange Seite hochwertig und nicht überladen wirkt.
 
@@ -241,7 +241,7 @@
 
 **Fertig, wenn:** Ich lade die Startseite und sehe Titel, Satz und Knopf nacheinander erscheinen, scrolle und sehe die Abschnitte einblenden; mit eingeschaltetem „Bewegung reduzieren“ blendet es ein, ohne sich zu verschieben.
 
-## Issue 17: Menü mit weichem Übergang und Orientierung ⬜ offen
+## Issue 17: Menü mit weichem Übergang und Orientierung 🔧 in Arbeit
 
 **Ziel:** Besucher*innen bedienen ein Menü, das weich ein- und ausblendet, ihnen zeigt, in welchem Abschnitt sie gerade sind, und das den Hero nicht mit einem zweiten Logo belastet, damit die Startseite aufgeräumt und gut zu navigieren ist.
 

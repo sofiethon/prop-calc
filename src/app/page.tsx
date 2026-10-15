@@ -48,7 +48,7 @@ export default async function Startseite() {
 
   return (
     <main className="flex flex-1 flex-col">
-      <section className="relative isolate overflow-hidden">
+      <section id="hero" className="relative isolate overflow-hidden">
         <Image
           src="/hero.jpg"
           alt=""
@@ -116,7 +116,7 @@ export default async function Startseite() {
             ))}
           </div>
 
-          <figure className="col-span-4 md:sticky md:top-24 md:col-span-3 md:self-start lg:col-span-5 lg:col-start-8">
+          <figure className="col-span-4 md:sticky md:top-40 md:col-span-3 md:self-start lg:col-span-5 lg:col-start-8">
             <Image
               src="/about-portrait.jpg"
               alt="Portrait of Sofie Thonhauser, founder and designer of SoTho Interiors"

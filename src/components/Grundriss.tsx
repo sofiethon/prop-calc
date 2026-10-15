@@ -39,7 +39,7 @@ function begrenzen(wert: number, min: number, max: number) {
 }
 
 /** Namen für die Liste: „Sofa“, bei mehreren derselben Art „Sofa 1“, „Sofa 2“ (angezeigt auf Englisch). */
-const ART_NAME: Record<string, string> = { Sofa: "Sofa", Couchtisch: "Coffee table", Esstisch: "Dining table" };
+const ART_NAME: Record<string, string> = { Sofa: "Sofa", Couchtisch: "Coffee table", Esstisch: "Dining table", Bett: "Bed" };
 const RICHTUNG = { unten: "the bottom", links: "the left", oben: "the top", rechts: "the right" } as const;
 function namenVergeben(moebel: Platziert[]) {
   const gesamt: Record<string, number> = {};
@@ -145,7 +145,7 @@ export default function Grundriss({ raum, moebel, ohneGrundriss, fenster, onLage
   } else if (moebel.length === 0 && fenster.length === 0) {
     inhalt = (
       <p className="text-muted">
-        For the floor plan I need a sofa, a coffee table or a dining table with a depth, or a window with a wall.{" "}
+        For the floor plan I need a sofa, coffee table, dining table or bed with a depth, or a window with a wall.{" "}
         <a href="#moebel-formular" className={linkKlasse}>
           Back to input
         </a>

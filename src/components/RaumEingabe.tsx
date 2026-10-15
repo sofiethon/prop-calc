@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import type { FormEvent } from "react";
+import BettEmpfehlung from "@/components/BettEmpfehlung";
 import AbstandEmpfehlung from "@/components/AbstandEmpfehlung";
 import BildEmpfehlung from "@/components/BildEmpfehlung";
 import Fehler from "@/components/Fehler";
@@ -19,7 +20,7 @@ import { DREHUNGEN, drehenUmMitte, istPlanArt, lagenBerechnen } from "@/lib/grun
 import type { Drehung, PlanMoebel, Platziert } from "@/lib/grundriss";
 import { leseZentimeter } from "@/lib/zentimeter";
 
-const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard", "Esstisch"] as const;
+const ARTEN = ["Sofa", "Fenster", "Couchtisch", "Fernseher", "Sideboard", "Esstisch", "Bett"] as const;
 type Art = (typeof ARTEN)[number];
 
 /** Die Arten bleiben intern deutsch (so sind sie gespeichert); angezeigt wird Englisch. */
@@ -30,6 +31,7 @@ const ART_LABEL: Record<Art, string> = {
   Fernseher: "TV",
   Sideboard: "Sideboard",
   Esstisch: "Dining table",
+  Bett: "Bed",
 };
 
 type Form = "rechteckig" | "rund";
@@ -156,7 +158,7 @@ function RaumEingabeInhalt() {
   }
 
   const istRunderTisch = art === "Esstisch" && tischForm === "rund";
-  const hatTiefe = art === "Sofa" || art === "Couchtisch" || (art === "Esstisch" && !istRunderTisch);
+  const hatTiefe = art === "Sofa" || art === "Couchtisch" || art === "Bett" || (art === "Esstisch" && !istRunderTisch);
 
   function eintragHinzufuegen(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -271,7 +273,7 @@ function RaumEingabeInhalt() {
 
   return (
     <div className="layout-grid gap-y-16">
-      <div className="col-span-full flex flex-col gap-16 lg:sticky lg:top-8 lg:col-span-5 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto">
+      <div className="col-span-full flex flex-col gap-16 lg:sticky lg:top-32 lg:col-span-5 lg:max-h-[calc(100vh-10rem)] lg:self-start lg:overflow-y-auto">
         <section
           id="raum-formular"
           aria-labelledby={`${uid}-raum`}
@@ -359,8 +361,8 @@ function RaumEingabeInhalt() {
             {(
               [
                 ["breite", istRunderTisch ? "Diameter" : "Width"],
-                ["hoehe", "Height"],
-                ...(hatTiefe ? [["tiefe", "Depth"]] : []),
+                ["hoehe", art === "Bett" ? "Height of mattress top" : "Height"],
+                ...(hatTiefe ? [["tiefe", art === "Bett" ? "Length" : "Depth"]] : []),
               ] as const
             ).map(([name, label]) => (
               <div key={name}>
@@ -540,6 +542,14 @@ function RaumEingabeInhalt() {
               tiefe: x.tiefe ?? x.breite,
               hoehe: x.hoehe,
             }))}
+        />
+
+        <BettEmpfehlung
+          raum={raum}
+          lagen={lagenNachId}
+          betten={eintraege
+            .filter((x) => x.art === "Bett")
+            .map((x) => ({ id: x.id, breite: x.breite, tiefe: x.tiefe ?? 0, hoehe: x.hoehe }))}
         />
 
         <PasstCheck
