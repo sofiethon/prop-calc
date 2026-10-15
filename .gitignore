@@ -48,3 +48,7 @@ next-env.d.ts
 
 # Playwright-Testordner
 .playwright-mcp/
+
+# Playwright-Ergebnisse
+/test-results/
+/playwright-report/
