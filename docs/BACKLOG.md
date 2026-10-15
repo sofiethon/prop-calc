@@ -235,11 +235,11 @@
 **Akzeptanzkriterien:**
 - Gegeben die Startseite wird geladen, dann erscheinen Titel, Satz und Knopf nacheinander mit leichtem Einblenden und Verschieben um 8–16 px; jede Bewegung dauert höchstens 0,6 s und danach ist alles sichtbar und bedienbar.
 - Gegeben ich scrolle nach unten, wenn About, Services, Portfolio und Contact ins Bild kommen, dann blenden sie sanft ein und bleiben danach sichtbar.
-- Gegeben im Betriebssystem ist „Bewegung reduzieren“ eingeschaltet, dann erscheinen alle Inhalte sofort und ohne Bewegung.
+- Gegeben im Betriebssystem ist „Bewegung reduzieren“ eingeschaltet, dann blenden die Inhalte nur ein (Deckkraft), ohne jede Verschiebung.
 - Gegeben ich springe über das Menü oder die Adresse (zum Beispiel `/#services`) direkt zu einem Abschnitt, dann ist dieser sichtbar und nicht leer.
 - Gegeben die Startseite, dann läuft nirgends eine Bewegung in Dauerschleife.
 
-**Fertig, wenn:** Ich lade die Startseite und sehe Titel, Satz und Knopf nacheinander erscheinen, scrolle und sehe die Abschnitte einblenden; mit eingeschaltetem „Bewegung reduzieren“ ist alles sofort da.
+**Fertig, wenn:** Ich lade die Startseite und sehe Titel, Satz und Knopf nacheinander erscheinen, scrolle und sehe die Abschnitte einblenden; mit eingeschaltetem „Bewegung reduzieren“ blendet es ein, ohne sich zu verschieben.
 
 ## Issue 17: Menü mit weichem Übergang und Orientierung ⬜ offen
 
