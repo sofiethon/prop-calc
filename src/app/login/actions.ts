@@ -53,6 +53,12 @@ export async function zugang(_vorher: ZugangZustand, formData: FormData): Promis
     if (error.code === "weak_password") {
       return { email, feld: "passwort", fehler: "This password is too weak. Choose a longer or less common one." };
     }
+    if (error.code === "user_already_exists") {
+      return { email, feld: "email", fehler: "An account with this email address already exists. Please sign in instead." };
+    }
+    if (error.code === "over_email_send_rate_limit" || error.code === "over_request_rate_limit") {
+      return { email, fehler: "Too many attempts. Please wait a few minutes and try again." };
+    }
     return { email, fehler: "Sign-up did not work. Please try again later, or sign in if you already have an account." };
   }
 
